@@ -1,16 +1,13 @@
 package sharedcms.asm;
 
-import java.util.List;
-import net.minecraft.launchwrapper.IClassTransformer;
-import sharedcms.asm.util.Clicker;
-
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.tree.ClassNode;
-import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.MethodNode;
+
+import net.minecraft.launchwrapper.IClassTransformer;
 
 public class InjectorRenderer implements IClassTransformer
 {
@@ -67,7 +64,6 @@ public class InjectorRenderer implements IClassTransformer
 			return bytes;
 		}
 		
-		Clicker.clip();
 		MethodNode injectedMethod = new MethodNode();
 		Label label0 = new Label();
 		injectedMethod.visitLabel(label0);

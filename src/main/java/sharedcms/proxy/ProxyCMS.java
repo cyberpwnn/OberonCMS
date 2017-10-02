@@ -16,7 +16,6 @@ import net.minecraft.item.Item;
 import sharedcms.Ares;
 import sharedcms.Info;
 import sharedcms.L;
-import sharedcms.asm.util.Clicker;
 import sharedcms.base.AresBiome;
 import sharedcms.base.AresBiomeDecorator;
 import sharedcms.base.AresEffect;
@@ -39,7 +38,6 @@ public class ProxyCMS implements IProxy
 	{
 		registrarQueue = new HashMap<IRegistrar, List<Object>>();
 		createDefaultRegistrars();
-		Clicker.clip();
 	}
 
 	public void createRegistrar(IRegistrar r)
@@ -178,8 +176,6 @@ public class ProxyCMS implements IProxy
 				}
 			}
 		}
-		
-		Clicker.clip();
 	}
 
 	@Override

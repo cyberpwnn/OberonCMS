@@ -13,7 +13,6 @@ import org.objectweb.asm.tree.VarInsnNode;
 import net.minecraft.launchwrapper.IClassTransformer;
 import sharedcms.asm.util.ASMHelper;
 import sharedcms.asm.util.Accept;
-import sharedcms.asm.util.Clicker;
 
 @Accept(obf = "ajt", deobf = "net.minecraft.block.BlockCactus")
 public class InjectorBlockCactus extends ASMHelper implements IClassTransformer
@@ -57,7 +56,6 @@ public class InjectorBlockCactus extends ASMHelper implements IClassTransformer
 						method.instructions.remove(mNode.getPrevious());
 					}
 
-					Clicker.clip();
 					System.out.println(" ===>>> Removed Cactus Damage Code");
 				}
 			}

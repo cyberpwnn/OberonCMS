@@ -8,7 +8,6 @@ import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.MinecraftForge;
-import sharedcms.asm.util.Clicker;
 import sharedcms.mutex.client.ClientHostProxy;
 import sharedcms.renderer.animation.MoBends;
 import sharedcms.renderer.camera.ShoulderSurfing;
@@ -35,7 +34,6 @@ public class ProxyClient extends ProxyCommon
 		ss.onPreInit(e);
 		bends.onPreInit(e);
 		host.onPreInit(e);
-		Clicker.clip();
 	}
 
 	@Override
@@ -44,7 +42,6 @@ public class ProxyClient extends ProxyCommon
 		super.onInit(e);
 		ss.onInit(e);
 		host.onInit(e);
-		Clicker.clip();
 	}
 
 	@Override
@@ -53,7 +50,6 @@ public class ProxyClient extends ProxyCommon
 		super.onPostInit(e);
 		ss.onPostInit(e);
 		host.onPostInit(e);
-		Clicker.clip();
 	}
 
 	@Override

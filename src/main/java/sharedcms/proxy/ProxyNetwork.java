@@ -3,7 +3,6 @@ package sharedcms.proxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import sharedcms.asm.util.Clicker;
 import sharedcms.network.PacketDispatcher;
 
 public class ProxyNetwork implements IProxy
@@ -12,7 +11,6 @@ public class ProxyNetwork implements IProxy
 	public void onPreInit(FMLPreInitializationEvent e)
 	{
 		PacketDispatcher.registerPackets();
-		Clicker.clip();
 	}
 
 	@Override

@@ -25,7 +25,6 @@ import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.init.Blocks;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
-import sharedcms.asm.util.Clicker;
 import sharedcms.command.CommandCMS;
 import sharedcms.config.GG;
 import sharedcms.content.Content;
@@ -48,7 +47,6 @@ public class Ares implements IProxy, IRegistrant
 	@EventHandler
 	public void onPreInit(FMLPreInitializationEvent e)
 	{
-		Clicker.clip();
 		testASM();
 		Content.init();
 		L.k = e.getModLog();
@@ -158,7 +156,6 @@ public class Ares implements IProxy, IRegistrant
 	@EventHandler
 	public void onInit(FMLInitializationEvent e)
 	{
-		Clicker.clip();
 		proxy.onInit(e);
 	}
 
@@ -166,7 +163,6 @@ public class Ares implements IProxy, IRegistrant
 	@EventHandler
 	public void onPostInit(FMLPostInitializationEvent e)
 	{
-		Clicker.clip();
 		proxy.onPostInit(e);
 
 		if(e.getSide().equals(Side.CLIENT))
@@ -185,8 +181,6 @@ public class Ares implements IProxy, IRegistrant
 				ii.print();
 			}
 		}
-		
-		Clicker.finish();
 	}
 
 	@Override

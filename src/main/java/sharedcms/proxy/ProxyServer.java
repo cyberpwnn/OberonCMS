@@ -15,7 +15,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import sharedcms.asm.util.Clicker;
 import sharedcms.mutex.server.ServerHostProxy;
 import sharedcms.network.PacketDispatcher;
 import sharedcms.network.PlayClientUpdateHealth;
@@ -42,7 +41,6 @@ public class ProxyServer extends ProxyCommon
 		MinecraftForge.EVENT_BUS.register(host);
 		FMLCommonHandler.instance().bus().register(host);
 		host.onPreInit(e);
-		Clicker.clip();
 	}
 
 	@Override

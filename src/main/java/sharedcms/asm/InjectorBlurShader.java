@@ -15,21 +15,16 @@
  */
 package sharedcms.asm;
 
-import java.io.PrintStream;
-import java.util.List;
-import java.util.Map;
-import net.minecraft.launchwrapper.IClassTransformer;
-import sharedcms.asm.util.Clicker;
-
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
-import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.InsnNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
+
+import net.minecraft.launchwrapper.IClassTransformer;
 
 public class InjectorBlurShader implements IClassTransformer
 {
@@ -62,7 +57,7 @@ public class InjectorBlurShader implements IClassTransformer
 					{
 						continue;
 					}
-					Clicker.clip();
+
 					System.out.println(" ===>>> Modifying GUI background darkness... ");
 					MethodInsnNode colorHook = new MethodInsnNode(184, "sharedcms/renderer/blur/Blur", "getBackgroundColor", "(Z)I", false);
 					AbstractInsnNode colorHook2 = colorHook.clone(null);
@@ -75,14 +70,12 @@ public class InjectorBlurShader implements IClassTransformer
 				}
 			}
 
-			Clicker.clip();
 			ClassWriter cw = new ClassWriter(1);
 			classNode.accept((ClassVisitor) cw);
 			System.out.println(" ===>>> Transforming " + transformedName + " Finished.");
 			return cw.toByteArray();
 		}
 		
-		Clicker.clip();
 		return basicClass;
 	}
 }

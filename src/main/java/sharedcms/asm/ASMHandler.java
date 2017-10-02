@@ -6,7 +6,6 @@ import java.util.Map;
 
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin.MCVersion;
-import sharedcms.asm.util.Clicker;
 
 @MCVersion("1.7.10")
 @IFMLLoadingPlugin.TransformerExclusions({"sharedcms.asm"})
@@ -19,7 +18,6 @@ public class ASMHandler implements IFMLLoadingPlugin
 		System.out.println("=================== ASM ===================");
 		k = new ArrayList<String>();
 		System.out.println("Building Injector list");
-		new Clicker();
 		buildInjectors();
 		
 		return k.toArray(new String[k.size()]);
@@ -27,7 +25,6 @@ public class ASMHandler implements IFMLLoadingPlugin
 
 	public void buildInjectors()
 	{
-		Clicker.clip();
 		add("InjectorBlock");
 		add("InjectorBlockCactus");
 		add("InjectorRenderer");

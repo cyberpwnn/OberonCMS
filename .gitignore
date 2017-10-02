@@ -105,4 +105,4 @@ Temporary Items
 *.classpath
 *.classpath
 /eclipse/
-.gradle/
+/.gradle/

@@ -13,7 +13,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.BlockEvent;
 import sharedcms.Ares;
 import sharedcms.Info;
-import sharedcms.asm.util.Clicker;
 import sharedcms.mutex.shared.SharedHostProxy;
 import sharedcms.network.PacketDispatcher;
 import sharedcms.registry.IRegistrant;
@@ -46,7 +45,6 @@ public class ProxyCommon implements IProxy
 		FMLCommonHandler.instance().bus().register(host);
 		FMLCommonHandler.instance().bus().register(Ares.proxy);
 		System.out.println("Register proxy events " + Ares.proxy.getClass().toString());
-		Clicker.clip();
 	}
 
 	@Override

@@ -1,14 +1,8 @@
 package sharedcms.asm;
 
 import java.util.HashMap;
-import java.util.List;
-import net.minecraft.launchwrapper.IClassTransformer;
-import sharedcms.asm.util.Clicker;
-import sharedcms.asm.util.ShoulderASMHelper;
-import sharedcms.renderer.camera.ShoulderSurfing;
 
 import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
@@ -22,6 +16,10 @@ import org.objectweb.asm.tree.LabelNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 import org.objectweb.asm.tree.VarInsnNode;
+
+import net.minecraft.launchwrapper.IClassTransformer;
+import sharedcms.asm.util.ShoulderASMHelper;
+import sharedcms.renderer.camera.ShoulderSurfing;
 
 public class InjectorCamera implements IClassTransformer
 {
@@ -59,16 +57,16 @@ public class InjectorCamera implements IClassTransformer
 	{
 		if(name.equals(this.obfStrings.get("EntityRendererClass")))
 		{
-			Clicker.clip();
 			ShoulderSurfing.logger.info("Injecting into obfuscated code - EntityRendererClass");
 			return this.transformEntityRenderClass(bytes, this.obfStrings);
 		}
+		
 		if(name.equals(this.mcpStrings.get("EntityRendererClass")))
 		{
-			Clicker.clip();
 			ShoulderSurfing.logger.info("Injecting into non-obfuscated code - EntityRendererClass");
 			return this.transformEntityRenderClass(bytes, this.mcpStrings);
 		}
+		
 		return bytes;
 	}
 
@@ -78,14 +76,15 @@ public class InjectorCamera implements IClassTransformer
 		ClassNode classNode = new ClassNode();
 		ClassReader classReader = new ClassReader(bytes);
 		classReader.accept((ClassVisitor) classNode, 0);
+		
 		for(MethodNode m : classNode.methods)
 		{
 			InsnList hackCode;
 			InsnList searchList;
 			int offset;
+			
 			if(m.name.equals(hm.get("orientCameraMethod")) && m.desc.equals("(F)V"))
 			{
-				Clicker.clip();
 				ShoulderSurfing.logger.info("Located method " + m.name + m.desc + ", locating signature");
 				searchList = new InsnList();
 				searchList.add((AbstractInsnNode) new VarInsnNode(25, 2));
@@ -95,11 +94,13 @@ public class InjectorCamera implements IClassTransformer
 				searchList.add((AbstractInsnNode) new FieldInsnNode(180, (String) hm.get("EntityLivingJavaClass"), (String) hm.get("rotationPitchField"), "F"));
 				searchList.add((AbstractInsnNode) new VarInsnNode(56, 12));
 				offset = ShoulderASMHelper.locateOffset(m.instructions, searchList);
+				
 				if(offset == -1)
 				{
 					ShoulderSurfing.logger.fatal("Failed to locate first of two offsets in " + m.name + m.desc + "!  Is base file changed?");
 					return bytes;
 				}
+				
 				ShoulderSurfing.logger.info("Located offset @ " + offset);
 				hackCode = new InsnList();
 				hackCode.add((AbstractInsnNode) new VarInsnNode(23, 13));

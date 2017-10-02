@@ -16,7 +16,6 @@ import net.minecraft.init.Blocks;
 import net.minecraftforge.common.config.Configuration;
 import sharedcms.Info;
 import sharedcms.L;
-import sharedcms.asm.util.Clicker;
 import sharedcms.voxel.SoftBlockRenderer;
 import sharedcms.voxel.VoxelRegistry;
 
@@ -64,8 +63,6 @@ public class ProxyVoxel implements IProxy
 				ProxyVoxel.loadAutoDetection();
 			}
 		}
-		
-		Clicker.clip();
 	}
 
 	public static void loadAutoDetection()

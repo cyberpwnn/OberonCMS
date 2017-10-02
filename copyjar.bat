@@ -1,2 +1,0 @@
-@echo off
-echo f | xcopy /s /y /v C:\Users\cyberpwn\Documents\development\workspace\SharedCMS\build\libs\sharedcms-1.2.jar C:\Users\cyberpwn\Documents\development\workspace\Strata\work\MultiMC\instances\ProjectOberon\minecraft\mods\sharedcms.jar

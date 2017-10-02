@@ -4,7 +4,6 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.launchwrapper.IClassTransformer;
-import sharedcms.asm.util.Clicker;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
@@ -70,7 +69,6 @@ public class InjectorBlock implements IClassTransformer
 			return bytes;
 		}
 		
-		Clicker.clip();
 		MethodNode injectedMethod = new MethodNode();
 		Label label0 = new Label();
 		injectedMethod.visitLabel(label0);
