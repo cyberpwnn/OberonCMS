@@ -1,0 +1,39 @@
+package sharedcms.base;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldSettings.GameType;
+import sharedcms.Info;
+import sharedcms.util.PlayerUtils;
+import sharedcms.voxel.VoxelRegistry;
+
+public class AresBlock extends Block
+{
+	public AresBlock(String unlocalizedName, Material material, CreativeTabs tab, SoundType type, boolean tessellate)
+	{
+		super(material);
+		setBlockName(unlocalizedName);
+		setBlockTextureName(Info.ID + ":" + getUnlocalizedName().substring(5));
+		setCreativeTab(tab);
+		setStepSound(type);
+		setBlockUnbreakable();
+
+		if(tessellate)
+		{
+			VoxelRegistry.registerForTessellator(this);
+		}
+	}
+
+	public void playSound(World w, int x, int y, int z, String sound, float v, float p, float div)
+	{
+		w.playSound(x, y, z, "sharedcms:" + sound, v, (float) (p + ((Math.random() - 0.5) * 2) * div), false);
+	}
+}
