@@ -31,15 +31,9 @@ import sharedcms.gui.UIWork;
 import sharedcms.mutex.client.mouse.MouseManager;
 import sharedcms.proxy.IProxy;
 import sharedcms.renderer.blur.Blur;
-import sharedcms.shuriken.api.health.HealthType;
-import sharedcms.shuriken.api.health.IHealthLayer;
-import sharedcms.shuriken.api.health.IHealthPool;
-import sharedcms.shuriken.health.HealthLayer;
-import sharedcms.shuriken.health.HealthPool;
 
 public class ClientHostProxy implements IProxy
 {
-	public static IHealthPool health;
 	private AudioManager audioManager;
 	private CharacterManager cm;
 	private Blur b;
@@ -58,13 +52,6 @@ public class ClientHostProxy implements IProxy
 		MinecraftForge.EVENT_BUS.register(cm);
 		FMLCommonHandler.instance().bus().register(cm);
 		FMLCommonHandler.instance().bus().register(audioManager);
-		health = new HealthPool();
-		IHealthLayer defaultShields = new HealthLayer(HealthType.ENERGY, 250);
-		IHealthLayer defaultArmor = new HealthLayer(HealthType.ARMOR, 50);
-		IHealthLayer defaultVitality = new HealthLayer(HealthType.HEALTH, 1500);
-		health.addLayer(defaultShields);
-		health.addLayer(defaultArmor);
-		health.addLayer(defaultVitality);
 	}
 
 	public static void openGui(final GuiScreen s)

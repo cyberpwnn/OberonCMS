@@ -46,7 +46,8 @@ public class PacketDispatcher
 	 */
 	public static final void registerPackets()
 	{
-		PacketDispatcher.registerMessage(PlayClientUpdateHealth.Handler.class, PlayClientUpdateHealth.class, Side.CLIENT);
+		// PacketDispatcher.registerMessage(PlayClientUpdateHealth.Handler.class,
+		// PlayClientUpdateHealth.class, Side.CLIENT);
 	}
 
 	/**

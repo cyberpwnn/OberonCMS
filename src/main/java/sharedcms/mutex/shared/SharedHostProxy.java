@@ -11,7 +11,6 @@ import net.minecraftforge.event.world.WorldEvent;
 import sharedcms.Info;
 import sharedcms.content.world.generator.SimplexNoiseGenerator;
 import sharedcms.content.world.meta.objects.MetaWorld;
-import sharedcms.mutex.server.CharacterController;
 import sharedcms.proxy.IProxy;
 import sharedcms.util.GMap;
 import sharedcms.util.Location;

@@ -14,14 +14,10 @@ import sharedcms.proxy.IProxy;
 
 public class ServerHostProxy implements IProxy
 {
-	public static CharacterController characterController;
-
 	@Override
 	public void onPreInit(FMLPreInitializationEvent e)
 	{
-		characterController = new CharacterController();
-		FMLCommonHandler.instance().bus().register(characterController);
-		MinecraftForge.EVENT_BUS.register(characterController);
+		
 	}
 
 	@Override
