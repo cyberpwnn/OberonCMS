@@ -1,14 +1,14 @@
 package sharedcms.audio;
 
 import net.minecraft.client.Minecraft;
-import sharedcms.util.SuperLocation;
+import sharedcms.util.Location;
 
 public class QSound
 {
 	public DSound sound;
-	public SuperLocation location;
+	public Location location;
 
-	public QSound(DSound sound, SuperLocation location)
+	public QSound(DSound sound, Location location)
 	{
 		super();
 		this.sound = sound;
@@ -22,7 +22,7 @@ public class QSound
 
 	public void play()
 	{
-		SuperLocation s = new SuperLocation();
+		Location s = new Location();
 
 		if(location != null)
 		{

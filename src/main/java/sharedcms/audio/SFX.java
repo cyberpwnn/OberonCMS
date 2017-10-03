@@ -1,6 +1,6 @@
 package sharedcms.audio;
 
-import sharedcms.util.SuperLocation;
+import sharedcms.util.Location;
 
 public class SFX
 {
@@ -9,7 +9,7 @@ public class SFX
 		AudioManager.playSound(sound);
 	}
 	
-	public static void play(DSound sound, SuperLocation s)
+	public static void play(DSound sound, Location s)
 	{
 		AudioManager.playSound(sound, s);
 	}

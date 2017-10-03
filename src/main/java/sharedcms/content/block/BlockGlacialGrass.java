@@ -13,8 +13,8 @@ import sharedcms.audio.SFX;
 import sharedcms.base.AresBlock;
 import sharedcms.base.AresNaturalBlock;
 import sharedcms.content.Content;
+import sharedcms.util.Location;
 import sharedcms.util.M;
-import sharedcms.util.SuperLocation;
 
 public class BlockGlacialGrass extends AresNaturalBlock
 {
@@ -31,7 +31,7 @@ public class BlockGlacialGrass extends AresNaturalBlock
 
 		if(M.r(0.00015))
 		{
-			SFX.play(new DSound("sharedcms:" + Content.SoundMaterial.AMBIENT_WIND, 5.9f, 1f, 0.2f), new SuperLocation(x, y, z));
+			SFX.play(new DSound("sharedcms:" + Content.SoundMaterial.AMBIENT_WIND, 5.9f, 1f, 0.2f), new Location(x, y, z));
 		}
 	}
 }

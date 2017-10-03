@@ -16,6 +16,9 @@ public class Info
 	public static final String PROXY_CLIENT = "sharedcms.proxy.ProxyClient";
 	public static final String PROXY_SERVER = "sharedcms.proxy.ProxyServer";
 	public static final String PROXY_CMS = "sharedcms.proxy.ProxyCMS";
+	public static final float LEVEL_DISTANCE_MULTIPLIER = 0.03f;
+	public static final float LEVEL_DISTANCE_RANDOM_MULTIPLIER = 0.01f;
+	public static final float LEVEL_HP_MULTIPLIER = 2.5f;
 	public static final float TESSELLATION_RATE_HEIGHT = 0.16f;
 	public static final float TESSELLATION_RATE_WIDTH = 0.16f;
 	public static final float TESSELLATION_SHIFT_X = 0.87f;

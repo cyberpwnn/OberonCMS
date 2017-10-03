@@ -5,15 +5,13 @@ import java.util.Random;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
 import sharedcms.audio.DSound;
 import sharedcms.audio.SFX;
 import sharedcms.base.AresNaturalBlock;
 import sharedcms.content.Content;
-import sharedcms.content.particle.ParticleFirefly;
+import sharedcms.util.Location;
 import sharedcms.util.M;
-import sharedcms.util.SuperLocation;
 
 public class BlockPodzol extends AresNaturalBlock
 {
@@ -31,7 +29,7 @@ public class BlockPodzol extends AresNaturalBlock
 			{
 				if(M.r(0.01))
 				{
-					SFX.play(new DSound("sharedcms:" + Content.SoundMaterial.AMBIENT_WOLF, 0.3f, 1f, 0.2f), new SuperLocation(x, y, z));
+					SFX.play(new DSound("sharedcms:" + Content.SoundMaterial.AMBIENT_WOLF, 0.3f, 1f, 0.2f), new Location(x, y, z));
 				}
 			}
 		}

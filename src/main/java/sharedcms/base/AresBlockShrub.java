@@ -13,8 +13,8 @@ import net.minecraft.world.World;
 import sharedcms.audio.DSound;
 import sharedcms.audio.SFX;
 import sharedcms.content.Content;
+import sharedcms.util.Location;
 import sharedcms.util.M;
-import sharedcms.util.SuperLocation;
 
 public abstract class AresBlockShrub extends AresBlock
 {
@@ -64,13 +64,13 @@ public abstract class AresBlockShrub extends AresBlock
 			{
 				if(M.r(0.4))
 				{
-					SFX.play(new DSound("sharedcms:" + Content.SoundMaterial.AMBIENT_CRICKETS, 2f, 1f, 0.2f), new SuperLocation(x, y, z));
+					SFX.play(new DSound("sharedcms:" + Content.SoundMaterial.AMBIENT_CRICKETS, 2f, 1f, 0.2f), new Location(x, y, z));
 				}
 			}
 			
 			else
 			{
-				SFX.play(new DSound("sharedcms:" + Content.SoundMaterial.AMBIENT_PLAINS, 2f, 1f, 0.2f), new SuperLocation(x, y, z));
+				SFX.play(new DSound("sharedcms:" + Content.SoundMaterial.AMBIENT_PLAINS, 2f, 1f, 0.2f), new Location(x, y, z));
 			}
 		}
 	}

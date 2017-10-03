@@ -13,8 +13,8 @@ import net.minecraft.world.World;
 import sharedcms.audio.DSound;
 import sharedcms.audio.SFX;
 import sharedcms.content.Content;
+import sharedcms.util.Location;
 import sharedcms.util.M;
-import sharedcms.util.SuperLocation;
 
 public abstract class AresNaturalLeavesBlock extends AresNaturalBlock
 {
@@ -97,7 +97,7 @@ public abstract class AresNaturalLeavesBlock extends AresNaturalBlock
 			{
 				if(M.r(0.01))
 				{
-					SFX.play(new DSound("sharedcms:" + Content.SoundMaterial.AMBIENT_OWL, 2f, 1f, 0.2f), new SuperLocation(x, y, z));
+					SFX.play(new DSound("sharedcms:" + Content.SoundMaterial.AMBIENT_OWL, 2f, 1f, 0.2f), new Location(x, y, z));
 				}
 			}
 			
@@ -105,7 +105,7 @@ public abstract class AresNaturalLeavesBlock extends AresNaturalBlock
 			{
 				if(M.r(0.4))
 				{
-					SFX.play(new DSound("sharedcms:" + Content.SoundMaterial.AMBIENT_FOREST, 2f, 1f, 0.2f), new SuperLocation(x, y, z));
+					SFX.play(new DSound("sharedcms:" + Content.SoundMaterial.AMBIENT_FOREST, 2f, 1f, 0.2f), new Location(x, y, z));
 				}
 			}
 		}

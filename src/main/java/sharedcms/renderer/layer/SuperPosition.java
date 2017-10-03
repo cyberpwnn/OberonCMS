@@ -1,7 +1,5 @@
 package sharedcms.renderer.layer;
 
-import sharedcms.util.SuperLocation;
-
 public class SuperPosition
 {
 	public int x;

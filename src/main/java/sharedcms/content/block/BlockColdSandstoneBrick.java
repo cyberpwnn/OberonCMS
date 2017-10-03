@@ -14,7 +14,6 @@ import sharedcms.base.AresBlock;
 import sharedcms.base.AresNaturalBlock;
 import sharedcms.content.Content;
 import sharedcms.util.M;
-import sharedcms.util.SuperLocation;
 
 public class BlockColdSandstoneBrick extends AresNaturalBlock
 {

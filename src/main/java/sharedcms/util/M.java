@@ -177,7 +177,12 @@ public class M
 
 	public static int rand(int f, int t)
 	{
-		return f + (int) (Math.random() * ((t - f) + 1));
+		return (int) ((Math.random() * (t - f)) + f);
+	}
+
+	public static double rand(double f, double t)
+	{
+		return (Math.random() * (t - f)) + f;
 	}
 
 	/**

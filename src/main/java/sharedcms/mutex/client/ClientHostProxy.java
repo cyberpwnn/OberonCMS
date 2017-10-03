@@ -22,7 +22,9 @@ import net.minecraft.client.gui.GuiOptions;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraftforge.common.MinecraftForge;
 import scala.swing.event.Key;
+import sharedcms.Info;
 import sharedcms.audio.AudioManager;
+import sharedcms.content.world.generator.SimplexNoiseGenerator;
 import sharedcms.gui.UIOptions;
 import sharedcms.gui.UIWork;
 import sharedcms.mutex.client.mouse.MouseManager;
@@ -33,6 +35,7 @@ import sharedcms.shuriken.api.health.IHealthLayer;
 import sharedcms.shuriken.api.health.IHealthPool;
 import sharedcms.shuriken.health.HealthLayer;
 import sharedcms.shuriken.health.HealthPool;
+import sharedcms.util.M;
 
 public class ClientHostProxy implements IProxy
 {
@@ -74,7 +77,7 @@ public class ClientHostProxy implements IProxy
 			}
 		});
 	}
-	
+
 	public static void doWork(String title, String message, final Runnable work)
 	{
 		openGui(new UIWork(title, message)
@@ -86,19 +89,19 @@ public class ClientHostProxy implements IProxy
 				{
 					Thread.sleep(500);
 				}
-				
+
 				catch(InterruptedException e)
 				{
 
 				}
-				
+
 				work.run();
-				
+
 				try
 				{
 					Thread.sleep(500);
 				}
-				
+
 				catch(InterruptedException e)
 				{
 
@@ -106,7 +109,7 @@ public class ClientHostProxy implements IProxy
 			}
 		});
 	}
-	
+
 	public static void closeGui()
 	{
 		queue.add(new Runnable()
@@ -159,4 +162,6 @@ public class ClientHostProxy implements IProxy
 	{
 		MouseManager.poll();
 	}
+
+	
 }

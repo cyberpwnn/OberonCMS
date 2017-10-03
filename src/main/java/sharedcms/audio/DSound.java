@@ -1,7 +1,5 @@
 package sharedcms.audio;
 
-import sharedcms.util.SuperLocation;
-
 public class DSound
 {
 	private String name;

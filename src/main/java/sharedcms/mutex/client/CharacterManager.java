@@ -27,9 +27,9 @@ import sharedcms.base.BSM;
 import sharedcms.content.Content;
 import sharedcms.proxy.IProxy;
 import sharedcms.util.C;
+import sharedcms.util.Location;
 import sharedcms.util.M;
 import sharedcms.util.PlayerUtils;
-import sharedcms.util.SuperLocation;
 
 public class CharacterManager implements IProxy
 {
@@ -266,7 +266,7 @@ public class CharacterManager implements IProxy
 
 		String k = "sharedcms:" + s;
 
-		SFX.play(new DSound(k, v, p, 0.1f), new SuperLocation(el.posX + x, el.posY + y, el.posZ + z));
+		SFX.play(new DSound(k, v, p, 0.1f), new Location(el.posX + x, el.posY + y, el.posZ + z));
 	}
 
 	public void play(String s, float v, float p)

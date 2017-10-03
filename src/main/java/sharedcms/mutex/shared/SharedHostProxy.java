@@ -1,41 +1,34 @@
 package sharedcms.mutex.shared;
 
-import java.util.List;
-import java.util.UUID;
-
-import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
-import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
-import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
-import net.minecraftforge.event.entity.living.LivingAttackEvent;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.WorldEvent;
-import sharedcms.command.CommandCMS;
+import sharedcms.Info;
+import sharedcms.content.world.generator.SimplexNoiseGenerator;
 import sharedcms.content.world.meta.objects.MetaWorld;
-import sharedcms.mutex.shared.object.IPlayer;
-import sharedcms.mutex.shared.object.Player;
 import sharedcms.proxy.IProxy;
-import sharedcms.util.GList;
 import sharedcms.util.GMap;
+import sharedcms.util.Location;
 
 public class SharedHostProxy implements IProxy
 {
-	public static int tick = 0;
-	public static GList<IPlayer> players;
+	public static CharacterController characterController;
 	public static GMap<World, MetaWorld> meta;
+	private static SimplexNoiseGenerator simplex;
 
 	@Override
 	public void onPreInit(FMLPreInitializationEvent e)
 	{
-		players = new GList<IPlayer>();
 		meta = new GMap<World, MetaWorld>();
+		characterController = new CharacterController();
+		FMLCommonHandler.instance().bus().register(characterController);
+		MinecraftForge.EVENT_BUS.register(characterController);
+		simplex = new SimplexNoiseGenerator(69696969);
 	}
 
 	@Override
@@ -62,91 +55,50 @@ public class SharedHostProxy implements IProxy
 		meta.get(e.world).save();
 	}
 
-	@SubscribeEvent
-	public void on(PlayerLoggedInEvent e)
-	{
-		players.add(new Player(e.player));
-		System.out.println(e.player.getDisplayName() + " JOINED");
-	}
-
-	@SubscribeEvent
-	public void on(PlayerLoggedOutEvent e)
-	{
-		players.remove(getPlayer(e.player));
-		System.out.println(e.player.getDisplayName() + " LEFT");
-	}
-
-	@SubscribeEvent
-	public void on(LivingHurtEvent e)
-	{
-		if(e.entityLiving instanceof EntityPlayer)
-		{
-			IPlayer p = getPlayer(e.entityLiving.getUniqueID());
-			p.onRawDamageTaken(e.source, e.ammount);
-			e.setCanceled(true);
-			e.ammount = 0;
-		}
-	}
-
-	@SubscribeEvent
-	public void on(LivingAttackEvent e)
-	{
-		if(e.entityLiving instanceof EntityPlayer)
-		{
-			on(new LivingHurtEvent(e.entityLiving, e.source, e.ammount));
-			e.setCanceled(true);
-			return;
-		}
-
-		e.entityLiving.setHealth(e.entityLiving.getHealth() - e.ammount);
-		e.entityLiving.worldObj.playSoundEffect(e.entityLiving.posX, e.entityLiving.posY, e.entityLiving.posZ, "game.neutral.hurt", 0.6f, (float) (1f + ((Math.random() - 1.5) * 2) * 0.3));
-		e.setCanceled(true);
-	}
-
-	@SubscribeEvent
-	public void on(ServerTickEvent e)
-	{
-		tick++;
-
-		for(IPlayer i : getPlayers())
-		{
-			i.tick(tick);
-		}
-	}
-
-	public MetaWorld getWorldMeta(World world)
+	public static MetaWorld getWorldMeta(World world)
 	{
 		return meta.get(world);
 	}
 
-	public List<IPlayer> getPlayers()
+	public static CharacterController getCharacterController()
 	{
-		return players.copy();
+		return characterController;
 	}
 
-	public IPlayer getPlayer(EntityPlayer p)
+	public static GMap<World, MetaWorld> getMeta()
 	{
-		for(IPlayer i : getPlayers())
-		{
-			if(i.getUUID().equals(p.getUniqueID()))
-			{
-				return i;
-			}
-		}
-
-		return null;
+		return meta;
 	}
-
-	public IPlayer getPlayer(UUID uuid)
+	
+	public static int getLevel(Location l)
 	{
-		for(IPlayer i : getPlayers())
-		{
-			if(i.getUUID().equals(uuid))
-			{
-				return i;
-			}
-		}
-
-		return null;
+		return getBaseLevel(l) + getLevelShift(l);
+	}
+	
+	public static int getLevelShift(Location l)
+	{
+		Location ll = l.clone();
+		ll.y = 150;
+		double simp1 = simplex.noise(ll.z / 5, 250, ll.x / 5) * 3;
+		double simp2 = simplex.noise(ll.x / 10, 100, ll.z / 10) * 50;
+		double simp3 = simplex.noise(ll.z / 55, 250, ll.x / 55) * 100;
+		double distance = ll.distance(new Location()) + simp1 + simp2 + simp3;
+		double shift = distance * Info.LEVEL_DISTANCE_RANDOM_MULTIPLIER;
+		double rshift = simplex.noise(ll.x / 2, 100, ll.z / 2) * shift;
+		
+		return (int) Math.abs(rshift);
+	}
+	
+	public static int getBaseLevel(Location l)
+	{
+		Location ll = l.clone();
+		ll.y = 100;
+		double simp1 = simplex.noise(ll.z / 5, 250, ll.x / 5) * 3;
+		double simp2 = simplex.noise(ll.x / 10, 100, ll.z / 10) * 50;
+		double simp3 = simplex.noise(ll.z / 55, 250, ll.x / 55) * 100;
+		double distance = ll.distance(new Location()) + simp1 + simp2 + simp3;
+		double level = distance * Info.LEVEL_DISTANCE_MULTIPLIER;
+		
+		return (int) Math.abs(level);
 	}
 }

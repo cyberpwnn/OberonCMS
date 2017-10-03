@@ -15,8 +15,8 @@ import sharedcms.content.world.meta.objects.Village;
 import sharedcms.mutex.shared.SharedHostProxy;
 import sharedcms.renderer.layer.SuperPosition;
 import sharedcms.util.GList;
+import sharedcms.util.Location;
 import sharedcms.util.M;
-import sharedcms.util.SuperLocation;
 import sharedcms.util.Vector;
 
 public class WorldGeneratorCities extends AresWorldGenerator
@@ -212,7 +212,7 @@ public class WorldGeneratorCities extends AresWorldGenerator
 		}
 	}
 
-	public void drawCuboid(SuperLocation a, SuperLocation b, double opacity, Block... blocks)
+	public void drawCuboid(Location a, Location b, double opacity, Block... blocks)
 	{
 		for(int i = mi(a.x, b.x); i < ma(a.x, b.x); i++)
 		{

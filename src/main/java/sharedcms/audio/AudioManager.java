@@ -18,7 +18,7 @@ import sharedcms.Status;
 import sharedcms.audio.openal.ProxySoundFilter;
 import sharedcms.proxy.IProxy;
 import sharedcms.util.GList;
-import sharedcms.util.SuperLocation;
+import sharedcms.util.Location;
 
 public class AudioManager implements IProxy
 {
@@ -123,7 +123,7 @@ public class AudioManager implements IProxy
 		instance.sounds.clear();
 	}
 
-	public static void playSound(DSound sound, SuperLocation location)
+	public static void playSound(DSound sound, Location location)
 	{
 		instance.sounds.add(new QSound(sound, location));
 	}
