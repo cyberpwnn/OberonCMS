@@ -1,7 +1,10 @@
 package sharedcms.mutex.client;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import org.lwjgl.input.Keyboard;
 
@@ -11,20 +14,18 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.InputEvent.KeyInputEvent;
 import cpw.mods.fml.common.gameevent.InputEvent.MouseInputEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiIngameMenu;
-import net.minecraft.client.gui.GuiOptions;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.MinecraftForge;
-import scala.swing.event.Key;
-import sharedcms.Info;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import sharedcms.audio.AudioManager;
-import sharedcms.content.world.generator.SimplexNoiseGenerator;
 import sharedcms.gui.UIOptions;
 import sharedcms.gui.UIWork;
 import sharedcms.mutex.client.mouse.MouseManager;
@@ -35,7 +36,6 @@ import sharedcms.shuriken.api.health.IHealthLayer;
 import sharedcms.shuriken.api.health.IHealthPool;
 import sharedcms.shuriken.health.HealthLayer;
 import sharedcms.shuriken.health.HealthPool;
-import sharedcms.util.M;
 
 public class ClientHostProxy implements IProxy
 {
@@ -44,6 +44,7 @@ public class ClientHostProxy implements IProxy
 	private CharacterManager cm;
 	private Blur b;
 	public static List<Runnable> queue = new ArrayList<Runnable>();
+	public static Map<UUID, NBTTagCompound> trackedEntities = new HashMap<UUID, NBTTagCompound>();
 
 	@Override
 	public void onPreInit(FMLPreInitializationEvent e)
@@ -142,7 +143,8 @@ public class ClientHostProxy implements IProxy
 	{
 		MouseManager.poll();
 		Keyboard.poll();
-
+		retrackEntities();
+		
 		if(Minecraft.getMinecraft().currentScreen instanceof GuiIngameMenu)
 		{
 			ClientHostProxy.openGui(new UIOptions());
@@ -154,6 +156,16 @@ public class ClientHostProxy implements IProxy
 		}
 
 		queue.clear();
+	}
+
+	private void retrackEntities()
+	{
+		EntityPlayer e = Minecraft.getMinecraft().thePlayer;
+		
+		if(e != null)
+		{
+			
+		}
 	}
 
 	@SideOnly(Side.CLIENT)

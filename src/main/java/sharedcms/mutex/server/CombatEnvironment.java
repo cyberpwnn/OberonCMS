@@ -1,4 +1,4 @@
-package sharedcms.mutex.shared;
+package sharedcms.mutex.server;
 
 import java.util.UUID;
 
@@ -7,6 +7,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import sharedcms.mutex.shared.SharedHostProxy;
 import sharedcms.mutex.shared.object.ICharacter;
 
 public class CombatEnvironment
@@ -18,7 +19,7 @@ public class CombatEnvironment
 	
 	public ICharacter getPlayer(UUID id)
 	{
-		return SharedHostProxy.characterController.getPlayer(id);
+		return ServerHostProxy.characterController.getPlayer(id);
 	}
 	
 	@SubscribeEvent(priority = EventPriority.HIGHEST, receiveCanceled = false)

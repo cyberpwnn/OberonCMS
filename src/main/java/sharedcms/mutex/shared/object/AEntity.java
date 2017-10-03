@@ -12,6 +12,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSourceIndirect;
 import sharedcms.Info;
+import sharedcms.network.NET;
 import sharedcms.shuriken.api.damage.DamageElement;
 import sharedcms.shuriken.api.damage.IDamage;
 import sharedcms.shuriken.api.damage.IDamageModifier;
@@ -37,7 +38,6 @@ public class AEntity implements IEntity
 	private double damageTicks;
 	private boolean healthModified;
 	private int damageTickSet;
-	private int level;
 
 	public AEntity(EntityLivingBase instance)
 	{
@@ -52,8 +52,6 @@ public class AEntity implements IEntity
 		regenTicks = 0;
 		healthModified = true;
 		damageTickSet = 0;
-		level = 0;
-		load();
 	}
 
 	@Override
@@ -244,11 +242,6 @@ public class AEntity implements IEntity
 		{
 			damageTickSet--;
 		}
-
-		if(tick % 20 == 0)
-		{
-			save();
-		}
 	}
 
 	public void regenHealth()
@@ -308,241 +301,5 @@ public class AEntity implements IEntity
 	public void takeDamage(IDamage damage)
 	{
 		takeDamage(damage, getLocation());
-	}
-
-	@Override
-	public NBTTagCompound getNBT()
-	{
-		NBTTagCompound t = new NBTTagCompound();
-		getEntity().writeToNBT(t);
-
-		return t;
-	}
-
-	@Override
-	public void setNBT(NBTTagCompound t)
-	{
-		getEntity().readFromNBT(t);
-	}
-
-	@Override
-	public void writeNBT(String key, double d)
-	{
-		NBTTagCompound t = getNBT();
-		t.setDouble(key, d);
-		setNBT(t);
-	}
-
-	@Override
-	public void writeNBT(String key, int d)
-	{
-		NBTTagCompound t = getNBT();
-		t.setInteger(key, d);
-		setNBT(t);
-	}
-
-	@Override
-	public void writeNBT(String key, boolean d)
-	{
-		NBTTagCompound t = getNBT();
-		t.setBoolean(key, d);
-		setNBT(t);
-	}
-
-	@Override
-	public void writeNBT(String key, String d)
-	{
-		NBTTagCompound t = getNBT();
-		t.setString(key, d);
-		setNBT(t);
-	}
-
-	@Override
-	public void writeNBT(String key, byte[] d)
-	{
-		NBTTagCompound t = getNBT();
-		t.setByteArray(key, d);
-		setNBT(t);
-	}
-
-	@Override
-	public double readNBTDouble(String key)
-	{
-		return getNBT().getDouble(key);
-	}
-
-	@Override
-	public int readNBTInt(String key)
-	{
-		return getNBT().getInteger(key);
-	}
-
-	@Override
-	public boolean readNBTBoolean(String key)
-	{
-		return getNBT().getBoolean(key);
-	}
-
-	@Override
-	public String readNBTString(String key)
-	{
-		return getNBT().getString(key);
-	}
-
-	@Override
-	public byte[] readNBTByteArray(String key)
-	{
-		return getNBT().getByteArray(key);
-	}
-
-	@Override
-	public boolean hasNBT(String tag)
-	{
-		return getNBT().hasKey(tag);
-	}
-
-	public static int readVarInt(InputStream buf, int maxSize)
-	{
-		try
-		{
-			int i = 0;
-			int j = 0;
-			byte b0;
-
-			do
-			{
-				b0 = (byte) buf.read();
-				i |= (b0 & 127) << j++ * 7;
-
-				if(j > maxSize)
-				{
-					throw new RuntimeException("VarInt too big");
-				}
-			}
-
-			while((b0 & 128) == 128);
-
-			return i;
-		}
-
-		catch(Exception e)
-		{
-			return -1;
-		}
-	}
-
-	public static void writeVarInt(OutputStream to, int toWrite, int maxSize)
-	{
-		try
-		{
-			while((toWrite & -128) != 0)
-			{
-				to.write(toWrite & 127 | 128);
-				toWrite >>>= 7;
-			}
-
-			to.write(toWrite);
-		}
-
-		catch(Exception e)
-		{
-
-		}
-	}
-
-	@Override
-	public void load()
-	{
-		if(hasNBT("cms-health"))
-		{
-			ByteArrayInputStream b = new ByteArrayInputStream(readNBTByteArray("cms-health"));
-			IHealthPool mPool = new HealthPool();
-			int layerCount = readVarInt(b, 1);
-
-			for(int i = 0; i < layerCount; i++)
-			{
-				HealthType lType = HealthType.values()[readVarInt(b, 1)];
-				double lCurrent = readVarInt(b, 4);
-				double lMax = readVarInt(b, 4);
-				int modifierCount = readVarInt(b, 1);
-				IHealthLayer mLayer = new HealthLayer(lType, lMax);
-				mLayer.set(lCurrent);
-
-				for(int j = 0; j < modifierCount; j++)
-				{
-					DamageElement mDamageElement = DamageElement.values()[readVarInt(b, 1)];
-					double mModifier = (double) readVarInt(b, 4) / 1000.0;
-					IDamageModifier mDamageModifier = new DamageModifier(mDamageElement, mModifier);
-					mLayer.addModifier(mDamageModifier);
-				}
-
-				mPool.addLayer(mLayer);
-			}
-
-			health = mPool;
-		}
-
-		if(hasNBT("cms-level"))
-		{
-			level = readNBTInt("cms-level");
-		}
-
-		if(hasNBT("cms-regenbase"))
-		{
-			regenRateBase = readNBTDouble("cms-regenbase");
-		}
-
-		if(hasNBT("cms-regenmult"))
-		{
-			regenRateMultiplier = readNBTDouble("cms-regenmult");
-		}
-
-		if(hasNBT("cms-regendelay"))
-		{
-			regenDelay = readNBTDouble("cms-regendelay");
-		}
-	}
-
-	@Override
-	public void save()
-	{
-		ByteArrayOutputStream b = new ByteArrayOutputStream();
-		IHealthPool pool = getHealthPool();
-
-		writeVarInt(b, pool.getLayers().size(), 1);
-
-		for(IHealthLayer i : pool.getLayers())
-		{
-			writeVarInt(b, i.getType().ordinal(), 1);
-			writeVarInt(b, (int) i.getCurrent(), 4);
-			writeVarInt(b, (int) i.getMaximum(), 4);
-			writeVarInt(b, i.getModifiers().size(), 1);
-
-			for(IDamageModifier j : i.getModifiers())
-			{
-				writeVarInt(b, j.getTargetType().ordinal(), 1);
-				writeVarInt(b, (int) (j.getModifier() * 1000), 4);
-			}
-		}
-
-		writeNBT("cms-health", b.toByteArray());
-		writeNBT("cms-level", (int) level);
-		writeNBT("cms-regenbase", (double) regenRateBase);
-		writeNBT("cms-regenmult", (double) regenRateMultiplier);
-		writeNBT("cms-regendelay", (double) regenDelay);
-	}
-
-	@Override
-	public int getLevel()
-	{
-		return level;
-	}
-
-	@Override
-	public void setLevel(int level)
-	{
-		this.level = level;
-		health.getLayers(HealthType.HEALTH).get(0).setMaximum(100 + ((double) level * Info.LEVEL_HP_MULTIPLIER));
-		save();
 	}
 }

@@ -3,8 +3,10 @@ package sharedcms.renderer.layer;
 import java.awt.Color;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
@@ -13,7 +15,6 @@ import sharedcms.Colors;
 import sharedcms.Status;
 import sharedcms.audio.openal.ProxySoundFilter;
 import sharedcms.mutex.shared.SharedHostProxy;
-import sharedcms.mutex.shared.object.IEntity;
 import sharedcms.util.F;
 import sharedcms.util.GList;
 import sharedcms.util.Location;
@@ -39,23 +40,25 @@ public class RenderLayerDebug extends RenderLayer
 		k.add(new TextElement("PARTICLE_USE : " + Status.PARTICLE_USE + " / 2000 (" + pw + ")", cp));
 		k.add(new TextElement("REVERB_STATE : " + "DEC: " + rvDecay + " GAN: " + rvGain + " DIF: " + rvDiff + " REF: " + rvRefl + " DEL: " + rvDel + " ROL: " + rvRoll, Color.GREEN));
 		k.add(new TextElement("Level: " + SharedHostProxy.getLevel(new Location(ep)) + " (" + SharedHostProxy.getBaseLevel(new Location(ep)) + " + " + SharedHostProxy.getLevelShift(new Location(ep)) + ")", Color.YELLOW));
-		
+
 		Minecraft.getMinecraft().entityRenderer.getMouseOver(0f);
-		
+
 		if(Minecraft.getMinecraft().pointedEntity != null)
 		{
-			IEntity ie = SharedHostProxy.characterController.getEntity(Minecraft.getMinecraft().pointedEntity.getUniqueID());
-			
-			
-			
-			if(ie != null)
+			Entity e = Minecraft.getMinecraft().pointedEntity;
+
+			if(e != null)
 			{
-				int hp = 0;
-				int hpm = 0;
-				k.add(new TextElement("Target: LVL: " + ie.getLevel() + " HP: " + ie.getHealthPool().getTotalHealth() + " / " + ie.getHealthPool().getTotalMaximumHealth()));
+				NBTTagCompound nbt = new NBTTagCompound();
+				e.writeToNBT(nbt);
+				
+				if(nbt.hasKey("cms-level"))
+				{
+					k.add(new TextElement("IT HAS A LEVEL?"));
+				}
 			}
 		}
-		
+
 		new RenderLayerMultiText(k, new SuperPosition(0, height / 2), 1f);
 	}
 

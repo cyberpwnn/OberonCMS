@@ -1,4 +1,4 @@
-package sharedcms.mutex.shared;
+package sharedcms.mutex.server;
 
 import java.util.List;
 import java.util.UUID;
@@ -12,6 +12,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
+import sharedcms.mutex.shared.SharedHostProxy;
 import sharedcms.mutex.shared.object.ACharacter;
 import sharedcms.mutex.shared.object.AEntity;
 import sharedcms.mutex.shared.object.ICharacter;
@@ -60,7 +61,6 @@ public class CharacterController
 			}
 			
 			AEntity a = new AEntity(e.entityLiving);
-			a.setLevel(SharedHostProxy.getLevel(a.getLocation()));
 			entities.add(a);
 		}
 	}

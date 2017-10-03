@@ -11,13 +11,13 @@ import net.minecraftforge.event.world.WorldEvent;
 import sharedcms.Info;
 import sharedcms.content.world.generator.SimplexNoiseGenerator;
 import sharedcms.content.world.meta.objects.MetaWorld;
+import sharedcms.mutex.server.CharacterController;
 import sharedcms.proxy.IProxy;
 import sharedcms.util.GMap;
 import sharedcms.util.Location;
 
 public class SharedHostProxy implements IProxy
 {
-	public static CharacterController characterController;
 	public static GMap<World, MetaWorld> meta;
 	private static SimplexNoiseGenerator simplex;
 
@@ -25,9 +25,6 @@ public class SharedHostProxy implements IProxy
 	public void onPreInit(FMLPreInitializationEvent e)
 	{
 		meta = new GMap<World, MetaWorld>();
-		characterController = new CharacterController();
-		FMLCommonHandler.instance().bus().register(characterController);
-		MinecraftForge.EVENT_BUS.register(characterController);
 		simplex = new SimplexNoiseGenerator(69696969);
 	}
 
@@ -59,12 +56,7 @@ public class SharedHostProxy implements IProxy
 	{
 		return meta.get(world);
 	}
-
-	public static CharacterController getCharacterController()
-	{
-		return characterController;
-	}
-
+	
 	public static GMap<World, MetaWorld> getMeta()
 	{
 		return meta;
