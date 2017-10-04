@@ -23,28 +23,28 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import sharedcms.command.CommandCMS;
 import sharedcms.config.GG;
-import sharedcms.content.Content;
 import sharedcms.controllable.ControllerManager;
 import sharedcms.controller.client.BoxelController;
 import sharedcms.controller.client.CameraController;
+import sharedcms.controller.shared.ContentController;
+import sharedcms.controller.shared.NetworkController;
+import sharedcms.controller.shared.WorldHostController;
 import sharedcms.json.JSONObject;
 import sharedcms.proxy.IProxy;
-import sharedcms.proxy.ProxyCMS;
 import sharedcms.proxy.ProxyCommon;
 import sharedcms.registry.IRegistrant;
 
 @Mod(modid = Info.ID, version = Info.VERSION, name = Info.NAME)
 public class Ares implements IProxy, IRegistrant
 {
-	public static Side side;
-	
 	@Instance(Info.ID)
 	public static Ares instance;
 
 	@SidedProxy(clientSide = Info.PROXY_CLIENT, serverSide = Info.PROXY_SERVER)
 	public static ProxyCommon proxy;
-	
+
 	private ControllerManager manager;
+	public static Side side;
 
 	@Override
 	@EventHandler
@@ -52,9 +52,6 @@ public class Ares implements IProxy, IRegistrant
 	{
 		side = e.getSide();
 		L.k = e.getModLog();
-		Content.init();
-		ProxyCMS.addRegistrant(this);
-		ProxyCMS.addRegistrant(new Content());
 		proxy.onPreInit(e);
 		controlMinecraft(e.getSide());
 		manager.onPreInit(e);
@@ -67,15 +64,17 @@ public class Ares implements IProxy, IRegistrant
 			@Override
 			public void buildControlledServer()
 			{
-				System.out.println("BUILD SERVER CALLED");
+				
 			}
-			
+
 			@Override
 			public void buildControlledLink()
 			{
-				System.out.println("BUILD SHARED CALLED");
+				register(new ContentController());
+				register(new NetworkController());
+				register(new WorldHostController());
 			}
-			
+
 			@Override
 			public void buildControlledClient()
 			{
@@ -211,7 +210,7 @@ public class Ares implements IProxy, IRegistrant
 	}
 
 	@Override
-	public void onPreRegister(ProxyCMS cms, Side side)
+	public void onPreRegister(ContentController cms, Side side)
 	{
 
 	}

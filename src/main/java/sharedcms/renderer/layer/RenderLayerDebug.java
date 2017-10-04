@@ -3,10 +3,8 @@ package sharedcms.renderer.layer;
 import java.awt.Color;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
@@ -14,10 +12,8 @@ import net.minecraft.world.World;
 import sharedcms.Colors;
 import sharedcms.Status;
 import sharedcms.audio.openal.ProxySoundFilter;
-import sharedcms.mutex.shared.SharedHostProxy;
 import sharedcms.util.F;
 import sharedcms.util.GList;
-import sharedcms.util.Location;
 
 public class RenderLayerDebug extends RenderLayer
 {

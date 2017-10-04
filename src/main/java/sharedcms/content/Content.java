@@ -126,7 +126,7 @@ import sharedcms.content.world.biome.decorator.BiomeDecoratorPlainsTrees;
 import sharedcms.content.world.biome.decorator.BiomeDecoratorRedwoods;
 import sharedcms.content.world.generator.WorldGeneratorEmpty;
 import sharedcms.content.world.type.WorldTypeAres;
-import sharedcms.proxy.ProxyCMS;
+import sharedcms.controller.shared.ContentController;
 import sharedcms.registry.IRegistrant;
 import sharedcms.voxel.VoxelRegistry;
 
@@ -556,7 +556,7 @@ public class Content implements IRegistrant
 	}
 
 	@Override
-	public void onPreRegister(ProxyCMS cms, Side side)
+	public void onPreRegister(ContentController cms, Side side)
 	{
 		VoxelRegistry.registerForTessellator(Blocks.cobblestone);
 		VoxelRegistry.registerForTessellator(Blocks.mossy_cobblestone);

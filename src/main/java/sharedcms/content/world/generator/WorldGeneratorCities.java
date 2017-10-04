@@ -12,7 +12,7 @@ import sharedcms.content.Content;
 import sharedcms.content.world.meta.objects.City;
 import sharedcms.content.world.meta.objects.ICity;
 import sharedcms.content.world.meta.objects.Village;
-import sharedcms.mutex.shared.SharedHostProxy;
+import sharedcms.controller.shared.WorldHostController;
 import sharedcms.renderer.layer.SuperPosition;
 import sharedcms.util.GList;
 import sharedcms.util.Location;
@@ -66,7 +66,7 @@ public class WorldGeneratorCities extends AresWorldGenerator
 			SuperPosition px = new SuperPosition(x, z);
 			int min = Integer.MAX_VALUE;
 
-			for(ICity i : SharedHostProxy.meta.get(world).getCities())
+			for(ICity i : WorldHostController.meta.get(world).getCities())
 			{
 				int md = (int) i.getPosition().distance(px);
 
@@ -87,7 +87,7 @@ public class WorldGeneratorCities extends AresWorldGenerator
 			}
 
 			ICity city = new City(px);
-			SharedHostProxy.meta.get(world).addCity(city);
+			WorldHostController.meta.get(world).addCity(city);
 			List<SuperPosition> mc = new ArrayList<SuperPosition>();
 			GList<String> f = new GList<String>();
 			f.add("");
@@ -122,7 +122,7 @@ public class WorldGeneratorCities extends AresWorldGenerator
 				}
 			}
 
-			for(ICity i : SharedHostProxy.meta.get(world).getCities())
+			for(ICity i : WorldHostController.meta.get(world).getCities())
 			{
 				if(i.getPosition().distance(px) < CITY_CONNECT_THRESHOLD && i.getPosition().distance(px) > CITIES_DIST_MIN)
 				{

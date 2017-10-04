@@ -1,9 +1,9 @@
 package sharedcms.registry;
 
 import cpw.mods.fml.relauncher.Side;
-import sharedcms.proxy.ProxyCMS;
+import sharedcms.controller.shared.ContentController;
 
 public interface IRegistrant
 {
-	public void onPreRegister(ProxyCMS cms, Side side);
+	public void onPreRegister(ContentController cms, Side side);
 }
