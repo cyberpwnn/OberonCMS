@@ -26,6 +26,7 @@ import sharedcms.config.GG;
 import sharedcms.controllable.ControllerManager;
 import sharedcms.controller.client.BoxelController;
 import sharedcms.controller.client.CameraController;
+import sharedcms.controller.server.PlayerMovementController;
 import sharedcms.controller.shared.ContentController;
 import sharedcms.controller.shared.NetworkController;
 import sharedcms.controller.shared.WorldHostController;
@@ -64,7 +65,7 @@ public class Ares implements IProxy, IRegistrant
 			@Override
 			public void buildControlledServer()
 			{
-				
+				register(new PlayerMovementController());
 			}
 
 			@Override
