@@ -7,7 +7,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 
 import cpw.mods.fml.common.Mod;
@@ -19,15 +18,15 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.SoundHandler;
-import net.minecraft.init.Blocks;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import sharedcms.command.CommandCMS;
 import sharedcms.config.GG;
 import sharedcms.content.Content;
+import sharedcms.controllable.ControllerManager;
+import sharedcms.controller.client.BoxelController;
+import sharedcms.controller.client.CameraController;
 import sharedcms.json.JSONObject;
 import sharedcms.proxy.IProxy;
 import sharedcms.proxy.ProxyCMS;
@@ -37,27 +36,53 @@ import sharedcms.registry.IRegistrant;
 @Mod(modid = Info.ID, version = Info.VERSION, name = Info.NAME)
 public class Ares implements IProxy, IRegistrant
 {
+	public static Side side;
+	
 	@Instance(Info.ID)
 	public static Ares instance;
 
 	@SidedProxy(clientSide = Info.PROXY_CLIENT, serverSide = Info.PROXY_SERVER)
 	public static ProxyCommon proxy;
+	
+	private ControllerManager manager;
 
 	@Override
 	@EventHandler
 	public void onPreInit(FMLPreInitializationEvent e)
 	{
-		testASM();
-		Content.init();
+		side = e.getSide();
 		L.k = e.getModLog();
+		Content.init();
 		ProxyCMS.addRegistrant(this);
 		ProxyCMS.addRegistrant(new Content());
 		proxy.onPreInit(e);
+		controlMinecraft(e.getSide());
+		manager.onPreInit(e);
 	}
 
-	private void testASM()
+	private void controlMinecraft(Side side)
 	{
-
+		manager = new ControllerManager(side)
+		{
+			@Override
+			public void buildControlledServer()
+			{
+				System.out.println("BUILD SERVER CALLED");
+			}
+			
+			@Override
+			public void buildControlledLink()
+			{
+				System.out.println("BUILD SHARED CALLED");
+			}
+			
+			@Override
+			public void buildControlledClient()
+			{
+				register(new BoxelController());
+				register(new CameraController());
+			}
+		};
 	}
 
 	public InputStream rcl(String r) throws IOException
@@ -157,6 +182,7 @@ public class Ares implements IProxy, IRegistrant
 	public void onInit(FMLInitializationEvent e)
 	{
 		proxy.onInit(e);
+		manager.onInit(e);
 	}
 
 	@Override
@@ -164,6 +190,7 @@ public class Ares implements IProxy, IRegistrant
 	public void onPostInit(FMLPostInitializationEvent e)
 	{
 		proxy.onPostInit(e);
+		manager.onPostInit(e);
 
 		if(e.getSide().equals(Side.CLIENT))
 		{

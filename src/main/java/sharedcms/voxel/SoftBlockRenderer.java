@@ -13,10 +13,9 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import sharedcms.Info;
-import sharedcms.content.world.generator.PerlinNoiseGenerator;
 import sharedcms.content.world.generator.SimplexNoiseGenerator;
+import sharedcms.controller.client.BoxelController;
 import sharedcms.gui.util.R;
-import sharedcms.proxy.ProxyVoxel;
 
 public class SoftBlockRenderer
 {
@@ -231,7 +230,7 @@ public class SoftBlockRenderer
 	{
 		Material material = block.getMaterial();
 
-		return material == Material.air || material == Material.plants || material == Material.vine || ProxyVoxel.isBlockLiquid(block);
+		return material == Material.air || material == Material.plants || material == Material.vine || BoxelController.isBlockLiquid(block);
 	}
 
 	public static boolean doesPointTopIntersectWithAir(IBlockAccess world, Vec3 point)
@@ -298,14 +297,14 @@ public class SoftBlockRenderer
 			int z1 = (int) (point.zCoord - (double) (i >> 1 & 1));
 			Block block = world.getBlock(x1, (int) point.yCoord, z1);
 
-			if(!SoftBlockRenderer.isBlockAirOrPlant(block) && !ProxyVoxel.isBlockSoft(block))
+			if(!SoftBlockRenderer.isBlockAirOrPlant(block) && !BoxelController.isBlockSoft(block))
 			{
 				return true;
 			}
 
 			Block block2 = world.getBlock(x1, (int) point.yCoord - 1, z1);
 
-			if(SoftBlockRenderer.isBlockAirOrPlant(block2) || ProxyVoxel.isBlockSoft(block2))
+			if(SoftBlockRenderer.isBlockAirOrPlant(block2) || BoxelController.isBlockSoft(block2))
 			{
 				continue;
 			}
@@ -320,49 +319,49 @@ public class SoftBlockRenderer
 	{
 		boolean rendered = renderer.renderBlockLiquid(block, x, y, z);
 
-		if(ProxyVoxel.isBlockLiquid(world.getBlock(x, y + 1, z)))
+		if(BoxelController.isBlockLiquid(world.getBlock(x, y + 1, z)))
 		{
 			return rendered;
 		}
 
 		int brightness = block.getMixedBrightnessForBlock(world, x, y, z);
 
-		if(ProxyVoxel.isBlockSoft(world.getBlock(x + 1, y, z)))
+		if(BoxelController.isBlockSoft(world.getBlock(x + 1, y, z)))
 		{
 			this.renderGhostLiquid(block, x + 1, y, z, brightness, renderer, world);
 		}
 
-		if(ProxyVoxel.isBlockSoft(world.getBlock(x, y, z + 1)) && !ProxyVoxel.isBlockLiquid(world.getBlock(x - 1, y, z + 1)))
+		if(BoxelController.isBlockSoft(world.getBlock(x, y, z + 1)) && !BoxelController.isBlockLiquid(world.getBlock(x - 1, y, z + 1)))
 		{
 			this.renderGhostLiquid(block, x, y, z + 1, brightness, renderer, world);
 		}
 
-		if(ProxyVoxel.isBlockSoft(world.getBlock(x - 1, y, z)) && !ProxyVoxel.isBlockLiquid(world.getBlock(x - 2, y, z)) && !ProxyVoxel.isBlockLiquid(world.getBlock(x - 1, y, z - 1)))
+		if(BoxelController.isBlockSoft(world.getBlock(x - 1, y, z)) && !BoxelController.isBlockLiquid(world.getBlock(x - 2, y, z)) && !BoxelController.isBlockLiquid(world.getBlock(x - 1, y, z - 1)))
 		{
 			this.renderGhostLiquid(block, x - 1, y, z, brightness, renderer, world);
 		}
 
-		if(ProxyVoxel.isBlockSoft(world.getBlock(x, y, z - 1)) && !ProxyVoxel.isBlockLiquid(world.getBlock(x - 1, y, z - 1)) && !ProxyVoxel.isBlockLiquid(world.getBlock(x, y, z - 2)) && !ProxyVoxel.isBlockLiquid(world.getBlock(x + 1, y, z - 1)))
+		if(BoxelController.isBlockSoft(world.getBlock(x, y, z - 1)) && !BoxelController.isBlockLiquid(world.getBlock(x - 1, y, z - 1)) && !BoxelController.isBlockLiquid(world.getBlock(x, y, z - 2)) && !BoxelController.isBlockLiquid(world.getBlock(x + 1, y, z - 1)))
 		{
 			this.renderGhostLiquid(block, x, y, z - 1, brightness, renderer, world);
 		}
 
-		if(!(!ProxyVoxel.isBlockSoft(world.getBlock(x + 1, y, z + 1)) || ProxyVoxel.isBlockLiquid(world.getBlock(x, y, z + 1)) || ProxyVoxel.isBlockLiquid(world.getBlock(x + 1, y, z)) || ProxyVoxel.isBlockLiquid(world.getBlock(x + 2, y, z + 1)) || ProxyVoxel.isBlockLiquid(world.getBlock(x + 1, y, z + 2))))
+		if(!(!BoxelController.isBlockSoft(world.getBlock(x + 1, y, z + 1)) || BoxelController.isBlockLiquid(world.getBlock(x, y, z + 1)) || BoxelController.isBlockLiquid(world.getBlock(x + 1, y, z)) || BoxelController.isBlockLiquid(world.getBlock(x + 2, y, z + 1)) || BoxelController.isBlockLiquid(world.getBlock(x + 1, y, z + 2))))
 		{
 			this.renderGhostLiquid(block, x + 1, y, z + 1, brightness, renderer, world);
 		}
 
-		if(!(!ProxyVoxel.isBlockSoft(world.getBlock(x + 1, y, z - 1)) || ProxyVoxel.isBlockLiquid(world.getBlock(x, y, z - 1)) || ProxyVoxel.isBlockLiquid(world.getBlock(x + 1, y, z - 2)) || ProxyVoxel.isBlockLiquid(world.getBlock(x + 2, y, z - 1)) || ProxyVoxel.isBlockLiquid(world.getBlock(x + 1, y, z)) || ProxyVoxel.isBlockLiquid(world.getBlock(x, y, z - 2))))
+		if(!(!BoxelController.isBlockSoft(world.getBlock(x + 1, y, z - 1)) || BoxelController.isBlockLiquid(world.getBlock(x, y, z - 1)) || BoxelController.isBlockLiquid(world.getBlock(x + 1, y, z - 2)) || BoxelController.isBlockLiquid(world.getBlock(x + 2, y, z - 1)) || BoxelController.isBlockLiquid(world.getBlock(x + 1, y, z)) || BoxelController.isBlockLiquid(world.getBlock(x, y, z - 2))))
 		{
 			this.renderGhostLiquid(block, x + 1, y, z - 1, brightness, renderer, world);
 		}
 
-		if(!(!ProxyVoxel.isBlockSoft(world.getBlock(x - 1, y, z - 1)) || ProxyVoxel.isBlockLiquid(world.getBlock(x - 2, y, z - 1)) || ProxyVoxel.isBlockLiquid(world.getBlock(x - 1, y, z - 2)) || ProxyVoxel.isBlockLiquid(world.getBlock(x, y, z - 1)) || ProxyVoxel.isBlockLiquid(world.getBlock(x - 1, y, z)) || ProxyVoxel.isBlockLiquid(world.getBlock(x - 2, y, z - 2)) || ProxyVoxel.isBlockLiquid(world.getBlock(x - 2, y, z))))
+		if(!(!BoxelController.isBlockSoft(world.getBlock(x - 1, y, z - 1)) || BoxelController.isBlockLiquid(world.getBlock(x - 2, y, z - 1)) || BoxelController.isBlockLiquid(world.getBlock(x - 1, y, z - 2)) || BoxelController.isBlockLiquid(world.getBlock(x, y, z - 1)) || BoxelController.isBlockLiquid(world.getBlock(x - 1, y, z)) || BoxelController.isBlockLiquid(world.getBlock(x - 2, y, z - 2)) || BoxelController.isBlockLiquid(world.getBlock(x - 2, y, z))))
 		{
 			this.renderGhostLiquid(block, x - 1, y, z - 1, brightness, renderer, world);
 		}
 
-		if(!(!ProxyVoxel.isBlockSoft(world.getBlock(x - 1, y, z + 1)) || ProxyVoxel.isBlockLiquid(world.getBlock(x - 2, y, z + 1)) || ProxyVoxel.isBlockLiquid(world.getBlock(x - 1, y, z)) || ProxyVoxel.isBlockLiquid(world.getBlock(x, y, z + 1)) || ProxyVoxel.isBlockLiquid(world.getBlock(x - 1, y, z + 2)) || ProxyVoxel.isBlockLiquid(world.getBlock(x - 2, y, z)) || ProxyVoxel.isBlockLiquid(world.getBlock(x - 2, y, z + 2)) || ProxyVoxel.isBlockLiquid(world.getBlock(x, y, z + 2))))
+		if(!(!BoxelController.isBlockSoft(world.getBlock(x - 1, y, z + 1)) || BoxelController.isBlockLiquid(world.getBlock(x - 2, y, z + 1)) || BoxelController.isBlockLiquid(world.getBlock(x - 1, y, z)) || BoxelController.isBlockLiquid(world.getBlock(x, y, z + 1)) || BoxelController.isBlockLiquid(world.getBlock(x - 1, y, z + 2)) || BoxelController.isBlockLiquid(world.getBlock(x - 2, y, z)) || BoxelController.isBlockLiquid(world.getBlock(x - 2, y, z + 2)) || BoxelController.isBlockLiquid(world.getBlock(x, y, z + 2))))
 		{
 			this.renderGhostLiquid(block, x - 1, y, z + 1, brightness, renderer, world);
 		}
@@ -372,7 +371,7 @@ public class SoftBlockRenderer
 
 	public boolean doesPointIntersectWithLiquid(int x, int y, int z, IBlockAccess world)
 	{
-		return ProxyVoxel.isBlockLiquid(world.getBlock(x, y, z)) || ProxyVoxel.isBlockLiquid(world.getBlock(x - 1, y, z)) || ProxyVoxel.isBlockLiquid(world.getBlock(x, y, z - 1)) || ProxyVoxel.isBlockLiquid(world.getBlock(x - 1, y, z - 1)) || ProxyVoxel.isBlockLiquid(world.getBlock(x, y + 1, z)) || ProxyVoxel.isBlockLiquid(world.getBlock(x - 1, y + 1, z)) || ProxyVoxel.isBlockLiquid(world.getBlock(x, y + 1, z - 1)) || ProxyVoxel.isBlockLiquid(world.getBlock(x - 1, y + 1, z - 1));
+		return BoxelController.isBlockLiquid(world.getBlock(x, y, z)) || BoxelController.isBlockLiquid(world.getBlock(x - 1, y, z)) || BoxelController.isBlockLiquid(world.getBlock(x, y, z - 1)) || BoxelController.isBlockLiquid(world.getBlock(x - 1, y, z - 1)) || BoxelController.isBlockLiquid(world.getBlock(x, y + 1, z)) || BoxelController.isBlockLiquid(world.getBlock(x - 1, y + 1, z)) || BoxelController.isBlockLiquid(world.getBlock(x, y + 1, z - 1)) || BoxelController.isBlockLiquid(world.getBlock(x - 1, y + 1, z - 1));
 	}
 
 	public boolean renderGhostLiquid(Block block, int x, int y, int z, int brightness, RenderBlocks renderer, IBlockAccess world)
@@ -421,7 +420,7 @@ public class SoftBlockRenderer
 
 	public static boolean shouldHookRenderer(Block block)
 	{
-		return ProxyVoxel.isNoCubesEnabled && (ProxyVoxel.isBlockSoft(block) || ProxyVoxel.isBlockLiquid(block));
+		return BoxelController.isNoCubesEnabled && (BoxelController.isBlockSoft(block) || BoxelController.isBlockLiquid(block));
 	}
 
 	public boolean directRenderHook(Block block, int x, int y, int z, RenderBlocks renderer)
@@ -430,7 +429,7 @@ public class SoftBlockRenderer
 		renderer.setRenderBoundsFromBlock(block);
 		IBlockAccess world = renderer.blockAccess;
 
-		if(ProxyVoxel.isBlockLiquid(block))
+		if(BoxelController.isBlockLiquid(block))
 		{
 			return this.renderLiquidBlock(block, x, y, z, renderer, world);
 		}

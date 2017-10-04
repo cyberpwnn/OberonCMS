@@ -1,12 +1,12 @@
 package sharedcms.voxel;
 
 import net.minecraft.block.Block;
-import sharedcms.proxy.ProxyVoxel;
+import sharedcms.controller.client.BoxelController;
 
 public class BlockRenderHook
 {
 	public static boolean shouldHookRenderer(Block block)
 	{
-		return ProxyVoxel.isBlockSoft(block) || ProxyVoxel.isBlockLiquid(block);
+		return BoxelController.isBlockSoft(block) || BoxelController.isBlockLiquid(block);
 	}
 }

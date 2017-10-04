@@ -1,32 +1,27 @@
-package sharedcms.proxy;
+package sharedcms.controller.client;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameData;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
-import net.minecraftforge.common.config.Configuration;
 import sharedcms.Info;
 import sharedcms.L;
+import sharedcms.controllable.Controller;
 import sharedcms.voxel.SoftBlockRenderer;
 import sharedcms.voxel.VoxelRegistry;
 
-public class ProxyVoxel implements IProxy
+public class BoxelController extends Controller
 {
 	private boolean isOutdated = false;
 	public static SoftBlockRenderer softBlockRenderer;
 	private static List softBlockList;
 	private static List liquidBlockList;
 	private static List leavesBlockList;
-	private static Configuration cubesConfig;
 	public static boolean isNoCubesEnabled;
 	public static boolean isAutoStepEnabled;
 	protected static List<String> list;
@@ -41,46 +36,73 @@ public class ProxyVoxel implements IProxy
 	protected static boolean autoLiquid;
 	protected static boolean autoIce;
 
-	public void onPreInit(FMLPreInitializationEvent event)
+	public BoxelController()
 	{
-		if(event.getSide() != Side.CLIENT)
+		softBlockList = new ArrayList();
+		list = new ArrayList<String>();
+		ListBlack = new ArrayList<Block>();
+		isblackListing = false;
+		autoDetection = true;
+		autoIce = true;
+		softBlockRenderer = new SoftBlockRenderer();
+		liquidBlockList = new ArrayList();
+		leavesBlockList = new ArrayList();
+		liquidBlockList.add(Blocks.water);
+		liquidBlockList.add(Blocks.flowing_water);
+		liquidBlockList.add(Blocks.lava);
+		liquidBlockList.add(Blocks.flowing_lava);
+		leavesBlockList.add(Blocks.leaves);
+		leavesBlockList.add(Blocks.leaves2);
+	}
+
+	@Override
+	public void onPreInitialization()
+	{
+		autoDetection = true;
+		isNoCubesEnabled = true;
+		isAutoStepEnabled = Info.TESSELLATION_STEP;
+		loadBlocks();
+		loadAutoDetection();
+		
+		System.out.println("Well it fucking loaded, whats the god damn problem.Z");
+		try
 		{
-			return;
+			Thread.sleep(5000);
 		}
-
-		cubesConfig = new Configuration(event.getSuggestedConfigurationFile());
-		autoDetection = cubesConfig.get("general", "AutoDetection", true).getBoolean(true);
-		isNoCubesEnabled = cubesConfig.get("general", "EnableNoCubes", true).getBoolean(true);
-		isAutoStepEnabled = cubesConfig.get("general", "EnableAutoStep", Info.TESSELLATION_STEP).getBoolean(Info.TESSELLATION_STEP);
-
-		if(event.getSide() == Side.CLIENT)
+		
+		catch(InterruptedException e)
 		{
-			ProxyVoxel.loadBlocks();
-			ProxyVoxel.loadBlocksBlackList();
-
-			if(autoDetection)
-			{
-				ProxyVoxel.loadAutoDetection();
-			}
+			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public void onInitialization()
+	{
+
+	}
+
+	@Override
+	public void onPostInitialization()
+	{
+
 	}
 
 	public static void loadAutoDetection()
 	{
-		autoDirt = cubesConfig.get("general", "autoDirt", true).getBoolean(true);
-		autoGravel = cubesConfig.get("general", "autoGravel_and_Sand", true).getBoolean(true);
-		autoLeaves = cubesConfig.get("general", "autoLeaves", true).getBoolean(true);
-		autoStone = cubesConfig.get("general", "autoStone", false).getBoolean(false);
-		autoSnow = cubesConfig.get("general", "autoSnow", true).getBoolean(true);
-		autoIce = cubesConfig.get("general", "autoIce", true).getBoolean(true);
-		autoLiquid = cubesConfig.get("general", "autoLiquid", true).getBoolean(true);
-		String[] s = new String[] {"examplemod:stone"};
-		String[] strautoblacklist = cubesConfig.getStringList("Auto Detection BlackList", "blocks", s, "Add Your Blocks Here");
+		autoDirt = true;
+		autoGravel = true;
+		autoLeaves = true;
+		autoStone = false;
+		autoSnow = true;
+		autoIce = true;
+		autoLiquid = true;
+		String[] strautoblacklist = new String[] {};
 		ArrayList<Block> autoblacklist = new ArrayList<Block>();
 
 		for(String str : strautoblacklist)
 		{
-			autoblacklist.add(ProxyVoxel.createBlock(str));
+			autoblacklist.add(createBlock(str));
 		}
 
 		for(Object gblock : GameData.getBlockRegistry())
@@ -150,21 +172,13 @@ public class ProxyVoxel implements IProxy
 		L.l("Setting " + softBlockList.size() + " blocks to tessellate.");
 	}
 
-	public static void saveCubeConfig()
-	{
-		cubesConfig.get("general", "EnableNoCubes", true).set(isNoCubesEnabled);
-		cubesConfig.get("general", "EnableAutoStep", true).set(isAutoStepEnabled);
-	}
-
 	public static void loadBlocks()
 	{
-		String[] s = new String[] {"minecraft:grass", "minecraft:dirt", "minecraft:sand", "minecraft:gravel", "minecraft:clay", "minecraft:farmland", "minecraft:mycelium", "minecraft:snow_layer", "minecraft:stone", "minecraft:coal_ore", "minecraft:iron_ore", "minecraft:gold_ore", "minecraft:diamond_ore", "minecraft:redstone_ore", "minecraft:emerald_ore", "minecraft:bedrock", "minecraft:netherrack", "minecraft:soul_sand", "minecraft:soul_sand", "minecraft:end_stone"};
-		String[] whitelist = cubesConfig.getStringList("No Cubes List", "blocks", s, "Add Your Blocks Here");
-		isblackListing = cubesConfig.getBoolean("blacklist_mode", "blocks", false, "All blocks Except in Blacklist Mode will work");
+		String[] whitelist = new String[] {"minecraft:grass", "minecraft:dirt", "minecraft:sand", "minecraft:gravel", "minecraft:clay", "minecraft:farmland", "minecraft:mycelium", "minecraft:snow_layer", "minecraft:stone", "minecraft:coal_ore", "minecraft:iron_ore", "minecraft:gold_ore", "minecraft:diamond_ore", "minecraft:redstone_ore", "minecraft:emerald_ore", "minecraft:bedrock", "minecraft:netherrack", "minecraft:soul_sand", "minecraft:soul_sand", "minecraft:end_stone"};
 
 		for(String ss : whitelist)
 		{
-			softBlockList.add(ProxyVoxel.createBlock(ss));
+			softBlockList.add(createBlock(ss));
 
 			if(!ss.equals("minecraft:redstone_ore"))
 			{
@@ -172,24 +186,6 @@ public class ProxyVoxel implements IProxy
 			}
 
 			softBlockList.add(Blocks.lit_redstone_ore);
-		}
-	}
-
-	public static void loadBlocksBlackList()
-	{
-		String[] blacklist;
-		String[] ss = new String[] {"examplemod:wood"};
-
-		for(String s : blacklist = cubesConfig.getStringList("No Cubes BlackList Mode", "blocks", ss, "BlackList Blocks Here"))
-		{
-			ListBlack.add(ProxyVoxel.createBlock(s));
-
-			if(!s.equals("minecraft:redstone_ore"))
-			{
-				continue;
-			}
-
-			ListBlack.add(Blocks.lit_redstone_ore);
 		}
 	}
 
@@ -239,36 +235,5 @@ public class ProxyVoxel implements IProxy
 	public static void registerAsLeaves(Block block)
 	{
 		leavesBlockList.add(block);
-	}
-
-	static
-	{
-		softBlockList = new ArrayList();
-		list = new ArrayList<String>();
-		ListBlack = new ArrayList<Block>();
-		isblackListing = false;
-		autoDetection = true;
-		autoIce = true;
-		softBlockRenderer = new SoftBlockRenderer();
-		liquidBlockList = new ArrayList();
-		leavesBlockList = new ArrayList();
-		liquidBlockList.add(Blocks.water);
-		liquidBlockList.add(Blocks.flowing_water);
-		liquidBlockList.add(Blocks.lava);
-		liquidBlockList.add(Blocks.flowing_lava);
-		leavesBlockList.add(Blocks.leaves);
-		leavesBlockList.add(Blocks.leaves2);
-	}
-
-	@Override
-	public void onInit(FMLInitializationEvent e)
-	{
-
-	}
-
-	@Override
-	public void onPostInit(FMLPostInitializationEvent e)
-	{
-
 	}
 }

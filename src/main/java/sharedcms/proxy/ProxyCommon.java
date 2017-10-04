@@ -20,7 +20,6 @@ import sharedcms.registry.IRegistrant;
 public class ProxyCommon implements IProxy
 {
 	private ProxyCMS cms;
-	private ProxyVoxel voxel;
 	private SharedHostProxy host;
 
 	@Override
@@ -28,7 +27,6 @@ public class ProxyCommon implements IProxy
 	{
 		Info.load();
 		host = new SharedHostProxy();
-		voxel = new ProxyVoxel();
 		cms = new ProxyCMS();
 		PacketDispatcher.registerPackets();
 
@@ -37,7 +35,6 @@ public class ProxyCommon implements IProxy
 			i.onPreRegister(cms, e.getSide());
 		}
 
-		voxel.onPreInit(e);
 		cms.onPreInit(e);
 		host.onPreInit(e);
 		MinecraftForge.EVENT_BUS.register(Ares.proxy);

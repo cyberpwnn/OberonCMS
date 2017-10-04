@@ -39,27 +39,6 @@ public class RenderLayerDebug extends RenderLayer
 		k.add(new TextElement("AUX_BANDWIDTH: " + Status.CHANNEL_USE + " / " + Status.CHANNEL_MAX + " (" + bw + ")", cc));
 		k.add(new TextElement("PARTICLE_USE : " + Status.PARTICLE_USE + " / 2000 (" + pw + ")", cp));
 		k.add(new TextElement("REVERB_STATE : " + "DEC: " + rvDecay + " GAN: " + rvGain + " DIF: " + rvDiff + " REF: " + rvRefl + " DEL: " + rvDel + " ROL: " + rvRoll, Color.GREEN));
-		k.add(new TextElement("Level: " + SharedHostProxy.getLevel(new Location(ep)) + " (" + SharedHostProxy.getBaseLevel(new Location(ep)) + " + " + SharedHostProxy.getLevelShift(new Location(ep)) + ")", Color.YELLOW));
-
-		Minecraft.getMinecraft().entityRenderer.getMouseOver(0f);
-
-		if(Minecraft.getMinecraft().pointedEntity != null)
-		{
-			Entity e = Minecraft.getMinecraft().pointedEntity;
-
-			if(e != null)
-			{
-				NBTTagCompound nbt = new NBTTagCompound();
-				e.writeToNBT(nbt);
-				
-				if(nbt.hasKey("cms-level"))
-				{
-					k.add(new TextElement("IT HAS A LEVEL?"));
-				}
-			}
-		}
-
-		new RenderLayerMultiText(k, new SuperPosition(0, height / 2), 1f);
 	}
 
 	protected MovingObjectPosition getMovingObjectPositionFromPlayer(World p_77621_1_, EntityPlayer p_77621_2_, boolean p_77621_3_)

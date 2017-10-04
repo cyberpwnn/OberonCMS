@@ -74,7 +74,7 @@ public class InjectorBlock implements IClassTransformer
 		injectedMethod.visitLabel(label0);
 		injectedMethod.visitVarInsn(25, 0);
 		System.out.println("  ===>>> Inject Softblock Collision check");
-		injectedMethod.visitMethodInsn(184, "sharedcms/proxy/ProxyVoxel", "isBlockSoftForCollision", obfuscated ? "(Laji;)Z" : "(Lnet/minecraft/block/Block;)Z");
+		injectedMethod.visitMethodInsn(184, "sharedcms/controller/client/BoxelController", "isBlockSoftForCollision", obfuscated ? "(Laji;)Z" : "(Lnet/minecraft/block/Block;)Z");
 		Label label2 = new Label();
 		injectedMethod.visitJumpInsn(153, label2);
 		Label label3 = new Label();

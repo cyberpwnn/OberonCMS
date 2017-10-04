@@ -2,7 +2,6 @@ package sharedcms.asm;
 
 import java.util.HashMap;
 
-import org.apache.logging.log4j.LogManager;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
@@ -19,7 +18,6 @@ import org.objectweb.asm.tree.VarInsnNode;
 
 import net.minecraft.launchwrapper.IClassTransformer;
 import sharedcms.asm.util.ShoulderASMHelper;
-import sharedcms.renderer.camera.ShoulderSurfing;
 
 public class InjectorCamera implements IClassTransformer
 {
@@ -30,10 +28,6 @@ public class InjectorCamera implements IClassTransformer
 
 	public InjectorCamera()
 	{
-		if(ShoulderSurfing.logger == null)
-		{
-			ShoulderSurfing.logger = LogManager.getLogger((String) "ShoulderSurfing");
-		}
 		this.obfStrings = new HashMap();
 		this.mcpStrings = new HashMap();
 		this.registerMapping("EntityRendererClass", "net.minecraft.client.renderer.EntityRenderer", "blt");
@@ -57,13 +51,13 @@ public class InjectorCamera implements IClassTransformer
 	{
 		if(name.equals(this.obfStrings.get("EntityRendererClass")))
 		{
-			ShoulderSurfing.logger.info("Injecting into obfuscated code - EntityRendererClass");
+			System.out.println("Injecting into obfuscated code - EntityRendererClass");
 			return this.transformEntityRenderClass(bytes, this.obfStrings);
 		}
 		
 		if(name.equals(this.mcpStrings.get("EntityRendererClass")))
 		{
-			ShoulderSurfing.logger.info("Injecting into non-obfuscated code - EntityRendererClass");
+			System.out.println("Injecting into non-obfuscated code - EntityRendererClass");
 			return this.transformEntityRenderClass(bytes, this.mcpStrings);
 		}
 		
@@ -72,7 +66,7 @@ public class InjectorCamera implements IClassTransformer
 
 	private byte[] transformEntityRenderClass(byte[] bytes, HashMap hm)
 	{
-		ShoulderSurfing.logger.info("Attempting class transformation against EntityRender");
+		System.out.println("Attempting class transformation against EntityRender");
 		ClassNode classNode = new ClassNode();
 		ClassReader classReader = new ClassReader(bytes);
 		classReader.accept((ClassVisitor) classNode, 0);
@@ -85,7 +79,7 @@ public class InjectorCamera implements IClassTransformer
 			
 			if(m.name.equals(hm.get("orientCameraMethod")) && m.desc.equals("(F)V"))
 			{
-				ShoulderSurfing.logger.info("Located method " + m.name + m.desc + ", locating signature");
+				System.out.println("Located method " + m.name + m.desc + ", locating signature");
 				searchList = new InsnList();
 				searchList.add((AbstractInsnNode) new VarInsnNode(25, 2));
 				searchList.add((AbstractInsnNode) new FieldInsnNode(180, (String) hm.get("EntityLivingJavaClass"), (String) hm.get("rotationYawField"), "F"));
@@ -97,11 +91,11 @@ public class InjectorCamera implements IClassTransformer
 				
 				if(offset == -1)
 				{
-					ShoulderSurfing.logger.fatal("Failed to locate first of two offsets in " + m.name + m.desc + "!  Is base file changed?");
+					System.out.println("Failed to locate first of two offsets in " + m.name + m.desc + "!  Is base file changed?");
 					return bytes;
 				}
 				
-				ShoulderSurfing.logger.info("Located offset @ " + offset);
+				System.out.println("Located offset @ " + offset);
 				hackCode = new InsnList();
 				hackCode.add((AbstractInsnNode) new VarInsnNode(23, 13));
 				hackCode.add((AbstractInsnNode) new MethodInsnNode(184, (String) hm.get("InjectionDelegationJavaClass"), "getShoulderRotation", "()F"));
@@ -114,7 +108,7 @@ public class InjectorCamera implements IClassTransformer
 				hackCode.add((AbstractInsnNode) new VarInsnNode(57, 10));
 				hackCode.add((AbstractInsnNode) new LabelNode(new Label()));
 				m.instructions.insertBefore(m.instructions.get(offset + 1), hackCode);
-				ShoulderSurfing.logger.info("Injected code for camera orientation!");
+				System.out.println("Injected code for camera orientation!");
 				++modifications;
 				searchList = new InsnList();
 				searchList.add((AbstractInsnNode) new VarInsnNode(57, 25));
@@ -122,37 +116,37 @@ public class InjectorCamera implements IClassTransformer
 				offset = ShoulderASMHelper.locateOffset(m.instructions, searchList);
 				if(offset == -1)
 				{
-					ShoulderSurfing.logger.fatal("Failed to locate second of two offsets in " + m.name + m.desc + "!  Is base file changed?");
+					System.out.println("Failed to locate second of two offsets in " + m.name + m.desc + "!  Is base file changed?");
 					return bytes;
 				}
-				ShoulderSurfing.logger.info("Located offset @ " + offset);
+				System.out.println("Located offset @ " + offset);
 				hackCode = new InsnList();
 				hackCode.add((AbstractInsnNode) new VarInsnNode(24, 25));
 				hackCode.add((AbstractInsnNode) new MethodInsnNode(184, (String) hm.get("InjectionDelegationJavaClass"), "verifyReverseBlockDist", "(D)V"));
 				hackCode.add((AbstractInsnNode) new LabelNode(new Label()));
 				m.instructions.insertBefore(m.instructions.get(offset), hackCode);
-				ShoulderSurfing.logger.info("Injected code for camera distance check!");
+				System.out.println("Injected code for camera distance check!");
 				++modifications;
 				continue;
 			}
 			if(!m.name.equals(hm.get("renderWorldMethod")) || !m.desc.equals("(FJ)V"))
 				continue;
-			ShoulderSurfing.logger.info("Located method " + m.name + m.desc + ", locating signature");
+			System.out.println("Located method " + m.name + m.desc + ", locating signature");
 			searchList = new InsnList();
 			searchList.add((AbstractInsnNode) new MethodInsnNode(184, (String) hm.get("clippingHelperImplJavaClass"), (String) hm.get("clippingHelperGetInstanceMethod"), "()L" + (String) hm.get("clippingHelperJavaClass") + ";"));
 			searchList.add((AbstractInsnNode) new InsnNode(87));
 			offset = ShoulderASMHelper.locateOffset(m.instructions, searchList);
 			if(offset == -1)
 			{
-				ShoulderSurfing.logger.fatal("Failed to locate offset in " + m.name + m.desc + "!  Is base file changed?");
+				System.out.println("Failed to locate offset in " + m.name + m.desc + "!  Is base file changed?");
 				return bytes;
 			}
-			ShoulderSurfing.logger.info("Located offset @ " + offset);
+			System.out.println("Located offset @ " + offset);
 			hackCode = new InsnList();
 			hackCode.add((AbstractInsnNode) new MethodInsnNode(184, (String) hm.get("InjectionDelegationJavaClass"), "calculateRayTraceProjection", "()V"));
 			hackCode.add((AbstractInsnNode) new LabelNode(new Label()));
 			m.instructions.insertBefore(m.instructions.get(offset + 1), hackCode);
-			ShoulderSurfing.logger.info("Injected code for ray trace projection!");
+			System.out.println("Injected code for ray trace projection!");
 			++modifications;
 		}
 		ClassWriter writer = new ClassWriter(1);

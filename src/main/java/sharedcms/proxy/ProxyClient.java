@@ -10,13 +10,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.MinecraftForge;
 import sharedcms.mutex.client.ClientHostProxy;
 import sharedcms.renderer.animation.MoBends;
-import sharedcms.renderer.camera.ShoulderSurfing;
 import sharedcms.renderer.layer.RenderHandler;
 
 public class ProxyClient extends ProxyCommon
 {
 	private MoBends bends;
-	private ShoulderSurfing ss;
 	private RenderHandler renderHandler;
 	private ClientHostProxy host;
 
@@ -24,14 +22,12 @@ public class ProxyClient extends ProxyCommon
 	public void onPreInit(FMLPreInitializationEvent e)
 	{
 		super.onPreInit(e);
-		ss = new ShoulderSurfing();
 		bends = new MoBends();
 		host = new ClientHostProxy();
 		renderHandler = new RenderHandler();
 		MinecraftForge.EVENT_BUS.register(host);
 		FMLCommonHandler.instance().bus().register(host);
 		MinecraftForge.EVENT_BUS.register(renderHandler);
-		ss.onPreInit(e);
 		bends.onPreInit(e);
 		host.onPreInit(e);
 	}
@@ -40,7 +36,6 @@ public class ProxyClient extends ProxyCommon
 	public void onInit(FMLInitializationEvent e)
 	{
 		super.onInit(e);
-		ss.onInit(e);
 		host.onInit(e);
 	}
 
@@ -48,7 +43,6 @@ public class ProxyClient extends ProxyCommon
 	public void onPostInit(FMLPostInitializationEvent e)
 	{
 		super.onPostInit(e);
-		ss.onPostInit(e);
 		host.onPostInit(e);
 	}
 
