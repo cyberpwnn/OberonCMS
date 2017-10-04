@@ -9,26 +9,18 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.MinecraftForge;
 import sharedcms.mutex.client.ClientHostProxy;
-import sharedcms.renderer.animation.MoBends;
-import sharedcms.renderer.layer.RenderHandler;
 
 public class ProxyClient extends ProxyCommon
 {
-	private MoBends bends;
-	private RenderHandler renderHandler;
 	private ClientHostProxy host;
 
 	@Override
 	public void onPreInit(FMLPreInitializationEvent e)
 	{
 		super.onPreInit(e);
-		bends = new MoBends();
 		host = new ClientHostProxy();
-		renderHandler = new RenderHandler();
 		MinecraftForge.EVENT_BUS.register(host);
 		FMLCommonHandler.instance().bus().register(host);
-		MinecraftForge.EVENT_BUS.register(renderHandler);
-		bends.onPreInit(e);
 		host.onPreInit(e);
 	}
 

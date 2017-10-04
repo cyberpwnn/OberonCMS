@@ -24,8 +24,11 @@ import net.minecraft.util.ResourceLocation;
 import sharedcms.command.CommandCMS;
 import sharedcms.config.GG;
 import sharedcms.controllable.ControllerManager;
+import sharedcms.controller.client.AnimationController;
+import sharedcms.controller.client.AudioController;
 import sharedcms.controller.client.BoxelController;
 import sharedcms.controller.client.CameraController;
+import sharedcms.controller.client.HudController;
 import sharedcms.controller.server.PlayerMovementController;
 import sharedcms.controller.shared.ContentController;
 import sharedcms.controller.shared.NetworkController;
@@ -81,6 +84,9 @@ public class Ares implements IProxy, IRegistrant
 			{
 				register(new BoxelController());
 				register(new CameraController());
+				register(new AnimationController());
+				register(new HudController());
+				register(new AudioController());
 			}
 		};
 	}

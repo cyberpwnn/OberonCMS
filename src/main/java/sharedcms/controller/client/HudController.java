@@ -1,20 +1,39 @@
-package sharedcms.renderer.layer;
+package sharedcms.controller.client;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.WorldSettings.GameType;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
-import sharedcms.mutex.client.ClientHostProxy;
+import sharedcms.controllable.Controller;
+import sharedcms.renderer.layer.RenderLayerDebug;
 import sharedcms.util.PlayerUtils;
 
-public class RenderHandler
+public class HudController extends Controller
 {
 	private Minecraft mc;
 
-	public RenderHandler()
+	public HudController()
 	{
 		mc = Minecraft.getMinecraft();
+	}
+
+	@Override
+	public void onPreInitialization()
+	{
+
+	}
+
+	@Override
+	public void onInitialization()
+	{
+
+	}
+
+	@Override
+	public void onPostInitialization()
+	{
+
 	}
 
 	@SubscribeEvent

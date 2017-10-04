@@ -39,7 +39,7 @@ import sharedcms.audio.filter.FilterLowPass;
 import sharedcms.audio.filter.FilterReverb;
 import sharedcms.proxy.IProxy;
 
-public class ProxySoundFilter implements IProxy
+public class ProxySoundFilter
 {
 	public static OpenALClientHandler proxy;
 	@SideOnly(value = Side.CLIENT)
@@ -58,8 +58,7 @@ public class ProxySoundFilter implements IProxy
 	public static TreeSet<Integer> lowReverbSet;
 	public static boolean DEBUG;
 
-	@Mod.EventHandler
-	public void onPreInit(FMLPreInitializationEvent event)
+	public void onPreInit()
 	{
 		proxy = new OpenALClientHandler();
 		DEBUG = false;
@@ -70,8 +69,7 @@ public class ProxySoundFilter implements IProxy
 		proxy.registerTickHandlers();
 	}
 
-	@Mod.EventHandler
-	public void onPostInit(FMLPostInitializationEvent event)
+	public void onPostInit()
 	{
 		ProxySoundFilter.reverbFilter.density = 0.15f;
 		ProxySoundFilter.reverbFilter.diffusion = 0.54f;
@@ -138,10 +136,8 @@ public class ProxySoundFilter implements IProxy
 		System.out.println("[Sound Filters] Loaded modified library.");
 	}
 
-	@Override
-	public void onInit(FMLInitializationEvent e)
+	public void onInit()
 	{
-		// TODO Auto-generated method stub
 		
 	}
 }

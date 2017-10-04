@@ -63,17 +63,6 @@ public class BoxelController extends Controller
 		isAutoStepEnabled = Info.TESSELLATION_STEP;
 		loadBlocks();
 		loadAutoDetection();
-		
-		System.out.println("Well it fucking loaded, whats the god damn problem.Z");
-		try
-		{
-			Thread.sleep(5000);
-		}
-		
-		catch(InterruptedException e)
-		{
-			e.printStackTrace();
-		}
 	}
 
 	@Override

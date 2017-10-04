@@ -24,8 +24,6 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import sharedcms.audio.AudioManager;
 import sharedcms.gui.UIOptions;
 import sharedcms.gui.UIWork;
 import sharedcms.mutex.client.mouse.MouseManager;
@@ -34,7 +32,6 @@ import sharedcms.renderer.blur.Blur;
 
 public class ClientHostProxy implements IProxy
 {
-	private AudioManager audioManager;
 	private CharacterManager cm;
 	private Blur b;
 	public static List<Runnable> queue = new ArrayList<Runnable>();
@@ -44,14 +41,11 @@ public class ClientHostProxy implements IProxy
 	public void onPreInit(FMLPreInitializationEvent e)
 	{
 		b = new Blur();
-		audioManager = new AudioManager();
 		cm = new CharacterManager();
 		cm.onPreInit(e);
-		audioManager.onPreInit(e);
 		b.preInit(e);
 		MinecraftForge.EVENT_BUS.register(cm);
 		FMLCommonHandler.instance().bus().register(cm);
-		FMLCommonHandler.instance().bus().register(audioManager);
 	}
 
 	public static void openGui(final GuiScreen s)
@@ -114,7 +108,6 @@ public class ClientHostProxy implements IProxy
 	public void onInit(FMLInitializationEvent e)
 	{
 		cm.onInit(e);
-		audioManager.onInit(e);
 	}
 
 	@Override

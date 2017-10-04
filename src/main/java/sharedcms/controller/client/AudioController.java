@@ -1,12 +1,9 @@
-package sharedcms.audio;
+package sharedcms.controller.client;
 
 import java.lang.reflect.Field;
 
 import com.google.common.collect.HashBiMap;
 
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
@@ -15,38 +12,44 @@ import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.client.audio.SoundManager;
 import sharedcms.Info;
 import sharedcms.Status;
+import sharedcms.audio.DSound;
+import sharedcms.audio.QSound;
 import sharedcms.audio.openal.ProxySoundFilter;
-import sharedcms.proxy.IProxy;
+import sharedcms.controllable.Controller;
 import sharedcms.util.GList;
 import sharedcms.util.Location;
 
-public class AudioManager implements IProxy
+public class AudioController extends Controller
 {
 	private ProxySoundFilter filters;
 	private GList<QSound> sounds;
-	public static AudioManager instance;
+	public static AudioController instance;
 
-	@Override
-	public void onPreInit(FMLPreInitializationEvent e)
+	public AudioController()
 	{
 		instance = this;
 		filters = new ProxySoundFilter();
-		filters.onPreInit(e);
 		sounds = new GList<QSound>();
 	}
 
 	@Override
-	public void onInit(FMLInitializationEvent e)
+	public void onPreInitialization()
 	{
-		filters.onInit(e);
+		filters.onPreInit();
 	}
 
 	@Override
-	public void onPostInit(FMLPostInitializationEvent e)
+	public void onInitialization()
 	{
-		filters.onPostInit(e);
+		filters.onInit();
 	}
 
+	@Override
+	public void onPostInitialization()
+	{
+		filters.onPostInit();
+	}
+	
 	@SideOnly(Side.CLIENT)
 	public static HashBiMap<String, ISound> getPlayingSounds()
 	{

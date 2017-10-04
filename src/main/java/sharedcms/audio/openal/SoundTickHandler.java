@@ -22,8 +22,6 @@
  */
 package sharedcms.audio.openal;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -31,25 +29,21 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Random;
-import java.util.Set;
 import java.util.TreeSet;
+
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityClientPlayerMP;
-import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import paulscode.sound.Source;
-import paulscode.sound.Vector3D;
 import sharedcms.Info;
-import sharedcms.audio.AudioManager;
-import sharedcms.audio.filter.FilterReverb;
-import sharedcms.audio.openal.ProxySoundFilter;
+import sharedcms.controller.client.AudioController;
 
 public class SoundTickHandler
 {
@@ -74,7 +68,7 @@ public class SoundTickHandler
 		{
 			if(this.mc.theWorld != null && this.mc.thePlayer != null)
 			{
-				AudioManager.flush();
+				AudioController.flush();
 
 				if(this.mc.thePlayer.isInsideOfMaterial(Material.water))
 				{
