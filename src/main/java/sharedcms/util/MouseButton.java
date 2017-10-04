@@ -1,4 +1,4 @@
-package sharedcms.mutex.client.mouse;
+package sharedcms.util;
 
 public enum MouseButton
 {

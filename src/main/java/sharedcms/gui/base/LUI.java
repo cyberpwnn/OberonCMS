@@ -13,11 +13,11 @@ import sharedcms.gui.component.ISlider;
 import sharedcms.gui.util.MouseEvent;
 import sharedcms.gui.util.Point;
 import sharedcms.gui.util.RenderMetadata;
-import sharedcms.mutex.client.mouse.MouseAdapter;
-import sharedcms.mutex.client.mouse.MouseButton;
-import sharedcms.mutex.client.mouse.MouseManager;
-import sharedcms.mutex.client.mouse.MouseState;
 import sharedcms.util.GList;
+import sharedcms.util.MouseAdapter;
+import sharedcms.util.MouseButton;
+import sharedcms.util.MouseManager;
+import sharedcms.util.MouseState;
 
 public abstract class LUI extends RecycledUI implements MouseAdapter
 {

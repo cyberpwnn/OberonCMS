@@ -1,10 +1,9 @@
-package sharedcms.mutex.client.mouse;
+package sharedcms.util;
 
 import org.lwjgl.input.Mouse;
 
 import net.minecraft.client.Minecraft;
 import sharedcms.gui.util.Point;
-import sharedcms.util.GList;
 
 public class MouseManager
 {

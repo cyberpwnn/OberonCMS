@@ -26,9 +26,14 @@ import sharedcms.config.GG;
 import sharedcms.controllable.ControllerManager;
 import sharedcms.controller.client.AnimationController;
 import sharedcms.controller.client.AudioController;
+import sharedcms.controller.client.BackgroundBlurController;
 import sharedcms.controller.client.BoxelController;
 import sharedcms.controller.client.CameraController;
+import sharedcms.controller.client.ClientController;
+import sharedcms.controller.client.GuiController;
 import sharedcms.controller.client.HudController;
+import sharedcms.controller.client.SFXController;
+import sharedcms.controller.client.VFXController;
 import sharedcms.controller.server.PlayerMovementController;
 import sharedcms.controller.shared.ContentController;
 import sharedcms.controller.shared.NetworkController;
@@ -87,6 +92,11 @@ public class Ares implements IProxy, IRegistrant
 				register(new AnimationController());
 				register(new HudController());
 				register(new AudioController());
+				register(new BackgroundBlurController());
+				register(new GuiController());
+				register(new ClientController());
+				register(new VFXController());
+				register(new SFXController());
 			}
 		};
 	}

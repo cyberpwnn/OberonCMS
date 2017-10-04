@@ -3,8 +3,8 @@ package sharedcms.config.graphics;
 import sharedcms.Info;
 import sharedcms.config.GConfig;
 import sharedcms.config.GG;
+import sharedcms.controller.client.GuiController;
 import sharedcms.gui.util.R;
-import sharedcms.mutex.client.ClientHostProxy;
 
 public class GraphicsManager
 {
@@ -21,7 +21,7 @@ public class GraphicsManager
 	
 	public static void apply()
 	{
-		ClientHostProxy.doWork("Please Wait", "Updating Graphics Settings", new Runnable()
+		GuiController.doWork("Please Wait", "Updating Graphics Settings", new Runnable()
 		{
 			@Override
 			public void run()

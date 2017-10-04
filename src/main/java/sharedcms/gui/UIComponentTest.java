@@ -16,9 +16,9 @@ import sharedcms.gui.components.HPanel;
 import sharedcms.gui.components.HSlider;
 import sharedcms.gui.util.MouseEvent;
 import sharedcms.gui.util.RenderMetadata;
-import sharedcms.mutex.client.mouse.MouseButton;
 import sharedcms.util.C;
 import sharedcms.util.GList;
+import sharedcms.util.MouseButton;
 
 public class UIComponentTest extends LUI
 {

@@ -37,6 +37,7 @@ import net.minecraft.client.resources.data.PackMetadataSection;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.util.ResourceLocation;
+import sharedcms.controller.client.BackgroundBlurController;
 
 public class ShaderResourcePack implements IResourcePack, IResourceManagerReloadListener
 {
@@ -57,14 +58,14 @@ public class ShaderResourcePack implements IResourcePack, IResourceManagerReload
 				public String apply(ResourceLocation loc)
 				{
 					StringBuilder data;
-					InputStream in = Blur.class.getResourceAsStream("/" + location.getResourcePath());
+					InputStream in = BackgroundBlurController.class.getResourceAsStream("/" + location.getResourcePath());
 					data = new StringBuilder();
 					Scanner scan = new Scanner(in);
 					try
 					{
 						while(scan.hasNextLine())
 						{
-							data.append(scan.nextLine().replaceAll("@radius@", Integer.toString(Blur.instance.radius))).append('\n');
+							data.append(scan.nextLine().replaceAll("@radius@", Integer.toString(BackgroundBlurController.instance.radius))).append('\n');
 						}
 					}
 					finally
@@ -81,7 +82,7 @@ public class ShaderResourcePack implements IResourcePack, IResourceManagerReload
 
 	public boolean resourceExists(ResourceLocation location)
 	{
-		return this.validPath(location) && Blur.class.getResource("/" + location.getResourcePath()) != null;
+		return this.validPath(location) && BackgroundBlurController.class.getResource("/" + location.getResourcePath()) != null;
 	}
 
 	public Set<String> getResourceDomains()

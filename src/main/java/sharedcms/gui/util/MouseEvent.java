@@ -3,7 +3,7 @@ package sharedcms.gui.util;
 import org.lwjgl.input.Mouse;
 
 import net.minecraft.client.Minecraft;
-import sharedcms.mutex.client.mouse.MouseButton;
+import sharedcms.util.MouseButton;
 
 public class MouseEvent extends Point
 {

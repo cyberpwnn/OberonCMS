@@ -31,7 +31,7 @@ public class InjectorBlurShader implements IClassTransformer
 	private static final String GUI_SCREEN_CLASS_NAME = "net.minecraft.client.gui.GuiScreen";
 	private static final String DRAW_WORLD_BAGKGROUND_METHOD = "drawWorldBackground";
 	private static final String DRAW_WORLD_BAGKGROUND_METHOD_OBF = "func_146270_b";
-	private static final String BLUR_MAIN_CLASS = "sharedcms/renderer/blur/Blur";
+	private static final String BLUR_MAIN_CLASS = "sharedcms/controller/client/BackgroundBlurController";
 	private static final String COLOR_HOOK_METHOD_NAME = "getBackgroundColor";
 	private static final String COLOR_HOOK_METHOD_DESC = "(Z)I";
 
@@ -59,7 +59,7 @@ public class InjectorBlurShader implements IClassTransformer
 					}
 
 					System.out.println(" ===>>> Modifying GUI background darkness... ");
-					MethodInsnNode colorHook = new MethodInsnNode(184, "sharedcms/renderer/blur/Blur", "getBackgroundColor", "(Z)I", false);
+					MethodInsnNode colorHook = new MethodInsnNode(184, "sharedcms/controller/client/BackgroundBlurController", "getBackgroundColor", "(Z)I", false);
 					AbstractInsnNode colorHook2 = colorHook.clone(null);
 					m.instructions.set(next, (AbstractInsnNode) colorHook);
 					m.instructions.set(colorHook.getNext(), colorHook2);
@@ -75,7 +75,7 @@ public class InjectorBlurShader implements IClassTransformer
 			System.out.println(" ===>>> Transforming " + transformedName + " Finished.");
 			return cw.toByteArray();
 		}
-		
+
 		return basicClass;
 	}
 }

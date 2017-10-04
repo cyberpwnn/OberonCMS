@@ -2,12 +2,11 @@ package sharedcms.gui;
 
 import java.awt.Color;
 
-import net.minecraft.client.Minecraft;
+import sharedcms.controller.client.GuiController;
 import sharedcms.gui.base.LUI;
 import sharedcms.gui.component.IComponent;
 import sharedcms.gui.components.HLabel;
 import sharedcms.gui.components.HPanel;
-import sharedcms.mutex.client.ClientHostProxy;
 
 public abstract class UIWork extends LUI
 {
@@ -64,8 +63,7 @@ public abstract class UIWork extends LUI
 		{
 			startedWork = true;
 			doWork();
-			System.gc();
-			ClientHostProxy.closeGui();
+			GuiController.closeGui();
 		}
 	}
 	

@@ -1,7 +1,5 @@
-package sharedcms.renderer.blur;
+package sharedcms.controller.client;
 
-import java.awt.Color;
-import java.io.File;
 import java.lang.reflect.Field;
 import java.util.List;
 
@@ -11,10 +9,6 @@ import org.apache.commons.lang3.ArrayUtils;
 
 import com.google.common.base.Throwables;
 
-import cpw.mods.fml.client.event.ConfigChangedEvent;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.ReflectionHelper;
@@ -30,13 +24,13 @@ import net.minecraft.client.shader.ShaderUniform;
 import net.minecraft.client.util.JsonException;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.GuiOpenEvent;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.config.Configuration;
 import sharedcms.Info;
+import sharedcms.controllable.Controller;
+import sharedcms.renderer.blur.ShaderResourcePack;
 
-public class Blur
+public class BackgroundBlurController extends Controller
 {
-	public static Blur instance;
+	public static BackgroundBlurController instance;
 	private String[] blurExclusions;
 	private Field _listShaders;
 	private long start;
@@ -47,19 +41,9 @@ public class Blur
 	@Nonnull
 	private ShaderResourcePack dummyPack = new ShaderResourcePack();
 
-	@Mod.EventHandler
-	public void preInit(FMLPreInitializationEvent event)
+	public BackgroundBlurController()
 	{
 		instance = this;
-		MinecraftForge.EVENT_BUS.register((Object) this);
-		FMLCommonHandler.instance().bus().register((Object) this);
-		((List) ReflectionHelper.getPrivateValue(Minecraft.class, Minecraft.getMinecraft(), (String[]) new String[] {"field_110449_ao", "defaultResourcePacks"})).add(this.dummyPack);
-		((SimpleReloadableResourceManager) Minecraft.getMinecraft().getResourceManager()).registerReloadListener((IResourceManagerReloadListener) this.dummyPack);
-		this.saveConfig();
-	}
-
-	private void saveConfig()
-	{
 		this.blurExclusions = new String[] {GuiChat.class.getName()};
 		this.fadeTime = Info.SHADER_BLUR_FADE;
 		this.colorFirst = Info.SHADER_BLUR_START.getRGB();
@@ -129,7 +113,7 @@ public class Blur
 
 	public static int getBackgroundColor(boolean second)
 	{
-		int color = second ? Blur.instance.colorSecond : Blur.instance.colorFirst;
+		int color = second ? BackgroundBlurController.instance.colorSecond : BackgroundBlurController.instance.colorFirst;
 		int a = color >>> 24;
 		int r = color >> 16 & 255;
 		int b = color >> 8 & 255;
@@ -140,5 +124,24 @@ public class Blur
 		g = (int) ((float) g * prog);
 		b = (int) ((float) b * prog);
 		return a << 24 | r << 16 | b << 8 | g;
+	}
+
+	@Override
+	public void onPreInitialization()
+	{
+		((List) ReflectionHelper.getPrivateValue(Minecraft.class, Minecraft.getMinecraft(), (String[]) new String[] {"field_110449_ao", "defaultResourcePacks"})).add(this.dummyPack);
+		((SimpleReloadableResourceManager) Minecraft.getMinecraft().getResourceManager()).registerReloadListener((IResourceManagerReloadListener) this.dummyPack);
+	}
+
+	@Override
+	public void onInitialization()
+	{
+
+	}
+
+	@Override
+	public void onPostInitialization()
+	{
+
 	}
 }

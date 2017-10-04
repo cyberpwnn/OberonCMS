@@ -7,10 +7,10 @@ import cpw.mods.fml.relauncher.Side;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
+import sharedcms.controller.client.GuiController;
 import sharedcms.gui.UIComponentTest;
 import sharedcms.gui.UIOptions;
 import sharedcms.gui.UIRenderTest;
-import sharedcms.mutex.client.ClientHostProxy;
 import sharedcms.util.GList;
 
 public class CommandCMS implements ICommand
@@ -78,7 +78,7 @@ public class CommandCMS implements ICommand
 				@Override
 				public void onCalled(ICommandSender sender)
 				{
-					ClientHostProxy.openGui(new UIRenderTest());
+					GuiController.openGui(new UIRenderTest());
 				}
 			});
 			
@@ -95,7 +95,7 @@ public class CommandCMS implements ICommand
 				@Override
 				public void onCalled(ICommandSender sender)
 				{
-					ClientHostProxy.openGui(new UIComponentTest());
+					GuiController.openGui(new UIComponentTest());
 				}
 			});
 			
@@ -112,7 +112,7 @@ public class CommandCMS implements ICommand
 				@Override
 				public void onCalled(ICommandSender sender)
 				{
-					ClientHostProxy.openGui(new UIOptions());
+					GuiController.openGui(new UIOptions());
 				}
 			});
 		}
