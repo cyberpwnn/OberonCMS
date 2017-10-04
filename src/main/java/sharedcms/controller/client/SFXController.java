@@ -2,6 +2,8 @@ package sharedcms.controller.client;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.WorldTickEvent;
+import cpw.mods.fml.common.registry.GameData;
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.Block.SoundType;
 import net.minecraft.client.Minecraft;
@@ -9,9 +11,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.client.event.sound.PlaySoundSourceEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
+import sharedcms.audio.BlockSound;
 import sharedcms.audio.DSound;
 import sharedcms.audio.SFX;
-import sharedcms.base.BSM;
 import sharedcms.content.Content;
 import sharedcms.controllable.Controller;
 import sharedcms.util.Location;
@@ -44,9 +46,23 @@ public class SFXController extends Controller
 	@Override
 	public void onPostInitialization()
 	{
-
+		replaceBlockSounds();
 	}
 
+	public void replaceBlockSounds()
+	{
+		for(Object i : GameData.getBlockRegistry())
+		{
+			Block b = (Block) i;
+			
+			if(b.stepSound.getBreakSound().equals("dig.stone"))
+			{
+				System.out.println(" ===> Tweaking " + b.getUnlocalizedName() + " step sound.");
+				b.stepSound = Content.BlockSoundType.STONE;
+			}
+		}
+	}
+	
 	@SubscribeEvent
 	public void on(LivingJumpEvent e)
 	{
@@ -58,14 +74,7 @@ public class SFXController extends Controller
 			}
 
 			lastCall = M.ms();
-
-			BSM b = getSoundSet(getSoundType((EntityPlayer) e.entityLiving));
-
-			if(b != null)
-			{
-				play(b.getJump(), 0.2f, rf(0.1f, 1f));
-				play(b.getWalk(), 0.2f, rf(0.1f, 1f));
-			}
+			play(Content.SoundMaterial.AMBIENT_JUMP, 0.2f, rf(0.1f, 1f));
 		}
 	}
 
@@ -81,35 +90,7 @@ public class SFXController extends Controller
 
 			lastCall = M.ms();
 
-			BSM b = getSoundSet(getSoundType((EntityPlayer) e.entityLiving));
-
-			if(b != null)
-			{
-				play(b.getLand(), 0.2f, rf(0.1f, 1f));
-			}
-		}
-	}
-
-	@SubscribeEvent
-	public void on(PlaySoundSourceEvent e)
-	{
-		EntityPlayer el = Minecraft.getMinecraft().thePlayer;
-
-		if(el == null)
-		{
-			return;
-		}
-
-		BSM b = getSoundSet(el.getEntityWorld().getBlock((int) e.x, (int) e.y - 2, (int) e.z).stepSound);
-
-		if(b == null)
-		{
-			return;
-		}
-
-		if(e.sound.getPositionedSoundLocation().getResourcePath().startsWith("step."))
-		{
-			play(sprinting ? b.getRun() : b.getWander(), 0.3f, rf(0.1f, 1f));
+			BlockSound.justLanded = true;
 		}
 	}
 
@@ -122,6 +103,8 @@ public class SFXController extends Controller
 		{
 			return;
 		}
+		
+		BlockSound.walking = !el.isSprinting();
 
 		if(moving && el.isSprinting())
 		{
@@ -136,35 +119,16 @@ public class SFXController extends Controller
 		if(el.distanceWalkedModified - el.prevDistanceWalkedModified != 0 && !moving)
 		{
 			moving = true;
-
-			BSM b = getSoundSet(getSoundType(el));
-
-			if(b != null)
-			{
-				play(b.getWander(), 0.2f, rf(0.1f, 1f));
-			}
 		}
 
 		if(el.distanceWalkedModified - el.prevDistanceWalkedModified == 0 && moving)
 		{
 			moving = false;
-
-			BSM b = getSoundSet(getSoundType(el));
-
-			if(b != null)
-			{
-				play(b.getWander(), 0.2f, rf(0.1f, 1f));
-			}
 		}
 
 		if(el.posY > 120)
 		{
 			windy = true;
-
-			if(Math.random() * 500 < 1)
-			{
-				play(Content.SoundMaterial.AMBIENT_WIND, rr(12), rr(12) + 40, rr(12), 10f, rf(0.1f, 1f));
-			}
 		}
 
 		else
@@ -212,83 +176,5 @@ public class SFXController extends Controller
 		Block b = getBlockUnder(p);
 
 		return b.stepSound;
-	}
-
-	public BSM getSoundSet(SoundType s)
-	{
-		if(s != null)
-		{
-			if(s.equals(Block.soundTypeAnvil))
-			{
-				return Content.BlockSound.METALBAR;
-			}
-
-			else if(s.equals(Block.soundTypeCloth))
-			{
-				return Content.BlockSound.WOOL;
-			}
-
-			else if(s.equals(Block.soundTypeGlass))
-			{
-				return Content.BlockSound.GLASS;
-			}
-
-			else if(s.equals(Block.soundTypeGrass))
-			{
-				return Content.BlockSound.GRASS;
-			}
-
-			else if(s.equals(Block.soundTypeGravel))
-			{
-				return Content.BlockSound.GRAVEL;
-			}
-
-			else if(s.equals(Block.soundTypeLadder))
-			{
-				return Content.BlockSound.PLANKS;
-			}
-
-			else if(s.equals(Block.soundTypeMetal))
-			{
-				return Content.BlockSound.METALBLOCK;
-			}
-
-			else if(s.equals(Block.soundTypePiston))
-			{
-				return Content.BlockSound.METALBLOCK;
-			}
-
-			else if(s.equals(Block.soundTypeSand))
-			{
-				return Content.BlockSound.SAND;
-			}
-
-			else if(s.equals(Block.soundTypeSnow))
-			{
-				return Content.BlockSound.SNOW;
-			}
-
-			else if(s.equals(Block.soundTypeStone))
-			{
-				return Content.BlockSound.ROCK;
-			}
-
-			else if(s.equals(Block.soundTypeWood))
-			{
-				return Content.BlockSound.WOOD;
-			}
-
-			else
-			{
-
-			}
-		}
-
-		else
-		{
-
-		}
-
-		return null;
 	}
 }

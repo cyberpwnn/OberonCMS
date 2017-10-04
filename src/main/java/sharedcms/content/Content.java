@@ -8,9 +8,9 @@ import cpw.mods.fml.relauncher.Side;
 import net.minecraft.block.Block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
+import sharedcms.audio.BlockSound;
 import sharedcms.base.AresBiome;
 import sharedcms.base.AresBlockShrub;
-import sharedcms.base.BSM;
 import sharedcms.content.block.BlockAridSand;
 import sharedcms.content.block.BlockAridStone;
 import sharedcms.content.block.BlockCharredBrick;
@@ -255,21 +255,9 @@ public class Content implements IRegistrant
 		}
 	}
 
-	public static class BlockSound
+	public static class BlockSoundType
 	{
-		public static BSM ROCK = new BSM(SoundMaterial.STONE_WALK, SoundMaterial.STONE_WANDER, SoundMaterial.STONE_WANDER, SoundMaterial.STONE_WANDER, SoundMaterial.STONE_RUN);
-		public static BSM SNOW = new BSM(SoundMaterial.AMBIENT_JUMP, SoundMaterial.SNOW_WALK, SoundMaterial.SNOW_WALK, SoundMaterial.SNOW_WANDER, SoundMaterial.SNOW_RUN);
-		public static BSM GRASS = new BSM(SoundMaterial.AMBIENT_JUMP, SoundMaterial.DIRT_LAND, SoundMaterial.GRASS_WALK, SoundMaterial.GRASS_WANDER, SoundMaterial.GRASS_RUN);
-		public static BSM DIRT = new BSM(SoundMaterial.AMBIENT_JUMP, SoundMaterial.DIRT_LAND, SoundMaterial.DIRT_WALK, SoundMaterial.DIRT_WANDER, SoundMaterial.DIRT_RUN);
-		public static BSM GRAVEL = new BSM(SoundMaterial.AMBIENT_JUMP, SoundMaterial.GRAVEL_LAND, SoundMaterial.GRAVEL_LAND, SoundMaterial.GRAVEL_WANDER, SoundMaterial.GRAVEL_LAND);
-		public static BSM SAND = new BSM(SoundMaterial.AMBIENT_JUMP, SoundMaterial.GRAVEL_LAND, SoundMaterial.GRAVEL_LAND, SoundMaterial.GRAVEL_WANDER, SoundMaterial.GRAVEL_LAND);
-		public static BSM WOOD = new BSM(SoundMaterial.AMBIENT_JUMP, SoundMaterial.WOOD_WALK, SoundMaterial.WOOD_WALK, SoundMaterial.BLUNTWOOD_WANDER, SoundMaterial.DECKWOOD_RUN);
-		public static BSM PLANKS = new BSM(SoundMaterial.AMBIENT_JUMP, SoundMaterial.SQUEAKYWOOD_WALK, SoundMaterial.SQUEAKYWOOD_WALK, SoundMaterial.SQUEAKYWOOD_WANDER, SoundMaterial.DECKWOOD_RUN);
-		public static BSM METALBLOCK = new BSM(SoundMaterial.AMBIENT_JUMP, SoundMaterial.METALBOX_WALK, SoundMaterial.METALBOX_WALK, SoundMaterial.METALBOX_WANDER, SoundMaterial.METALBOX_RUN);
-		public static BSM METALBAR = new BSM(SoundMaterial.AMBIENT_JUMP, SoundMaterial.METALBAR_WALK, SoundMaterial.METALBAR_WALK, SoundMaterial.METALBAR_WANDER, SoundMaterial.METALBAR_RUN);
-		public static BSM WOOL = new BSM(SoundMaterial.AMBIENT_JUMP, SoundMaterial.RUG_WALK, SoundMaterial.RUG_WALK, SoundMaterial.RUG_WALK, SoundMaterial.RUG_WALK);
-		public static BSM GLASS = new BSM(SoundMaterial.AMBIENT_JUMP, SoundMaterial.GLASS_HARD, SoundMaterial.GLASS_HARD, SoundMaterial.GLASS_HARD, SoundMaterial.GLASS_HARD);
-		public static BSM MUD = new BSM(SoundMaterial.AMBIENT_JUMP, SoundMaterial.MUD_WALK, SoundMaterial.MUD_WALK, SoundMaterial.MUD_WANDER, SoundMaterial.MUD_WALK);
+		public static BlockSound STONE = new BlockSound("sharedcms:" + SoundMaterial.STONE_WALK, "sharedcms:" + SoundMaterial.STONE_RUN, "sharedcms:" + SoundMaterial.GRAVEL_LAND, 1f, 1f);
 
 		public static void s()
 		{

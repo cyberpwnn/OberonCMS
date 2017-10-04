@@ -35,7 +35,8 @@ public class Info
 	public static final float TESSELLATION_PERLIN_Z = 17f;
 	public static final boolean TESSELLATION_STEP = true;
 	public static final boolean WEAPON_TRAIL = false;
-	public static final int MAX_CHANNELS = 48;
+	public static final int MAX_STREAM_CHANNELS = 8;
+	public static final int MAX_CHANNELS = 48 + MAX_STREAM_CHANNELS;
 	public static final int ROOM_SCAN_SIZE = 1024;
 	public static final float REVERB_DECAY = 2f;
 	public static final float REVERB_GAIN = 0.12f;

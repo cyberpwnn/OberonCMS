@@ -125,6 +125,7 @@ public class ProxySoundFilter
 		try
 		{
 			SoundSystemConfig.setNumberNormalChannels(Info.MAX_CHANNELS);
+			SoundSystemConfig.setNumberStreamingChannels(Info.MAX_STREAM_CHANNELS);
 			System.out.println("Sound Channels set to " + SoundSystemConfig.getNumberNormalChannels());
 		}
 		
