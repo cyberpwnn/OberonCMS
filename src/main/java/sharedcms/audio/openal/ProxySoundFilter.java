@@ -61,28 +61,23 @@ public class ProxySoundFilter
 	public void onPreInit()
 	{
 		proxy = new OpenALClientHandler();
-		DEBUG = false;
-		doReverb = true;
-		doLowPass = true;
-		doOcclusion = true;
-		profileSize = Info.ROOM_SCAN_SIZE;
 		proxy.registerTickHandlers();
 	}
 
 	public void onPostInit()
 	{
-		ProxySoundFilter.reverbFilter.density = 0.15f;
+		ProxySoundFilter.reverbFilter.density = 0.65f;
 		ProxySoundFilter.reverbFilter.diffusion = 0.54f;
-		ProxySoundFilter.reverbFilter.gain = 0.15f;
-		ProxySoundFilter.reverbFilter.gainHF = 0.2f;
+		ProxySoundFilter.reverbFilter.gain = 0.4f;
+		ProxySoundFilter.reverbFilter.gainHF = 0.4f;
 		ProxySoundFilter.reverbFilter.decayTime = 1.3f;
 		ProxySoundFilter.reverbFilter.decayHFRatio = 0.7f;
-		ProxySoundFilter.reverbFilter.reflectionsGain = 0.2f;
-		ProxySoundFilter.reverbFilter.reflectionsDelay = 0.0f;
-		ProxySoundFilter.reverbFilter.lateReverbGain = 0.00f;
-		ProxySoundFilter.reverbFilter.lateReverbDelay = 0.0f;
+		ProxySoundFilter.reverbFilter.reflectionsGain = 0.0f;
+		ProxySoundFilter.reverbFilter.reflectionsDelay = 0.3f;
+		ProxySoundFilter.reverbFilter.lateReverbGain = 0.2f;
+		ProxySoundFilter.reverbFilter.lateReverbDelay = 0.001f;
 		ProxySoundFilter.reverbFilter.airAbsorptionGainHF = 0.99f;
-		ProxySoundFilter.reverbFilter.roomRolloffFactor = 0.0f;
+		ProxySoundFilter.reverbFilter.roomRolloffFactor = 0.2f;
 	}
 
 	public static boolean isGamePaused()
@@ -95,7 +90,7 @@ public class ProxySoundFilter
 		mc = Minecraft.getMinecraft();
 		rand = new Random();
 		loaded = false;
-		profileSize = 1024;
+		profileSize = Info.ROOM_SCAN_SIZE;
 		doReverb = true;
 		doLowPass = true;
 		doOcclusion = true;
@@ -105,40 +100,40 @@ public class ProxySoundFilter
 		highReverbSet = new TreeSet();
 		midReverbSet = new TreeSet();
 		lowReverbSet = new TreeSet();
-		DEBUG = false;
-				
+		DEBUG = true;
+
 		if(SoundSystemConfig.getLibraries() != null)
 		{
 			SoundSystemConfig.getLibraries().clear();
 		}
-				
+
 		try
 		{
 			SoundSystemConfig.addLibrary(ModifiedLWJGLOpenALLibrary.class);
 		}
-		
+
 		catch(SoundSystemException e)
 		{
 			e.printStackTrace();
 		}
-		
+
 		try
 		{
 			SoundSystemConfig.setNumberNormalChannels(Info.MAX_CHANNELS);
 			SoundSystemConfig.setNumberStreamingChannels(Info.MAX_STREAM_CHANNELS);
 			System.out.println("Sound Channels set to " + SoundSystemConfig.getNumberNormalChannels());
 		}
-		
+
 		catch(Exception e)
 		{
-			
+			e.printStackTrace();
 		}
-		
+
 		System.out.println("[Sound Filters] Loaded modified library.");
 	}
 
 	public void onInit()
 	{
-		
+
 	}
 }

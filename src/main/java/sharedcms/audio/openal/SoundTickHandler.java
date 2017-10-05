@@ -44,10 +44,12 @@ import net.minecraft.world.World;
 import paulscode.sound.Source;
 import sharedcms.Info;
 import sharedcms.controller.client.AudioController;
+import sharedcms.util.Location;
 
 public class SoundTickHandler
 {
 	private Minecraft mc = Minecraft.getMinecraft();
+	private Location last = null;
 	private static int profileTickCountdown = 13;
 	private static float prevDecayFactor = 0.0f;
 	private static float prevRoomFactor = 0.0f;
@@ -64,268 +66,296 @@ public class SoundTickHandler
 	@SubscribeEvent
 	public void tickStart(TickEvent.ClientTickEvent event)
 	{
-		if(event.phase == TickEvent.Phase.START)
+		try
 		{
-			if(this.mc.theWorld != null && this.mc.thePlayer != null)
+			if(event.phase == TickEvent.Phase.START)
 			{
-				AudioController.flush();
-
-				if(this.mc.thePlayer.isInsideOfMaterial(Material.water))
+				if(this.mc.theWorld != null && this.mc.thePlayer != null)
 				{
-					if(!waterSound)
+					AudioController.flush();
+
+					if(this.mc.thePlayer.isInsideOfMaterial(Material.water))
+					{
+						if(!waterSound)
+						{
+							baseLowPassGain = 1.0f;
+							baseLowPassGainHF = 0.4f;
+							lavaSound = false;
+							waterSound = true;
+						}
+					}
+					else if(waterSound)
 					{
 						baseLowPassGain = 1.0f;
-						baseLowPassGainHF = 0.4f;
-						lavaSound = false;
-						waterSound = true;
-					}
-				}
-				else if(waterSound)
-				{
-					baseLowPassGain = 1.0f;
-					baseLowPassGainHF = 1.0f;
-					waterSound = false;
-				}
-				if(this.mc.thePlayer.isInsideOfMaterial(Material.lava))
-				{
-					if(!lavaSound)
-					{
-						baseLowPassGain = 0.6f;
-						baseLowPassGainHF = 0.2f;
-						lavaSound = true;
+						baseLowPassGainHF = 1.0f;
 						waterSound = false;
 					}
+					if(this.mc.thePlayer.isInsideOfMaterial(Material.lava))
+					{
+						if(!lavaSound)
+						{
+							baseLowPassGain = 0.6f;
+							baseLowPassGainHF = 0.2f;
+							lavaSound = true;
+							waterSound = false;
+						}
+					}
+					else if(lavaSound)
+					{
+						baseLowPassGain = 1.0f;
+						baseLowPassGainHF = 1.0f;
+						lavaSound = false;
+					}
 				}
-				else if(lavaSound)
+				else
 				{
 					baseLowPassGain = 1.0f;
 					baseLowPassGainHF = 1.0f;
+					ProxySoundFilter.reverbFilter.decayTime = 0.1f;
+					ProxySoundFilter.reverbFilter.reflectionsDelay = 0.0f;
+					ProxySoundFilter.reverbFilter.lateReverbDelay = 0.0f;
 					lavaSound = false;
+					waterSound = false;
 				}
 			}
-			else
+			if(event.phase == TickEvent.Phase.END)
 			{
-				baseLowPassGain = 1.0f;
-				baseLowPassGainHF = 1.0f;
-				ProxySoundFilter.reverbFilter.decayTime = 0.1f;
-				ProxySoundFilter.reverbFilter.reflectionsDelay = 0.0f;
-				ProxySoundFilter.reverbFilter.lateReverbDelay = 0.0f;
-				lavaSound = false;
-				waterSound = false;
+				ArrayList<Source> toRemove = new ArrayList<Source>();
+				if(ProxySoundFilter.doOcclusion)
+				{
+					Map<Source, Double> map = sourceOcclusionMap;
+					synchronized(map)
+					{
+						for(Source source : sourceOcclusionMap.keySet())
+						{
+							if(!source.playing())
+							{
+								toRemove.add(source);
+								continue;
+							}
+							if(this.mc.theWorld != null && this.mc.thePlayer != null)
+							{
+								Vec3 playerVec = Vec3.createVectorHelper((double) this.mc.thePlayer.posX, (double) (this.mc.thePlayer.posY + (double) this.mc.thePlayer.getEyeHeight()), (double) this.mc.thePlayer.posZ);
+								double occlusion = SoundTickHandler.getSoundOcclusion((World) this.mc.theWorld, Vec3.createVectorHelper((double) source.position.x, (double) source.position.y, (double) source.position.z), playerVec);
+								sourceOcclusionMap.put(source, occlusion);
+								continue;
+							}
+							sourceOcclusionMap.put(source, 0.0);
+						}
+						for(Source sourceToRemove : toRemove)
+						{
+							sourceOcclusionMap.remove((Object) sourceToRemove);
+						}
+					}
+				}
+				if(this.mc.theWorld != null && this.mc.thePlayer != null && ProxySoundFilter.doReverb && --profileTickCountdown <= 0)
+				{
+					profileTickCountdown = 13;
+					
+					if(last != null)
+					{
+						if(last.distanceSquared(new Location(mc.thePlayer)) > 5)
+						{
+							last = new Location(mc.thePlayer);
+						}
+						
+						else
+						{
+							return;
+						}
+					}
+					
+					else
+					{
+						last = new Location(mc.thePlayer);
+					}
+					
+					
+					Random rand = new Random();
+					TreeSet<ComparablePosition> visited = new TreeSet<ComparablePosition>(CPcomparator);
+					ArrayList<Block> blocksFound = new ArrayList<Block>();
+					LinkedList<ComparablePosition> toVisit = new LinkedList<ComparablePosition>();
+					toVisit.add(new ComparablePosition(MathHelper.floor_double((double) this.mc.thePlayer.posX), MathHelper.floor_double((double) this.mc.thePlayer.posY), MathHelper.floor_double((double) this.mc.thePlayer.posZ)));
+					for(int i = 0; i < ProxySoundFilter.profileSize && !toVisit.isEmpty(); ++i)
+					{
+						ComparablePosition current = (ComparablePosition) toVisit.remove(rand.nextInt(toVisit.size()));
+						visited.add(current);
+						ComparablePosition nextPosition = new ComparablePosition(current.x, current.y, current.z + 1);
+						Block block = this.mc.theWorld.getBlock(nextPosition.x, nextPosition.y, nextPosition.z);
+						Material material = block.getMaterial();
+						if(!material.blocksMovement())
+						{
+							if(!visited.contains(nextPosition) && !toVisit.contains(nextPosition))
+							{
+								toVisit.add(nextPosition);
+							}
+							if(material != Material.air)
+							{
+								blocksFound.add(block);
+							}
+						}
+						else
+						{
+							blocksFound.add(block);
+						}
+						nextPosition = new ComparablePosition(current.x, current.y, current.z - 1);
+						block = this.mc.theWorld.getBlock(nextPosition.x, nextPosition.y, nextPosition.z);
+						material = block.getMaterial();
+						if(!material.blocksMovement())
+						{
+							if(!visited.contains(nextPosition) && !toVisit.contains(nextPosition))
+							{
+								toVisit.add(nextPosition);
+							}
+							if(material != Material.air)
+							{
+								blocksFound.add(block);
+							}
+						}
+						else
+						{
+							blocksFound.add(block);
+						}
+						nextPosition = new ComparablePosition(current.x, current.y + 1, current.z);
+						block = this.mc.theWorld.getBlock(nextPosition.x, nextPosition.y, nextPosition.z);
+						material = block.getMaterial();
+						if(!material.blocksMovement())
+						{
+							if(!visited.contains(nextPosition) && !toVisit.contains(nextPosition))
+							{
+								toVisit.add(nextPosition);
+							}
+							if(material != Material.air)
+							{
+								blocksFound.add(block);
+							}
+						}
+						else
+						{
+							blocksFound.add(block);
+						}
+						nextPosition = new ComparablePosition(current.x, current.y - 1, current.z);
+						block = this.mc.theWorld.getBlock(nextPosition.x, nextPosition.y, nextPosition.z);
+						material = block.getMaterial();
+						if(!material.blocksMovement())
+						{
+							if(!visited.contains(nextPosition) && !toVisit.contains(nextPosition))
+							{
+								toVisit.add(nextPosition);
+							}
+							if(material != Material.air)
+							{
+								blocksFound.add(block);
+							}
+						}
+						else
+						{
+							blocksFound.add(block);
+						}
+						nextPosition = new ComparablePosition(current.x + 1, current.y, current.z);
+						block = this.mc.theWorld.getBlock(nextPosition.x, nextPosition.y, nextPosition.z);
+						material = block.getMaterial();
+						if(!material.blocksMovement())
+						{
+							if(!visited.contains(nextPosition) && !toVisit.contains(nextPosition))
+							{
+								toVisit.add(nextPosition);
+							}
+							if(material != Material.air)
+							{
+								blocksFound.add(block);
+							}
+						}
+						else
+						{
+							blocksFound.add(block);
+						}
+						nextPosition = new ComparablePosition(current.x - 1, current.y, current.z);
+						block = this.mc.theWorld.getBlock(nextPosition.x, nextPosition.y, nextPosition.z);
+						material = block.getMaterial();
+						if(!material.blocksMovement())
+						{
+							if(!visited.contains(nextPosition) && !toVisit.contains(nextPosition))
+							{
+								toVisit.add(nextPosition);
+							}
+							if(material == Material.air)
+								continue;
+							blocksFound.add(block);
+							continue;
+						}
+						blocksFound.add(block);
+					}
+					int roomSize = visited.size();
+					int highReverb = 0;
+					int midReverb = 0;
+					int lowReverb = 0;
+					for(Block b : blocksFound)
+					{
+						if(ProxySoundFilter.highReverbSet.contains(Block.getIdFromBlock((Block) b)))
+						{
+							++highReverb;
+							continue;
+						}
+						if(ProxySoundFilter.midReverbSet.contains(Block.getIdFromBlock((Block) b)))
+						{
+							++midReverb;
+							continue;
+						}
+						if(ProxySoundFilter.lowReverbSet.contains(Block.getIdFromBlock((Block) b)))
+						{
+							++lowReverb;
+							continue;
+						}
+						if(b.getMaterial() == Material.rock || b.getMaterial() == Material.glass || b.getMaterial() == Material.ice || b.getMaterial() == Material.iron)
+						{
+							++highReverb;
+							continue;
+						}
+						if(b.getMaterial() == Material.cactus || b.getMaterial() == Material.cake || b.getMaterial() == Material.cloth || b.getMaterial() == Material.coral || b.getMaterial() == Material.grass || b.getMaterial() == Material.leaves || b.getMaterial() == Material.carpet || b.getMaterial() == Material.plants || b.getMaterial() == Material.gourd || b.getMaterial() == Material.snow || b.getMaterial() == Material.sponge || b.getMaterial() == Material.vine || b.getMaterial() == Material.web)
+						{
+							++lowReverb;
+							continue;
+						}
+						++midReverb;
+					}
+					float decayFactor = 0.0f;
+					float roomFactor = (float) roomSize / (float) ProxySoundFilter.profileSize;
+					if(highReverb + midReverb + lowReverb > 0)
+					{
+						decayFactor += (float) (highReverb - lowReverb) / (float) (highReverb + midReverb + lowReverb);
+					}
+					if(decayFactor < 0.0f)
+					{
+						decayFactor = 0.0f;
+					}
+					if(decayFactor > 1.0f)
+					{
+						decayFactor = 1.0f;
+					}
+					decayFactor = (decayFactor + prevDecayFactor) / 2.0f;
+					roomFactor = (roomFactor + prevRoomFactor) / 2.0f;
+					prevDecayFactor = decayFactor;
+					prevRoomFactor = roomFactor;
+					ProxySoundFilter.reverbFilter.decayTime = Info.REVERB_DECAY * decayFactor * roomFactor;
+					ProxySoundFilter.reverbFilter.gain = Info.REVERB_GAIN * roomFactor;
+					ProxySoundFilter.reverbFilter.diffusion = Info.REVERB_DIFFUSION * roomFactor;
+					ProxySoundFilter.reverbFilter.roomRolloffFactor = Info.REVERB_ROLLOFF * roomFactor;
+
+					if(ProxySoundFilter.reverbFilter.decayTime < 0.001f)
+					{
+						ProxySoundFilter.reverbFilter.decayTime = 0.001f;
+					}
+
+					ProxySoundFilter.reverbFilter.reflectionsDelay = Info.REVERB_REFLECTOR * roomFactor;
+					ProxySoundFilter.reverbFilter.lateReverbDelay = Info.REVERB_DELAY * roomFactor;
+				}
 			}
 		}
-		if(event.phase == TickEvent.Phase.END)
-		{
-			ArrayList<Source> toRemove = new ArrayList<Source>();
-			if(ProxySoundFilter.doOcclusion)
-			{
-				Map<Source, Double> map = sourceOcclusionMap;
-				synchronized(map)
-				{
-					for(Source source : sourceOcclusionMap.keySet())
-					{
-						if(!source.playing())
-						{
-							toRemove.add(source);
-							continue;
-						}
-						if(this.mc.theWorld != null && this.mc.thePlayer != null)
-						{
-							Vec3 playerVec = Vec3.createVectorHelper((double) this.mc.thePlayer.posX, (double) (this.mc.thePlayer.posY + (double) this.mc.thePlayer.getEyeHeight()), (double) this.mc.thePlayer.posZ);
-							double occlusion = SoundTickHandler.getSoundOcclusion((World) this.mc.theWorld, Vec3.createVectorHelper((double) source.position.x, (double) source.position.y, (double) source.position.z), playerVec);
-							sourceOcclusionMap.put(source, occlusion);
-							continue;
-						}
-						sourceOcclusionMap.put(source, 0.0);
-					}
-					for(Source sourceToRemove : toRemove)
-					{
-						sourceOcclusionMap.remove((Object) sourceToRemove);
-					}
-				}
-			}
-			if(this.mc.theWorld != null && this.mc.thePlayer != null && ProxySoundFilter.doReverb && --profileTickCountdown <= 0)
-			{
-				profileTickCountdown = 13;
-				Random rand = new Random();
-				TreeSet<ComparablePosition> visited = new TreeSet<ComparablePosition>(CPcomparator);
-				ArrayList<Block> blocksFound = new ArrayList<Block>();
-				LinkedList<ComparablePosition> toVisit = new LinkedList<ComparablePosition>();
-				toVisit.add(new ComparablePosition(MathHelper.floor_double((double) this.mc.thePlayer.posX), MathHelper.floor_double((double) this.mc.thePlayer.posY), MathHelper.floor_double((double) this.mc.thePlayer.posZ)));
-				for(int i = 0; i < ProxySoundFilter.profileSize && !toVisit.isEmpty(); ++i)
-				{
-					ComparablePosition current = (ComparablePosition) toVisit.remove(rand.nextInt(toVisit.size()));
-					visited.add(current);
-					ComparablePosition nextPosition = new ComparablePosition(current.x, current.y, current.z + 1);
-					Block block = this.mc.theWorld.getBlock(nextPosition.x, nextPosition.y, nextPosition.z);
-					Material material = block.getMaterial();
-					if(!material.blocksMovement())
-					{
-						if(!visited.contains(nextPosition) && !toVisit.contains(nextPosition))
-						{
-							toVisit.add(nextPosition);
-						}
-						if(material != Material.air)
-						{
-							blocksFound.add(block);
-						}
-					}
-					else
-					{
-						blocksFound.add(block);
-					}
-					nextPosition = new ComparablePosition(current.x, current.y, current.z - 1);
-					block = this.mc.theWorld.getBlock(nextPosition.x, nextPosition.y, nextPosition.z);
-					material = block.getMaterial();
-					if(!material.blocksMovement())
-					{
-						if(!visited.contains(nextPosition) && !toVisit.contains(nextPosition))
-						{
-							toVisit.add(nextPosition);
-						}
-						if(material != Material.air)
-						{
-							blocksFound.add(block);
-						}
-					}
-					else
-					{
-						blocksFound.add(block);
-					}
-					nextPosition = new ComparablePosition(current.x, current.y + 1, current.z);
-					block = this.mc.theWorld.getBlock(nextPosition.x, nextPosition.y, nextPosition.z);
-					material = block.getMaterial();
-					if(!material.blocksMovement())
-					{
-						if(!visited.contains(nextPosition) && !toVisit.contains(nextPosition))
-						{
-							toVisit.add(nextPosition);
-						}
-						if(material != Material.air)
-						{
-							blocksFound.add(block);
-						}
-					}
-					else
-					{
-						blocksFound.add(block);
-					}
-					nextPosition = new ComparablePosition(current.x, current.y - 1, current.z);
-					block = this.mc.theWorld.getBlock(nextPosition.x, nextPosition.y, nextPosition.z);
-					material = block.getMaterial();
-					if(!material.blocksMovement())
-					{
-						if(!visited.contains(nextPosition) && !toVisit.contains(nextPosition))
-						{
-							toVisit.add(nextPosition);
-						}
-						if(material != Material.air)
-						{
-							blocksFound.add(block);
-						}
-					}
-					else
-					{
-						blocksFound.add(block);
-					}
-					nextPosition = new ComparablePosition(current.x + 1, current.y, current.z);
-					block = this.mc.theWorld.getBlock(nextPosition.x, nextPosition.y, nextPosition.z);
-					material = block.getMaterial();
-					if(!material.blocksMovement())
-					{
-						if(!visited.contains(nextPosition) && !toVisit.contains(nextPosition))
-						{
-							toVisit.add(nextPosition);
-						}
-						if(material != Material.air)
-						{
-							blocksFound.add(block);
-						}
-					}
-					else
-					{
-						blocksFound.add(block);
-					}
-					nextPosition = new ComparablePosition(current.x - 1, current.y, current.z);
-					block = this.mc.theWorld.getBlock(nextPosition.x, nextPosition.y, nextPosition.z);
-					material = block.getMaterial();
-					if(!material.blocksMovement())
-					{
-						if(!visited.contains(nextPosition) && !toVisit.contains(nextPosition))
-						{
-							toVisit.add(nextPosition);
-						}
-						if(material == Material.air)
-							continue;
-						blocksFound.add(block);
-						continue;
-					}
-					blocksFound.add(block);
-				}
-				int roomSize = visited.size();
-				int highReverb = 0;
-				int midReverb = 0;
-				int lowReverb = 0;
-				for(Block b : blocksFound)
-				{
-					if(ProxySoundFilter.highReverbSet.contains(Block.getIdFromBlock((Block) b)))
-					{
-						++highReverb;
-						continue;
-					}
-					if(ProxySoundFilter.midReverbSet.contains(Block.getIdFromBlock((Block) b)))
-					{
-						++midReverb;
-						continue;
-					}
-					if(ProxySoundFilter.lowReverbSet.contains(Block.getIdFromBlock((Block) b)))
-					{
-						++lowReverb;
-						continue;
-					}
-					if(b.getMaterial() == Material.rock || b.getMaterial() == Material.glass || b.getMaterial() == Material.ice || b.getMaterial() == Material.iron)
-					{
-						++highReverb;
-						continue;
-					}
-					if(b.getMaterial() == Material.cactus || b.getMaterial() == Material.cake || b.getMaterial() == Material.cloth || b.getMaterial() == Material.coral || b.getMaterial() == Material.grass || b.getMaterial() == Material.leaves || b.getMaterial() == Material.carpet || b.getMaterial() == Material.plants || b.getMaterial() == Material.gourd || b.getMaterial() == Material.snow || b.getMaterial() == Material.sponge || b.getMaterial() == Material.vine || b.getMaterial() == Material.web)
-					{
-						++lowReverb;
-						continue;
-					}
-					++midReverb;
-				}
-				float decayFactor = 0.0f;
-				float roomFactor = (float) roomSize / (float) ProxySoundFilter.profileSize;
-				if(highReverb + midReverb + lowReverb > 0)
-				{
-					decayFactor += (float) (highReverb - lowReverb) / (float) (highReverb + midReverb + lowReverb);
-				}
-				if(decayFactor < 0.0f)
-				{
-					decayFactor = 0.0f;
-				}
-				if(decayFactor > 1.0f)
-				{
-					decayFactor = 1.0f;
-				}
-				decayFactor = (decayFactor + prevDecayFactor) / 2.0f;
-				roomFactor = (roomFactor + prevRoomFactor) / 2.0f;
-				prevDecayFactor = decayFactor;
-				prevRoomFactor = roomFactor;
-				ProxySoundFilter.reverbFilter.decayTime = Info.REVERB_DECAY * decayFactor * roomFactor;
-				ProxySoundFilter.reverbFilter.gain = Info.REVERB_GAIN * roomFactor;
-				ProxySoundFilter.reverbFilter.diffusion = Info.REVERB_DIFFUSION * roomFactor;
-				ProxySoundFilter.reverbFilter.roomRolloffFactor = Info.REVERB_ROLLOFF * roomFactor;
-				
-				if(ProxySoundFilter.reverbFilter.decayTime < 0.001f)
-				{
-					ProxySoundFilter.reverbFilter.decayTime = 0.001f;
-				}
 
-				ProxySoundFilter.reverbFilter.reflectionsDelay = Info.REVERB_REFLECTOR * roomFactor;
-				ProxySoundFilter.reverbFilter.lateReverbDelay = Info.REVERB_DELAY * roomFactor;
-			}
+		catch(Exception e)
+		{
+
 		}
 	}
 

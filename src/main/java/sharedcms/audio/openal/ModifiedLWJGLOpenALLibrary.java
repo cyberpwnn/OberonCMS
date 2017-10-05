@@ -86,7 +86,7 @@ public class ModifiedLWJGLOpenALLibrary extends Library
 		}
 		else
 		{
-			this.message("OpenAL initialized.");
+			this.message("OpenAL initialized. GTGO");
 		}
 		this.listenerPositionAL = BufferUtils.createFloatBuffer((int) 3).put(new float[] {this.listener.position.x, this.listener.position.y, this.listener.position.z});
 		this.listenerOrientation = BufferUtils.createFloatBuffer((int) 6).put(new float[] {this.listener.lookAt.x, this.listener.lookAt.y, this.listener.lookAt.z, this.listener.up.x, this.listener.up.y, this.listener.up.z});
@@ -633,12 +633,12 @@ public class ModifiedLWJGLOpenALLibrary extends Library
 
 	public static String getTitle()
 	{
-		return "LWJGL OpenAL";
+		return "LWJGL OpenAL :P";
 	}
 
 	public static String getDescription()
 	{
-		return "The LWJGL binding of OpenAL.  For more information, see http://www.lwjgl.org";
+		return "The LWJGL binding of OpenAL.  For more information, see http://www.lwjgl.org :P";
 	}
 
 	public String getClassName()

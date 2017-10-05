@@ -30,11 +30,13 @@ public class RenderLayerDebug extends RenderLayer
 		String rvRefl = F.fd(ProxySoundFilter.reverbFilter.reflectionsDelay, 2);
 		String rvDel = F.fd(ProxySoundFilter.reverbFilter.lateReverbDelay, 2);
 		String rvRoll = F.fd(ProxySoundFilter.reverbFilter.roomRolloffFactor, 2);
-
+		
 		EntityPlayer ep = Minecraft.getMinecraft().thePlayer;
 		k.add(new TextElement("AUX_BANDWIDTH: " + Status.CHANNEL_USE + " / " + Status.CHANNEL_MAX + " (" + bw + ")", cc));
 		k.add(new TextElement("PARTICLE_USE : " + Status.PARTICLE_USE + " / 2000 (" + pw + ")", cp));
 		k.add(new TextElement("REVERB_STATE : " + "DEC: " + rvDecay + " GAN: " + rvGain + " DIF: " + rvDiff + " REF: " + rvRefl + " DEL: " + rvDel + " ROL: " + rvRoll, Color.GREEN));
+		
+		new RenderLayerMultiText(k, new SuperPosition(0, height / 2), 1f);
 	}
 
 	protected MovingObjectPosition getMovingObjectPositionFromPlayer(World p_77621_1_, EntityPlayer p_77621_2_, boolean p_77621_3_)

@@ -17,14 +17,14 @@ public class BlockSound extends SoundType
 	{
 		super(walkSound, volume, pitch);
 		
-		this.walkSound = walkSound;
-		this.runSound = runSound;
-		this.landSound = landSound;
+		this.walkSound = "sharedcms:" + walkSound;
+		this.runSound = "sharedcms:" + runSound;
+		this.landSound = "sharedcms:" + landSound;
 	}
 
 	public String getBreakSound()
 	{
-		return walkSound;
+		return runSound;
 	}
 
 	public String getStepResourcePath()

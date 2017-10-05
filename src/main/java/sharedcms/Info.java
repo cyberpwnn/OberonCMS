@@ -36,14 +36,14 @@ public class Info
 	public static final boolean TESSELLATION_STEP = true;
 	public static final boolean WEAPON_TRAIL = false;
 	public static final int MAX_STREAM_CHANNELS = 8;
-	public static final int MAX_CHANNELS = 48 + MAX_STREAM_CHANNELS;
-	public static final int ROOM_SCAN_SIZE = 1024;
-	public static final float REVERB_DECAY = 2f;
-	public static final float REVERB_GAIN = 0.12f;
-	public static final float REVERB_DELAY = 0.01f;
-	public static final float REVERB_REFLECTOR = 0.015f;
-	public static final float REVERB_DIFFUSION = 0.14f;
-	public static final float REVERB_ROLLOFF = 0.1f;
+	public static final int MAX_CHANNELS = 48;
+	public static final int ROOM_SCAN_SIZE = 512;
+	public static final float REVERB_DECAY = 4.5f;
+	public static final float REVERB_GAIN = 0.42f;
+	public static final float REVERB_DELAY = 0.001f;
+	public static final float REVERB_REFLECTOR = 0.01f;
+	public static final float REVERB_DIFFUSION = 0.74f;
+	public static final float REVERB_ROLLOFF = 0.001f;
 	public static int SHADER_BLUR_RADIUS = 28;
 	public static final int SHADER_BLUR_FADE = 500;
 	public static final Color SHADER_BLUR_START = new Color(0, 0, 0, 0);
@@ -69,14 +69,14 @@ public class Info
 	public static void load()
 	{
 		File f = new File("optionscms.json");
-		
+
 		try
 		{
 			if(!f.exists())
 			{
 				save();
 			}
-			
+
 			DataCluster cc = new DataCluster();
 			cc.read(f);
 			SHADER_BLUR_RADIUS = cc.getInt("blur-radius");
@@ -88,7 +88,7 @@ public class Info
 			TESSELLATION_VERTEX_MODIFIER = R.CLIP(TESSELLATION_VERTEX_MODIFIER, 0f, 2.5f);
 			TESSELLATION_SIMPLEX_MODIFIER = R.CLIP(TESSELLATION_VERTEX_MODIFIER, 0f, 2f);
 		}
-		
+
 		catch(Exception e)
 		{
 			f.delete();

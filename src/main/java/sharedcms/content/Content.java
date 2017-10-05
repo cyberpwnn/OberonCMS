@@ -257,7 +257,19 @@ public class Content implements IRegistrant
 
 	public static class BlockSoundType
 	{
-		public static BlockSound STONE = new BlockSound("sharedcms:" + SoundMaterial.STONE_WALK, "sharedcms:" + SoundMaterial.STONE_RUN, "sharedcms:" + SoundMaterial.GRAVEL_LAND, 1f, 1f);
+		public static BlockSound STONE = new BlockSound(SoundMaterial.STONE_WALK, SoundMaterial.STONE_RUN, SoundMaterial.GRAVEL_LAND, 1f, 1f);
+		public static BlockSound WOOD = new BlockSound(SoundMaterial.WOOD_WALK, SoundMaterial.WOOD_WALK, SoundMaterial.SQUEAKYWOOD_WALK, 1f, 1f);
+		public static BlockSound SNOW = new BlockSound(SoundMaterial.SNOW_WALK, SoundMaterial.SNOW_RUN, SoundMaterial.SNOW_WALK, 1f, 1f);
+		public static BlockSound SAND = new BlockSound(SoundMaterial.SAND_WALK, SoundMaterial.SAND_RUN, SoundMaterial.DIRT_LAND, 1f, 1f);
+		public static BlockSound METAL = new BlockSound(SoundMaterial.METALBAR_LAND, SoundMaterial.METALBAR_LAND, SoundMaterial.METALBAR_LAND, 1f, 1f);
+		public static BlockSound GRAVEL = new BlockSound(SoundMaterial.GRAVEL_WALK, SoundMaterial.GRAVEL_RUN, SoundMaterial.GRAVEL_LAND, 1f, 1f);
+		public static BlockSound DIRT = new BlockSound(SoundMaterial.DIRT_WALK, SoundMaterial.DIRT_RUN, SoundMaterial.DIRT_LAND, 1f, 1f);
+		public static BlockSound GRASS = new BlockSound(SoundMaterial.GRASS_WALK, SoundMaterial.GRASS_RUN, SoundMaterial.DIRT_LAND, 1f, 1f);
+		public static BlockSound GLASS = new BlockSound(SoundMaterial.STONE_WALK, SoundMaterial.STONE_RUN, SoundMaterial.STONE_WALK, 1f, 1.5f);
+		public static BlockSound CLOTH = new BlockSound(SoundMaterial.RUG_WALK, SoundMaterial.RUG_WALK, SoundMaterial.RUG_WALK, 1f, 1f);
+		public static BlockSound ICE = new BlockSound(SoundMaterial.MUIFFLEDLEDICE_WALK, SoundMaterial.WEAKICE_WALK, SoundMaterial.WEAKICE_WALK, 1f, 1f);
+		public static BlockSound MUD = new BlockSound(SoundMaterial.MUD_WALK, SoundMaterial.MUD_WALK, SoundMaterial.MUD_WALK, 1f, 1f);
+		public static BlockSound LEAVES = new BlockSound(SoundMaterial.LEAVES_THROUGH, SoundMaterial.BRUSH_THROUGH, SoundMaterial.LEAVES_THROUGH, 1f, 1f);
 
 		public static void s()
 		{

@@ -88,10 +88,10 @@ public class Ares implements IProxy, IRegistrant
 			public void buildControlledClient()
 			{
 				register(new BoxelController());
+				register(new AudioController());
 				register(new CameraController());
 				register(new AnimationController());
 				register(new HudController());
-				register(new AudioController());
 				register(new BackgroundBlurController());
 				register(new GuiController());
 				register(new ClientController());
