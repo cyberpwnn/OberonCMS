@@ -37,7 +37,7 @@ public class InjectorBlurShader implements IClassTransformer
 					}
 
 					System.out.println(" ===>>> Modifying GUI background darkness... ");
-					MethodInsnNode colorHook = new MethodInsnNode(184, ASMKey.CKASS_BACKGROUNDBLURCONTROLLER, ASMKey.SIGNATURE_GUISCREEN_BACKGROUND_D, ASMKey.SIGNATURE_GUISCREEN_BACKGROUND_O, false);
+					MethodInsnNode colorHook = new MethodInsnNode(184, ASMKey.CLASS_BACKGROUNDBLURCONTROLLER, ASMKey.METHOD_BGC_BACKGROUND_D, ASMKey.SIGNATURE_GUISCREEN_BACKGROUND, false);
 					AbstractInsnNode colorHook2 = colorHook.clone(null);
 					m.instructions.set(next, (AbstractInsnNode) colorHook);
 					m.instructions.set(colorHook.getNext(), colorHook2);

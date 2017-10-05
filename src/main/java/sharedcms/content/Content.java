@@ -1,16 +1,22 @@
 package sharedcms.content;
 
+import java.awt.Color;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
 import cpw.mods.fml.relauncher.Side;
+import net.minecraft.block.Block;
 import net.minecraft.block.Block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
+import net.minecraft.world.World;
 import sharedcms.audio.BlockSound;
+import sharedcms.audio.DSound;
+import sharedcms.audio.SFX;
 import sharedcms.base.AresBiome;
 import sharedcms.base.AresBlockShrub;
+import sharedcms.base.AresNaturalLeavesBlock;
 import sharedcms.content.block.BlockAridSand;
 import sharedcms.content.block.BlockAridStone;
 import sharedcms.content.block.BlockCharredBrick;
@@ -65,6 +71,7 @@ import sharedcms.content.block.BlockLeavesRedwood;
 import sharedcms.content.block.BlockLeavesSpruce;
 import sharedcms.content.block.BlockLogAcacia;
 import sharedcms.content.block.BlockLogArid;
+import sharedcms.content.block.BlockLogBase;
 import sharedcms.content.block.BlockLogBirch;
 import sharedcms.content.block.BlockLogDarkOak;
 import sharedcms.content.block.BlockLogGlacial;
@@ -127,7 +134,11 @@ import sharedcms.content.world.biome.decorator.BiomeDecoratorRedwoods;
 import sharedcms.content.world.generator.WorldGeneratorEmpty;
 import sharedcms.content.world.type.WorldTypeAres;
 import sharedcms.controller.shared.ContentController;
+import sharedcms.fx.BlockEffect;
+import sharedcms.fx.SimpleBlockEffect;
 import sharedcms.registry.IRegistrant;
+import sharedcms.util.Location;
+import sharedcms.util.M;
 import sharedcms.voxel.VoxelRegistry;
 
 public class Content implements IRegistrant
@@ -475,6 +486,341 @@ public class Content implements IRegistrant
 		}
 	}
 
+	public static class BlockEffects
+	{
+		public static BlockEffect LOGS_NIGHT = new SimpleBlockEffect()
+		{
+			@Override
+			public void onPlay(World w, int x, int y, int z)
+			{
+				SFX.play(new DSound("sharedcms:" + Content.SoundMaterial.AMBIENT_WOODPECKER, 2f, 1f, 0.2f), new Location(x, y, z));
+			}
+
+			@Override
+			public boolean meetsConditions(World w, int x, int y, int z)
+			{
+				if(!w.isRaining() && w.getWorldTime() > 12966 && w.getWorldTime() < 22916)
+				{
+					return true;
+				}
+
+				return false;
+			}
+
+			@Override
+			public double getChance()
+			{
+				return 0.0001;
+			}
+
+			@Override
+			public boolean qualifies(net.minecraft.block.Block block)
+			{
+				return block instanceof BlockLogBase;
+			}
+		};
+
+		public static BlockEffect LEAVES_NIGHT = new SimpleBlockEffect()
+		{
+			@Override
+			public void onPlay(World w, int x, int y, int z)
+			{
+				SFX.play(new DSound("sharedcms:" + Content.SoundMaterial.AMBIENT_OWL, 2f, 1f, 0.2f), new Location(x, y, z));
+			}
+
+			@Override
+			public boolean meetsConditions(World w, int x, int y, int z)
+			{
+				if(!w.isRaining() && w.getWorldTime() > 12966 && w.getWorldTime() < 22916)
+				{
+					return true;
+				}
+
+				return false;
+			}
+
+			@Override
+			public double getChance()
+			{
+				return 0.0001;
+			}
+
+			@Override
+			public boolean qualifies(net.minecraft.block.Block block)
+			{
+				return block instanceof AresNaturalLeavesBlock;
+			}
+		};
+
+		public static BlockEffect LEAVES_DAY = new SimpleBlockEffect()
+		{
+			long ms = M.ms();
+
+			@Override
+			public void onPlay(World w, int x, int y, int z)
+			{
+				SFX.play(new DSound("sharedcms:" + Content.SoundMaterial.AMBIENT_FOREST, 2f, 1f, 0.2f), new Location(x, y, z));
+			}
+
+			@Override
+			public boolean meetsConditions(World w, int x, int y, int z)
+			{
+				if(M.ms() - ms < 5000)
+				{
+					return false;
+				}
+
+				if(!w.isRaining() && !(w.getWorldTime() > 12966 && w.getWorldTime() < 22916))
+				{
+					ms = M.ms();
+					return true;
+				}
+
+				return false;
+			}
+
+			@Override
+			public double getChance()
+			{
+				return 0.01;
+			}
+
+			@Override
+			public boolean qualifies(net.minecraft.block.Block block)
+			{
+				return block instanceof AresNaturalLeavesBlock;
+			}
+		};
+
+		public static BlockEffect SHRUB_NIGHT = new SimpleBlockEffect()
+		{
+			long ms = M.ms();
+
+			@Override
+			public void onPlay(World w, int x, int y, int z)
+			{
+				SFX.play(new DSound("sharedcms:" + Content.SoundMaterial.AMBIENT_CRICKETS, 2f, 1f, 0.2f), new Location(x, y, z));
+			}
+
+			@Override
+			public boolean meetsConditions(World w, int x, int y, int z)
+			{
+				if(M.ms() - ms < 5000)
+				{
+					return false;
+				}
+
+				if(!w.isRaining() && w.getWorldTime() > 12966 && w.getWorldTime() < 22916)
+				{
+					ms = M.ms();
+					return true;
+				}
+
+				return false;
+			}
+
+			@Override
+			public double getChance()
+			{
+				return 0.01;
+			}
+
+			@Override
+			public boolean qualifies(net.minecraft.block.Block block)
+			{
+				return block instanceof AresBlockShrub;
+			}
+		};
+
+		public static BlockEffect SHRUB_DAY = new SimpleBlockEffect()
+		{
+			long ms = M.ms();
+			
+			@Override
+			public void onPlay(World w, int x, int y, int z)
+			{
+				SFX.play(new DSound("sharedcms:" + Content.SoundMaterial.AMBIENT_PLAINS, 2f, 1f, 0.2f), new Location(x, y, z));
+			}
+
+			@Override
+			public boolean meetsConditions(World w, int x, int y, int z)
+			{
+				if(M.ms() - ms < 5000)
+				{
+					return false;
+				}
+				
+				if(!w.isRaining() && !(w.getWorldTime() > 12966 && w.getWorldTime() < 22916))
+				{
+					ms = M.ms();
+					return true;
+				}
+
+				return false;
+			}
+
+			@Override
+			public double getChance()
+			{
+				return 0.01;
+			}
+
+			@Override
+			public boolean qualifies(net.minecraft.block.Block block)
+			{
+				return block instanceof AresBlockShrub;
+			}
+		};
+
+		public static BlockEffect SHRUB_FIREFLY = new SimpleBlockEffect()
+		{
+			@Override
+			public void onPlay(World w, int x, int y, int z)
+			{
+				Content.Effect.FIREFLY.play(w, x, y, z, ((AresBlockShrub) w.getBlock(x, y, z)).getRadiantColor());
+			}
+
+			@Override
+			public boolean meetsConditions(World w, int x, int y, int z)
+			{
+				return !w.isRaining();
+			}
+
+			@Override
+			public double getChance()
+			{
+				return 0.02;
+			}
+
+			@Override
+			public boolean qualifies(net.minecraft.block.Block block)
+			{
+				return block instanceof AresBlockShrub;
+			}
+		};
+
+		public static BlockEffect REDWOODS_HOWL = new SimpleBlockEffect()
+		{
+			@Override
+			public void onPlay(World w, int x, int y, int z)
+			{
+				SFX.play(new DSound("sharedcms:" + Content.SoundMaterial.AMBIENT_WOLF, 0.3f, 1f, 0.2f), new Location(x, y, z));
+			}
+
+			@Override
+			public boolean meetsConditions(World w, int x, int y, int z)
+			{
+				return w.getWorldTime() > 12966 && w.getWorldTime() < 22916;
+			}
+
+			@Override
+			public double getChance()
+			{
+				return 0.0001;
+			}
+
+			@Override
+			public boolean qualifies(net.minecraft.block.Block block)
+			{
+				return block instanceof BlockPodzol;
+			}
+		};
+
+		public static BlockEffect DUST_SNOW = new SimpleBlockEffect()
+		{
+			@Override
+			public void onPlay(World w, int x, int y, int z)
+			{
+				Content.Effect.DUST.play(w, x, y, z, new Color(240, 240, 255));
+			}
+
+			@Override
+			public boolean meetsConditions(World w, int x, int y, int z)
+			{
+				return true;
+			}
+
+			@Override
+			public double getChance()
+			{
+				return 0.01;
+			}
+
+			@Override
+			public boolean qualifies(net.minecraft.block.Block block)
+			{
+				return block instanceof BlockGlacialGrass;
+			}
+		};
+
+		public static BlockEffect DUST_SAND = new SimpleBlockEffect()
+		{
+			@Override
+			public void onPlay(World w, int x, int y, int z)
+			{
+				Content.Effect.DUST.play(w, x, y, z, new Color(255, 227, 137));
+			}
+
+			@Override
+			public boolean meetsConditions(World w, int x, int y, int z)
+			{
+				return true;
+			}
+
+			@Override
+			public double getChance()
+			{
+				return 0.01;
+			}
+
+			@Override
+			public boolean qualifies(net.minecraft.block.Block block)
+			{
+				return block instanceof BlockAridSand;
+			}
+		};
+
+		public static BlockEffect LEAVES = new SimpleBlockEffect()
+		{
+			@Override
+			public void onPlay(World w, int x, int y, int z)
+			{
+				if(w.getBlock(x, y, z) instanceof BlockLeavesCherryBlossom)
+				{
+					Content.Effect.FALLING_LEAF.play(w, x, y, z, new Color(255, 145, 249));
+				}
+
+				else
+				{
+					Content.Effect.FALLING_LEAF.play(w, x, y, z, new Color(w.getBlock(x, y, z).getBlockColor()));
+				}
+			}
+
+			@Override
+			public boolean meetsConditions(World w, int x, int y, int z)
+			{
+				return true;
+			}
+
+			@Override
+			public double getChance()
+			{
+				return 0.005;
+			}
+
+			@Override
+			public boolean qualifies(net.minecraft.block.Block block)
+			{
+				return block instanceof AresNaturalLeavesBlock || block instanceof BlockLeavesCherryBlossom;
+			}
+		};
+
+		public static void s()
+		{
+
+		}
+	}
+
 	public static List<AresBlockShrub> flowers()
 	{
 		List<AresBlockShrub> b = new ArrayList<AresBlockShrub>();
@@ -602,6 +948,11 @@ public class Content implements IRegistrant
 			{
 				cms.register(i.get(null));
 			}
+
+			for(Field i : BlockEffects.class.getDeclaredFields())
+			{
+				cms.register(i.get(null));
+			}
 		}
 
 		catch(Exception e)
@@ -621,5 +972,6 @@ public class Content implements IRegistrant
 		Content.Biome.s();
 		Content.Effect.s();
 		Content.SoundMaterial.s();
+		Content.BlockEffects.s();
 	}
 }

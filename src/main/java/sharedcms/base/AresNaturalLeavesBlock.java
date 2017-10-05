@@ -81,7 +81,7 @@ public abstract class AresNaturalLeavesBlock extends AresNaturalBlock
 	@SideOnly(Side.CLIENT)
 	public void randomDisplayTick(World w, int x, int y, int z, Random r)
 	{
-		Content.Effect.FALLING_LEAF.play(w, x, y, z, new Color(getBlockColor()));
+		super.randomDisplayTick(w, x, y, z, r);
 		
 		if(w.canLightningStrikeAt(x, y + 1, z) && !World.doesBlockHaveSolidTopSurface(w, x, y - 1, z) && r.nextInt(15) == 1)
 		{
@@ -89,25 +89,6 @@ public abstract class AresNaturalLeavesBlock extends AresNaturalBlock
 			double d1 = (double) y - 0.05D;
 			double d2 = (double) ((float) z + r.nextFloat());
 			w.spawnParticle("dripWater", d0, d1, d2, 0.0D, 0.0D, 0.0D);
-		}
-		
-		if(M.r(0.004))
-		{
-			if(w.getWorldTime() > 12966 && w.getWorldTime() < 22916)
-			{
-				if(M.r(0.01))
-				{
-					SFX.play(new DSound("sharedcms:" + Content.SoundMaterial.AMBIENT_OWL, 2f, 1f, 0.2f), new Location(x, y, z));
-				}
-			}
-			
-			else
-			{
-				if(M.r(0.4))
-				{
-					SFX.play(new DSound("sharedcms:" + Content.SoundMaterial.AMBIENT_FOREST, 2f, 1f, 0.2f), new Location(x, y, z));
-				}
-			}
 		}
 	}
 }

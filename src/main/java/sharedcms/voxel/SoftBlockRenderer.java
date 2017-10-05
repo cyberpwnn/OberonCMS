@@ -217,8 +217,8 @@ public class SoftBlockRenderer
 		{
 			point.xCoord += ((simplex.getNoise((double) point.xCoord / tsx, (double) point.yCoord / tsx, (double) point.zCoord / tsx)) * thx);
 			point.xCoord -= mod * ((perlin.getNoise((double) point.xCoord / tpx, (double) point.yCoord / tpx, (double) point.zCoord / tpx)) * tax);
-			point.yCoord += ((simplex.getNoise((double) point.yCoord / tsy, (double) point.zCoord / tsy, (double) point.xCoord / tsy)) * thy);
-			point.yCoord -= mof * ((perlin.getNoise((double) point.yCoord / tpy, (double) point.zCoord / tpy, (double) point.xCoord / tpy)) * tay);
+			point.yCoord += 0.01 * ((simplex.getNoise((double) point.yCoord / tsy, (double) point.zCoord / tsy, (double) point.xCoord / tsy)) * thy);
+			point.yCoord -= 0.01 * mof * ((perlin.getNoise((double) point.yCoord / tpy, (double) point.zCoord / tpy, (double) point.xCoord / tpy)) * tay);
 			point.zCoord += ((simplex.getNoise((double) point.zCoord / tsz, (double) point.yCoord / tsz, (double) point.xCoord / tsz)) * thz);
 			point.zCoord -= mod * ((perlin.getNoise((double) point.zCoord / tpz, (double) point.yCoord / tpz, (double) point.xCoord / tpz)) * taz);
 		}

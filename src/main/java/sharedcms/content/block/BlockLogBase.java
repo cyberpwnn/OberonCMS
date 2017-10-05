@@ -19,16 +19,4 @@ public class BlockLogBase extends AresNaturalBlock
 	{
 		super(unlocalizedName, material, type);
 	}
-
-	@SideOnly(Side.CLIENT)
-	public void randomDisplayTick(World w, int x, int y, int z, Random r)
-	{
-		if(M.r(0.01))
-		{
-			if(M.r(0.04))
-			{
-				SFX.play(new DSound("sharedcms:" + Content.SoundMaterial.AMBIENT_WOODPECKER, 2f, 1f, 0.2f), new Location(x, y, z));
-			}
-		}
-	}
 }

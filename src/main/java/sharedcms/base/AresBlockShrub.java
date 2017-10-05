@@ -51,29 +51,6 @@ public abstract class AresBlockShrub extends AresBlock
 
 		return this;
 	}
-	
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void randomDisplayTick(World w, int x, int y, int z, Random r)
-	{
-		Content.Effect.FIREFLY.play(w, x, y, z, getRadiantColor());
-		
-		if(M.r(0.01))
-		{
-			if(w.getWorldTime() > 12966 && w.getWorldTime() < 22916)
-			{
-				if(M.r(0.4))
-				{
-					SFX.play(new DSound("sharedcms:" + Content.SoundMaterial.AMBIENT_CRICKETS, 2f, 1f, 0.2f), new Location(x, y, z));
-				}
-			}
-			
-			else
-			{
-				SFX.play(new DSound("sharedcms:" + Content.SoundMaterial.AMBIENT_PLAINS, 2f, 1f, 0.2f), new Location(x, y, z));
-			}
-		}
-	}
 
 	public abstract Color getRadiantColor();
 

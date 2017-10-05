@@ -30,6 +30,7 @@ import sharedcms.controller.client.BackgroundBlurController;
 import sharedcms.controller.client.BoxelController;
 import sharedcms.controller.client.CameraController;
 import sharedcms.controller.client.ClientController;
+import sharedcms.controller.client.FXController;
 import sharedcms.controller.client.GuiController;
 import sharedcms.controller.client.HudController;
 import sharedcms.controller.client.SFXController;
@@ -95,6 +96,7 @@ public class Ares implements IProxy, IRegistrant
 				register(new BackgroundBlurController());
 				register(new GuiController());
 				register(new ClientController());
+				register(new FXController());
 				register(new VFXController());
 				register(new SFXController());
 			}

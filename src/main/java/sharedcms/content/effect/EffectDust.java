@@ -11,11 +11,6 @@ public class EffectDust extends AresEffect
 	@Override
 	public void play(World w, int x, int y, int z, Object... data)
 	{
-		if(Math.random() * 50 > 1)
-		{
-			return;
-		}
-		
 		double dx = (Math.random() - Math.random()) / 200;
 		double dy = (Math.random() - Math.random()) + 0.01;
 		double dz = (Math.random() - Math.random()) / 200;

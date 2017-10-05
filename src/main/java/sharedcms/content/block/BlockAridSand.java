@@ -18,11 +18,4 @@ public class BlockAridSand extends AresNaturalBlock
 	{
 		super(unlocalizedName, material, type);
 	}
-	
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void randomDisplayTick(World w, int x, int y, int z, Random r)
-	{
-		Content.Effect.DUST.play(w, x, y, z, new Color(255, 227, 137));
-	}
 }

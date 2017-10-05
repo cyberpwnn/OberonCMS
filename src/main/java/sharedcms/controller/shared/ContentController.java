@@ -27,6 +27,8 @@ import sharedcms.base.TabIconChange;
 import sharedcms.content.Content;
 import sharedcms.controllable.Controller;
 import sharedcms.controllable.ControllerIncapableSideException;
+import sharedcms.controller.client.FXController;
+import sharedcms.fx.BlockEffect;
 import sharedcms.registry.BaseRegistrar;
 import sharedcms.registry.IRegistrant;
 import sharedcms.registry.IRegistrar;
@@ -181,6 +183,15 @@ public class ContentController extends Controller
 			public void register(AresEffect o)
 			{
 
+			}
+		});
+		
+		createRegistrar(new BaseRegistrar<BlockEffect>(BlockEffect.class, RegistryPhase.PRE_INIT)
+		{
+			@Override
+			public void register(BlockEffect o)
+			{
+				FXController.addEffect(o);
 			}
 		});
 	}

@@ -1,5 +1,7 @@
 package sharedcms.base;
 
+import java.util.Random;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -12,6 +14,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSettings.GameType;
 import sharedcms.Info;
+import sharedcms.controller.client.FXController;
 import sharedcms.util.PlayerUtils;
 import sharedcms.voxel.VoxelRegistry;
 
@@ -30,6 +33,13 @@ public class AresBlock extends Block
 		{
 			VoxelRegistry.registerForTessellator(this);
 		}
+	}
+	
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void randomDisplayTick(World w, int x, int y, int z, Random r)
+	{
+		FXController.tick(w, x, y, z, r, this);
 	}
 
 	public void playSound(World w, int x, int y, int z, String sound, float v, float p, float div)
