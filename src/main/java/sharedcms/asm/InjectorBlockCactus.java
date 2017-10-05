@@ -1,10 +1,8 @@
 package sharedcms.asm;
 
-import static org.objectweb.asm.Opcodes.*;
+import static org.objectweb.asm.Opcodes.ALOAD;
+import static org.objectweb.asm.Opcodes.GETSTATIC;
 
-import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodNode;
@@ -14,7 +12,7 @@ import net.minecraft.launchwrapper.IClassTransformer;
 import sharedcms.asm.util.ASMHelper;
 import sharedcms.asm.util.Accept;
 
-@Accept(obf = "ajt", deobf = "net.minecraft.block.BlockCactus")
+@Accept(obf = ASMKey.CLASS_BLOCKCACTUS_O, deobf = ASMKey.CLASS_BLOCKCACTUS_D)
 public class InjectorBlockCactus extends ASMHelper implements IClassTransformer
 {
 	@Override
@@ -26,8 +24,8 @@ public class InjectorBlockCactus extends ASMHelper implements IClassTransformer
 	@Override
 	public ClassNode transform(ClassNode node)
 	{
-		String methodName = obfuscated ? "a" : "onEntityCollidedWithBlock";
-		String methodDesc = obfuscated ? "(Lahb;IIILsa;)V" : "(Lnet/minecraft/world/World;IIILnet/minecraft/entity/Entity;)V";
+		String methodName = obfuscated ? ASMKey.METHOD_BLOCKCACTUS_COLLISION_O : ASMKey.METHOD_BLOCKCACTUS_COLLISION_D;
+		String methodDesc = obfuscated ? ASMKey.SIGNATURE_BLOCKCACTUS_O : ASMKey.SIGNATURE_BLOCKCACTUS_D;
 
 		for(MethodNode i : node.methods)
 		{

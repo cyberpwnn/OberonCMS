@@ -24,9 +24,9 @@ public class InjectorBlock implements IClassTransformer
 
 		boolean obfuscated = true;
 
-		if(!"aji".equals(name))
+		if(!name.equals(ASMKey.CLASS_BLOCK_O))
 		{
-			if(!"net.minecraft.block.Block".equals(name))
+			if(!name.equals(ASMKey.CLASS_BLOCK_D))
 			{
 				return bytes;
 			}
@@ -43,7 +43,7 @@ public class InjectorBlock implements IClassTransformer
 		{
 			if(obfuscated)
 			{
-				if(!"a".equals(methodNode.name) || !"(Lahb;IIILazt;Ljava/util/List;Lsa;)V".equals(methodNode.desc))
+				if(!methodNode.name.equals(ASMKey.METHOD_BLOCK_COLLISION_O) || !methodNode.desc.equals(ASMKey.SIGNATURE_BLOCK_COLLISION))
 				{
 					continue;
 				}
@@ -53,7 +53,7 @@ public class InjectorBlock implements IClassTransformer
 				break;
 			}
 
-			if(!"addCollisionBoxesToList".equals(methodNode.name))
+			if(!methodNode.name.equals(ASMKey.METHOD_BLOCK_COLLISION_D))
 			{
 				continue;
 			}
@@ -65,7 +65,6 @@ public class InjectorBlock implements IClassTransformer
 
 		if(targetMethod == null)
 		{
-			System.out.println("  TARGET NULL!");
 			return bytes;
 		}
 		
@@ -74,7 +73,7 @@ public class InjectorBlock implements IClassTransformer
 		injectedMethod.visitLabel(label0);
 		injectedMethod.visitVarInsn(25, 0);
 		System.out.println("  ===>>> Inject Softblock Collision check");
-		injectedMethod.visitMethodInsn(184, "sharedcms/controller/client/BoxelController", "isBlockSoftForCollision", obfuscated ? "(Laji;)Z" : "(Lnet/minecraft/block/Block;)Z");
+		injectedMethod.visitMethodInsn(184, ASMKey.CLASS_BOXEL, ASMKey.METHOD_BOXEL_CHECK, obfuscated ? ASMKey.SIGNATURE_BOXEL_CHECK_O : ASMKey.SIGNATURE_BOXEL_CHECK_D);
 		Label label2 = new Label();
 		injectedMethod.visitJumpInsn(153, label2);
 		Label label3 = new Label();
@@ -88,7 +87,7 @@ public class InjectorBlock implements IClassTransformer
 		injectedMethod.visitVarInsn(25, 6);
 		injectedMethod.visitVarInsn(25, 7);
 		System.out.println("  ===>>> Inject Softblock Collision bounds");
-		injectedMethod.visitMethodInsn(184, "sharedcms/voxel/SoftBlockRenderer", "inject", obfuscated ? "(Laji;Lahb;IIILazt;Ljava/util/List;Lsa;)V" : "(Lnet/minecraft/block/Block;Lnet/minecraft/world/World;IIILnet/minecraft/util/AxisAlignedBB;Ljava/util/List;Lnet/minecraft/entity/Entity;)V");
+		injectedMethod.visitMethodInsn(184, ASMKey.CLASS_BLOCKRENDERER, ASMKey.METHOD_BLOCKRENDERER_INJECT, obfuscated ? ASMKey.SIGNATURE_BLOCKRENDERER_INJECT_O : ASMKey.SIGNATURE_BLOCKRENDERER_INJECT_D);
 		Label label4 = new Label();
 		injectedMethod.visitLabel(label4);
 		injectedMethod.visitInsn(177);

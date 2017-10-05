@@ -1,18 +1,3 @@
-/*
- * Decompiled with CFR 0_122.
- * 
- * Could not load the following classes:
- *  net.minecraft.launchwrapper.IClassTransformer
- *  org.objectweb.asm.ClassReader
- *  org.objectweb.asm.ClassVisitor
- *  org.objectweb.asm.ClassWriter
- *  org.objectweb.asm.tree.AbstractInsnNode
- *  org.objectweb.asm.tree.ClassNode
- *  org.objectweb.asm.tree.InsnList
- *  org.objectweb.asm.tree.InsnNode
- *  org.objectweb.asm.tree.MethodInsnNode
- *  org.objectweb.asm.tree.MethodNode
- */
 package sharedcms.asm;
 
 import org.objectweb.asm.ClassReader;
@@ -28,24 +13,17 @@ import net.minecraft.launchwrapper.IClassTransformer;
 
 public class InjectorBlurShader implements IClassTransformer
 {
-	private static final String GUI_SCREEN_CLASS_NAME = "net.minecraft.client.gui.GuiScreen";
-	private static final String DRAW_WORLD_BAGKGROUND_METHOD = "drawWorldBackground";
-	private static final String DRAW_WORLD_BAGKGROUND_METHOD_OBF = "func_146270_b";
-	private static final String BLUR_MAIN_CLASS = "sharedcms/controller/client/BackgroundBlurController";
-	private static final String COLOR_HOOK_METHOD_NAME = "getBackgroundColor";
-	private static final String COLOR_HOOK_METHOD_DESC = "(Z)I";
-
 	public byte[] transform(String name, String transformedName, byte[] basicClass)
 	{
-		if(transformedName.equals("net.minecraft.client.gui.GuiScreen"))
+		if(transformedName.equals(ASMKey.CLASS_GUISCREEN))
 		{
-			System.out.println(" ===>>> Transforming Class [" + transformedName + "], Method [" + "drawWorldBackground" + "]");
+			System.out.println(" ===>>> Transforming Class [" + transformedName + "], Method [" + ASMKey.METHOD_GUISCREEN_DRAWBACKGROUND_D + "]");
 			ClassNode classNode = new ClassNode();
 			ClassReader classReader = new ClassReader(basicClass);
 			classReader.accept((ClassVisitor) classNode, 0);
 			block0: for(MethodNode m : classNode.methods)
 			{
-				if(!m.name.equals("drawWorldBackground") && !m.name.equals("func_146270_b"))
+				if(!m.name.equals(ASMKey.METHOD_GUISCREEN_DRAWBACKGROUND_D) && !m.name.equals(ASMKey.METHOD_GUISCREEN_DRAWBACKGROUND_O))
 				{
 					continue;
 				}
@@ -59,7 +37,7 @@ public class InjectorBlurShader implements IClassTransformer
 					}
 
 					System.out.println(" ===>>> Modifying GUI background darkness... ");
-					MethodInsnNode colorHook = new MethodInsnNode(184, "sharedcms/controller/client/BackgroundBlurController", "getBackgroundColor", "(Z)I", false);
+					MethodInsnNode colorHook = new MethodInsnNode(184, ASMKey.CKASS_BACKGROUNDBLURCONTROLLER, ASMKey.SIGNATURE_GUISCREEN_BACKGROUND_D, ASMKey.SIGNATURE_GUISCREEN_BACKGROUND_O, false);
 					AbstractInsnNode colorHook2 = colorHook.clone(null);
 					m.instructions.set(next, (AbstractInsnNode) colorHook);
 					m.instructions.set(colorHook.getNext(), colorHook2);
