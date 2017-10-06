@@ -8,6 +8,6 @@ public class TabNatural extends AresTab
 	public TabNatural(String unlocalizedName)
 	{
 		super(unlocalizedName);
-		setSearchBar(true);
+		setSearchBar(false);
 	}
 }

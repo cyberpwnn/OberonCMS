@@ -2,7 +2,7 @@ package sharedcms.asm;
 
 public class ASMKey
 {
-	public static final String CLASS_BOXEL = "sharedcms/controller/client/BoxelController";
+	public static final String CLASS_BOXEL = "sharedcms/controller/shared/BoxelController";
 	public static final String CLASS_BLOCK_O = "aji";
 	public static final String CLASS_BLOCK_D = "net.minecraft.block.Block";
 	public static final String CLASS_BLOCKRENDERER = "sharedcms/voxel/SoftBlockRenderer";

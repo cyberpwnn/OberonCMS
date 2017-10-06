@@ -14,7 +14,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import sharedcms.Info;
 import sharedcms.content.world.generator.SimplexNoiseGenerator;
-import sharedcms.controller.client.BoxelController;
+import sharedcms.controller.shared.BoxelController;
 import sharedcms.gui.util.R;
 
 public class SoftBlockRenderer

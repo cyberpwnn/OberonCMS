@@ -1,4 +1,4 @@
-package sharedcms.controller.client;
+package sharedcms.controller.shared;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -203,6 +203,11 @@ public class BoxelController extends Controller
 
 	public static boolean isBlockSoftForCollision(Block block)
 	{
+		if(softBlockList == null)
+		{
+			return false;
+		}
+		
 		return (VoxelRegistry.tessellate.contains(block) || softBlockList.contains((Object) block)) && isAutoStepEnabled;
 	}
 

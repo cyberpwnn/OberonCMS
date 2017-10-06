@@ -27,7 +27,6 @@ import sharedcms.controllable.ControllerManager;
 import sharedcms.controller.client.AnimationController;
 import sharedcms.controller.client.AudioController;
 import sharedcms.controller.client.BackgroundBlurController;
-import sharedcms.controller.client.BoxelController;
 import sharedcms.controller.client.CameraController;
 import sharedcms.controller.client.ClientController;
 import sharedcms.controller.client.FXController;
@@ -36,6 +35,7 @@ import sharedcms.controller.client.HudController;
 import sharedcms.controller.client.SFXController;
 import sharedcms.controller.client.VFXController;
 import sharedcms.controller.server.PlayerMovementController;
+import sharedcms.controller.shared.BoxelController;
 import sharedcms.controller.shared.ContentController;
 import sharedcms.controller.shared.NetworkController;
 import sharedcms.controller.shared.WorldHostController;
@@ -80,6 +80,7 @@ public class Ares implements IProxy, IRegistrant
 			@Override
 			public void buildControlledLink()
 			{
+				register(new BoxelController());
 				register(new ContentController());
 				register(new NetworkController());
 				register(new WorldHostController());
@@ -88,7 +89,6 @@ public class Ares implements IProxy, IRegistrant
 			@Override
 			public void buildControlledClient()
 			{
-				register(new BoxelController());
 				register(new AudioController());
 				register(new CameraController());
 				register(new AnimationController());

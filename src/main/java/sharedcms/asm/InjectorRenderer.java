@@ -73,7 +73,7 @@ public class InjectorRenderer implements IClassTransformer
 		injectedMethod.visitJumpInsn(153, label2);
 		Label label3 = new Label();
 		injectedMethod.visitLabel(label3);
-		injectedMethod.visitFieldInsn(178, "sharedcms/controller/client/BoxelController", "softBlockRenderer", "Lsharedcms/voxel/SoftBlockRenderer;");
+		injectedMethod.visitFieldInsn(178, "sharedcms/controller/shared/BoxelController", "softBlockRenderer", "Lsharedcms/voxel/SoftBlockRenderer;");
 		injectedMethod.visitVarInsn(25, 1);
 		injectedMethod.visitVarInsn(21, 2);
 		injectedMethod.visitVarInsn(21, 3);

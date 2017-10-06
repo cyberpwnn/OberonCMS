@@ -108,12 +108,12 @@ public abstract class AresBiome extends BiomeGenBase
 
 	public float getHeightVariation()
 	{
-		return 0.2f;
+		return 0.1f;
 	}
 
 	public float getHeight()
 	{
-		return 0.1f;
+		return 0.4f;
 	}
 
 	public int getColor()

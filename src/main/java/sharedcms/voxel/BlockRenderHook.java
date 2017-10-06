@@ -1,7 +1,7 @@
 package sharedcms.voxel;
 
 import net.minecraft.block.Block;
-import sharedcms.controller.client.BoxelController;
+import sharedcms.controller.shared.BoxelController;
 
 public class BlockRenderHook
 {

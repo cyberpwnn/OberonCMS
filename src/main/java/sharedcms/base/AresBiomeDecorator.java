@@ -89,7 +89,7 @@ public class AresBiomeDecorator extends BiomeDecorator
 	{
 		if(this.currentWorld != null)
 		{
-			throw new RuntimeException("Already decorating!!");
+			
 		}
 
 		else

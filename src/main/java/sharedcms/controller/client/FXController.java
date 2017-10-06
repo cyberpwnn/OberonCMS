@@ -2,6 +2,8 @@ package sharedcms.controller.client;
 
 import java.util.Random;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
 import sharedcms.controllable.Controller;

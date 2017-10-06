@@ -289,6 +289,16 @@ public class WorldTessellatedTreeGen extends WorldGenTrees
 			return true;
 		}
 		
+		if(b.equals(Blocks.dirt))
+		{
+			return true;
+		}
+		
+		if(b.equals(Blocks.grass))
+		{
+			return true;
+		}
+		
 		return false;
 	}
 

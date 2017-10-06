@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cpw.mods.fml.relauncher.Side;
-import net.minecraft.block.Block;
 import net.minecraft.block.Block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
@@ -76,6 +75,7 @@ import sharedcms.content.block.BlockLogBirch;
 import sharedcms.content.block.BlockLogDarkOak;
 import sharedcms.content.block.BlockLogGlacial;
 import sharedcms.content.block.BlockLogJungle;
+import sharedcms.content.block.BlockLogMossy;
 import sharedcms.content.block.BlockLogOak;
 import sharedcms.content.block.BlockLogRedwood;
 import sharedcms.content.block.BlockLogSpruce;
@@ -94,6 +94,7 @@ import sharedcms.content.block.BlockPlanksDark;
 import sharedcms.content.block.BlockPlanksJungle;
 import sharedcms.content.block.BlockPlanksOak;
 import sharedcms.content.block.BlockPodzol;
+import sharedcms.content.block.BlockPodzolMossy;
 import sharedcms.content.block.BlockRiverStone;
 import sharedcms.content.block.BlockRoughDirt;
 import sharedcms.content.block.BlockShortGrass;
@@ -103,6 +104,7 @@ import sharedcms.content.block.BlockThinGrass;
 import sharedcms.content.effect.EffectDust;
 import sharedcms.content.effect.EffectFallingLeaf;
 import sharedcms.content.effect.EffectFirefly;
+import sharedcms.content.item.ItemCrusader;
 import sharedcms.content.tab.TabNatural;
 import sharedcms.content.world.biome.BiomeDesert;
 import sharedcms.content.world.biome.BiomeDesertArid;
@@ -118,6 +120,7 @@ import sharedcms.content.world.biome.BiomePlainsHilly;
 import sharedcms.content.world.biome.BiomePlainsHillyExtreme;
 import sharedcms.content.world.biome.BiomePlainsTrees;
 import sharedcms.content.world.biome.BiomeRedwoods;
+import sharedcms.content.world.biome.BiomeRoofedForest;
 import sharedcms.content.world.biome.decorator.BiomeDecoratorDefault;
 import sharedcms.content.world.biome.decorator.BiomeDecoratorDesert;
 import sharedcms.content.world.biome.decorator.BiomeDecoratorDesertArid;
@@ -131,6 +134,7 @@ import sharedcms.content.world.biome.decorator.BiomeDecoratorOriental;
 import sharedcms.content.world.biome.decorator.BiomeDecoratorPlains;
 import sharedcms.content.world.biome.decorator.BiomeDecoratorPlainsTrees;
 import sharedcms.content.world.biome.decorator.BiomeDecoratorRedwoods;
+import sharedcms.content.world.biome.decorator.BiomeDecoratorRoofedForest;
 import sharedcms.content.world.generator.WorldGeneratorEmpty;
 import sharedcms.content.world.type.WorldTypeAres;
 import sharedcms.controller.shared.ContentController;
@@ -147,6 +151,7 @@ public class Content implements IRegistrant
 	{
 		public static TabNatural NATURAL = new TabNatural("tnatural");
 		public static TabNatural SHRUBS = new TabNatural("tshrubs");
+		public static TabNatural WEAPONS = new TabNatural("tweapons");
 
 		public static void s()
 		{
@@ -216,6 +221,7 @@ public class Content implements IRegistrant
 		public static BlockFlowerTulipWhite FLOWER_TULIP_WHITE = new BlockFlowerTulipWhite("flower_tulip_white", Material.plants, Sound.GRASS, 5);
 		public static BlockLogArid LOG_ARID = new BlockLogArid("log_arid", Material.wood, Sound.WOOD);
 		public static BlockLogOak LOG_OAK = new BlockLogOak("log_oak", Material.wood, Sound.WOOD);
+		public static BlockLogMossy LOG_MOSSY = new BlockLogMossy("log_mossy", Material.wood, Sound.WOOD);
 		public static BlockLogBirch LOG_BIRCH = new BlockLogBirch("log_birch", Material.wood, Sound.WOOD);
 		public static BlockLogDarkOak LOG_DARK = new BlockLogDarkOak("log_dark", Material.wood, Sound.WOOD);
 		public static BlockLogSpruce LOG_SPRUCE = new BlockLogSpruce("log_spruce", Material.wood, Sound.WOOD);
@@ -237,6 +243,7 @@ public class Content implements IRegistrant
 		public static BlockGlacialDirt GLACIAL_DIRT = new BlockGlacialDirt("glacial_dirt", Material.sand, Sound.GRAVEL);
 		public static BlockGlacialRock GLACIAL_ROCK = new BlockGlacialRock("glacial_rock", Material.sand, Sound.STONE);
 		public static BlockPodzol PODZOL = new BlockPodzol("podzol", Material.ground, Sound.GRAVEL);
+		public static BlockPodzolMossy PODZOL_MOSSY = new BlockPodzolMossy("podzol_mossy", Material.ground, Sound.GRAVEL);
 		public static BlockRoughDirt ROUGH_DIRT = new BlockRoughDirt("rough_dirt", Material.ground, Sound.GRAVEL);
 
 		public static void s()
@@ -403,6 +410,9 @@ public class Content implements IRegistrant
 
 	public static class Item
 	{
+		public static ItemCrusader SWORD_CRUSADER = new ItemCrusader("crusader");
+		public static ItemCrusader SWORD_CRUSADER_HIGH = new ItemCrusader("crusader_high");
+		
 		public static void s()
 		{
 
@@ -457,6 +467,7 @@ public class Content implements IRegistrant
 		public static BiomeOrientalPrairie ORIENTAL_PRAIRIE = new BiomeOrientalPrairie(110);
 		public static BiomePlainsTrees PLAINS_TREES = new BiomePlainsTrees(111);
 		public static BiomeGlacier GLACIER = new BiomeGlacier(112);
+		public static BiomeRoofedForest ROOFED_FOREST = new BiomeRoofedForest(113);
 
 		public static void s()
 		{
@@ -479,6 +490,7 @@ public class Content implements IRegistrant
 		public static BiomeDecoratorOriental ORIENTAL = new BiomeDecoratorOriental(Biome.ORIENTAL_PRAIRIE);
 		public static BiomeDecoratorPlainsTrees PLAINS_TREES = new BiomeDecoratorPlainsTrees(Biome.PLAINS_TREES);
 		public static BiomeDecoratorGlacier GLACIER = new BiomeDecoratorGlacier(Biome.GLACIER);
+		public static BiomeDecoratorRoofedForest ROOFED_FOREST = new BiomeDecoratorRoofedForest(Biome.ROOFED_FOREST);
 
 		public static void s()
 		{
@@ -635,7 +647,7 @@ public class Content implements IRegistrant
 		public static BlockEffect SHRUB_DAY = new SimpleBlockEffect()
 		{
 			long ms = M.ms();
-			
+
 			@Override
 			public void onPlay(World w, int x, int y, int z)
 			{
@@ -649,7 +661,7 @@ public class Content implements IRegistrant
 				{
 					return false;
 				}
-				
+
 				if(!w.isRaining() && !(w.getWorldTime() > 12966 && w.getWorldTime() < 22916))
 				{
 					ms = M.ms();
@@ -949,9 +961,12 @@ public class Content implements IRegistrant
 				cms.register(i.get(null));
 			}
 
-			for(Field i : BlockEffects.class.getDeclaredFields())
+			if(side.equals(Side.CLIENT))
 			{
-				cms.register(i.get(null));
+				for(Field i : BlockEffects.class.getDeclaredFields())
+				{
+					cms.register(i.get(null));
+				}
 			}
 		}
 
@@ -972,6 +987,5 @@ public class Content implements IRegistrant
 		Content.Biome.s();
 		Content.Effect.s();
 		Content.SoundMaterial.s();
-		Content.BlockEffects.s();
 	}
 }
