@@ -1,10 +1,12 @@
 package sharedcms.renderer.animation.anim.player;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.MathHelper;
+import sharedcms.audio.SFX;
 import sharedcms.renderer.animation.anim.Animation;
 import sharedcms.renderer.animation.client.model.ModelRendererBends;
 import sharedcms.renderer.animation.client.model.entity.ModelBendsPlayer;
@@ -35,6 +37,7 @@ extends Animation {
         ((ModelRendererBends)model.bipedLeftLeg).rotation.setSmoothY(-45.0f, 0.3f);
         ((ModelRendererBends)model.bipedRightForeLeg).rotation.setSmoothX(60.0f);
         ((ModelRendererBends)model.bipedLeftForeLeg).rotation.setSmoothX(60.0f);
+
         if (argData.motion.x == 0.0f & argData.motion.z == 0.0f) {
             ((ModelRendererBends)model.bipedRightArm).rotation.setSmoothX(-10.0f, 0.3f);
             ((ModelRendererBends)model.bipedLeftArm).rotation.setSmoothX(-10.0f, 0.3f);

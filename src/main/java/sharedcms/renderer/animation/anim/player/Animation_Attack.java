@@ -1,9 +1,11 @@
 package sharedcms.renderer.animation.anim.player;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import sharedcms.audio.SFX;
 import sharedcms.renderer.animation.anim.Animation;
 import sharedcms.renderer.animation.anim.player.Animation_Attack_Combo0;
 import sharedcms.renderer.animation.anim.player.Animation_Attack_Combo1;
@@ -39,16 +41,19 @@ public class Animation_Attack extends Animation
 					Animation_Attack_Combo0.animate((EntityPlayer) argEntity, model, data);
 					BendsPack.animate(model, "player", "attack_0");
 				}
+				
 				else if(data.currentAttack == 2)
 				{
 					Animation_Attack_Combo1.animate((EntityPlayer) argEntity, model, data);
 					BendsPack.animate(model, "player", "attack_1");
 				}
+				
 				else if(data.currentAttack == 3)
 				{
 					Animation_Attack_Combo2.animate((EntityPlayer) argEntity, model, data);
 					BendsPack.animate(model, "player", "attack_2");
 				}
+				
 				else if(data.currentAttack == 4)
 				{
 					Animation_Attack_Combo3.animate((EntityPlayer) argEntity, model, data);

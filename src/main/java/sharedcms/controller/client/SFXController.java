@@ -8,7 +8,8 @@ import net.minecraft.block.Block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.client.event.sound.SoundEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import sharedcms.audio.BlockSound;
@@ -47,6 +48,15 @@ public class SFXController extends Controller
 	public void onPostInitialization()
 	{
 		replaceBlockSounds();
+	}
+	
+	@SubscribeEvent
+	public void on(SoundEvent.SoundSourceEvent e)
+	{
+		if(e.name.contains("fs."))
+		{
+			SFX.playArmorRustleSounds(Minecraft.getMinecraft().thePlayer);
+		}
 	}
 
 	public void replaceBlockSounds()

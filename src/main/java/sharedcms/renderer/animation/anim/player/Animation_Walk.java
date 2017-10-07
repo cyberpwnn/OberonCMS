@@ -1,9 +1,11 @@
 package sharedcms.renderer.animation.anim.player;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.MathHelper;
+import sharedcms.audio.SFX;
 import sharedcms.renderer.animation.anim.Animation;
 import sharedcms.renderer.animation.client.model.ModelRendererBends;
 import sharedcms.renderer.animation.client.model.entity.ModelBendsPlayer;
@@ -23,6 +25,7 @@ public class Animation_Walk extends Animation
 	public void animate(EntityLivingBase argEntity, ModelBase argModel, EntityData argData)
 	{
 		ModelBendsPlayer model = (ModelBendsPlayer) argModel;
+
 		((ModelRendererBends) model.bipedRightArm).rotation.setSmoothX(0.5f * (float) ((double) (MathHelper.cos((float) (model.armSwing * 0.6662f + 3.1415927f)) * 2.0f * model.armSwingAmount * 0.5f) / 3.141592653589793 * 180.0));
 		((ModelRendererBends) model.bipedLeftArm).rotation.setSmoothX(0.5f * (float) ((double) (MathHelper.cos((float) (model.armSwing * 0.6662f)) * 2.0f * model.armSwingAmount * 0.5f) / 3.141592653589793 * 180.0));
 		((ModelRendererBends) model.bipedRightArm).rotation.setSmoothZ(5.0f, 0.3f);

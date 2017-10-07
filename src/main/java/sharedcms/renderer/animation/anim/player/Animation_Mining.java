@@ -1,10 +1,12 @@
 package sharedcms.renderer.animation.anim.player;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.MathHelper;
+import sharedcms.audio.SFX;
 import sharedcms.renderer.animation.anim.Animation;
 import sharedcms.renderer.animation.client.model.ModelRendererBends;
 import sharedcms.renderer.animation.client.model.entity.ModelBendsPlayer;
@@ -28,6 +30,7 @@ extends Animation {
         ((ModelRendererBends)model.bipedLeftLeg).rotation.setSmoothZ(-10.0f, 0.3f);
         model.renderOffset.setSmoothY(-1.5f, 0.3f);
         if (player.isSwingInProgress) {
+
             float speed = 1.8f;
             float progress = (float)player.ticksExisted * speed / 20.0f % 1.0f;
             float progress2 = (float)(player.ticksExisted - 2) * speed / 20.0f % 1.0f;

@@ -311,6 +311,8 @@ public class Content implements IRegistrant
 
 	public static class SoundMaterial
 	{
+		public static String ARMOR_LEATHER = "fs.armor.leather";
+		public static String ARMOR_METAL = "fs.armor.metal";
 		public static String BLUNTWOOD_WALK = "fs.bluntwood.bluntwood_walk";
 		public static String BLUNTWOOD_WANDER = "fs.bluntwood.bluntwood_wander";
 		public static String BRUSH_THROUGH = "fs.brush.brush_through";
@@ -426,6 +428,9 @@ public class Content implements IRegistrant
 	{
 		public static ItemCrusader SWORD_CRUSADER = new ItemCrusader("crusader");
 		public static ItemCrusader SWORD_CRUSADER_HIGH = new ItemCrusader("crusader_high");
+		public static ItemCrusader SWORD_CRUSADER_VENERATED = new ItemCrusader("crusader_venerated");
+		public static ItemCrusader SWORD_CRUSADER_DAMNED = new ItemCrusader("crusader_damned");
+		public static ItemCrusader SWORD_CRUSADER_MALEVOLENT = new ItemCrusader("crusader_malevolent");
 
 		public static void s()
 		{

@@ -1,9 +1,11 @@
 package sharedcms.renderer.animation.anim.player;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.MathHelper;
+import sharedcms.audio.SFX;
 import sharedcms.renderer.animation.anim.Animation;
 import sharedcms.renderer.animation.client.model.ModelRendererBends;
 import sharedcms.renderer.animation.client.model.entity.ModelBendsPlayer;
@@ -32,6 +34,7 @@ extends Animation {
         float foreArmStretch = armSway * 2.0f;
         foreArmStretch -= 1.0f;
         foreArmStretch = GUtil.min(foreArmStretch, 0.0f);
+
         if (data.motion.x == 0.0f & data.motion.z == 0.0f) {
             armSway = (MathHelper.cos((float)(data.ticks * 0.0825f)) + 1.0f) / 2.0f;
             armSway2 = (- MathHelper.sin((float)(data.ticks * 0.0825f)) + 1.0f) / 2.0f;

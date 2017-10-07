@@ -15,6 +15,21 @@
             "footsteps/bluntwood/bluntwood_walk9"
         ]
     },
+    "fs.armor.leather": {
+        "category": "player",
+        "sounds": [
+            "footsteps/armor/leather1",
+            "footsteps/armor/leather2",
+            "footsteps/armor/leather3"
+        ]
+    },
+	"fs.armor.metal": {
+        "category": "player",
+        "sounds": [
+            "footsteps/armor/metal1",
+            "footsteps/armor/metal2"
+        ]
+    },
     "fs.bluntwood.bluntwood_wander": {
         "category": "player",
         "sounds": [

@@ -1,9 +1,11 @@
 package sharedcms.renderer.animation.anim.player;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import sharedcms.audio.SFX;
 import sharedcms.renderer.animation.anim.Animation;
 import sharedcms.renderer.animation.client.model.ModelRendererBends;
 import sharedcms.renderer.animation.client.model.entity.ModelBendsPlayer;
@@ -25,6 +27,7 @@ extends Animation {
         Data_Player data = (Data_Player)argData;
         EntityPlayer player = (EntityPlayer)argEntity;
         float aimedBowDuration = 0.0f;
+        
         if (player != null) {
             aimedBowDuration = player.getItemInUseDuration();
         }
