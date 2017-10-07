@@ -17,6 +17,9 @@ public class WorldTreeGenTops extends WorldGenTrees
 {
 	private Block log;
 	private Block leaves;
+	private int height;
+	private int wbonus;
+	private int wrbonus;
 
 	public WorldTreeGenTops(Block log, Block leaves)
 	{
@@ -24,11 +27,23 @@ public class WorldTreeGenTops extends WorldGenTrees
 
 		this.log = log;
 		this.leaves = leaves;
+		this.height = 14;
+		this.wbonus = 0;
+		this.wrbonus = 0;
+	}
+
+	public WorldTreeGenTops(Block log, Block leaves, int height, int wbonus, int wrbonus)
+	{
+		this(log, leaves);
+
+		this.height = height;
+		this.wbonus = wbonus;
+		this.wrbonus = wrbonus;
 	}
 
 	public boolean generate(World w, Random r, int x, int y, int z)
 	{
-		int l = r.nextInt(3) + r.nextInt(2) + 14;
+		int l = r.nextInt(3) + r.nextInt(2) + height;
 		boolean flag = true;
 
 		if(y >= 1 && y + l + 1 <= 256)
@@ -185,25 +200,49 @@ public class WorldTreeGenTops extends WorldGenTrees
 
 								int i3;
 
-								for(l2 = -3; l2 <= 3; ++l2)
+								for(l2 = -3 - wbonus; l2 <= 3 + wbonus; ++l2)
 								{
-									for(i3 = -3; i3 <= 3; ++i3)
+									for(i3 = -3 - wbonus; i3 <= 3 + wbonus; ++i3)
 									{
 										this.func_150526_a(w, k3 + j2 + l2, i2 - 0, l1 + k2 + i3, r);
 									}
 								}
 
-								for(l2 = -6; l2 <= 6; ++l2)
+								for(l2 = -6 - wbonus; l2 <= 6 + wbonus; ++l2)
 								{
-									for(i3 = -6; i3 <= 6; ++i3)
+									for(i3 = -6 - wbonus; i3 <= 6 + wbonus; ++i3)
 									{
-										if(Math.abs(l2) != 6 || Math.abs(i3) != 6)
+										if(Math.abs(l2) != 6 + wbonus || Math.abs(i3) != 6 + wbonus)
 										{
-											if(Math.abs(l2) + Math.abs(i3) < 8 + r.nextInt(2))
+											if(Math.abs(l2) + Math.abs(i3) < 8 + wbonus + r.nextInt(2 + wrbonus))
 											{
 												this.func_150526_a(w, k3 + j2 + l2, i2 - 1, l1 + k2 + i3, r);
 											}
 										}
+									}
+								}
+								
+								if(wbonus > 0)
+								{
+									int vv = wbonus;
+									
+									while(vv > -4)
+									{
+										for(l2 = -6 - vv; l2 <= 6 + vv; ++l2)
+										{
+											for(i3 = -6 - vv; i3 <= 6 + vv; ++i3)
+											{
+												if(Math.abs(l2) != 6 + vv || Math.abs(i3) != 6 + vv)
+												{
+													if(Math.abs(l2) + Math.abs(i3) < 8 + vv + r.nextInt(2 + wrbonus))
+													{
+														this.func_150526_a(w, k3 + j2 + l2, i2 - 1, l1 + k2 + i3, r);
+													}
+												}
+											}
+										}
+										
+										vv -= wbonus / 2;
 									}
 								}
 
@@ -245,7 +284,7 @@ public class WorldTreeGenTops extends WorldGenTrees
 		{
 			return true;
 		}
-		
+
 		if(b.equals(Content.Block.PODZOL_MOSSY))
 		{
 			return true;
@@ -273,7 +312,7 @@ public class WorldTreeGenTops extends WorldGenTrees
 
 		return false;
 	}
-	
+
 	public Block getLeavesBlock(Random rand)
 	{
 		if(rand.nextInt(4) == 0)

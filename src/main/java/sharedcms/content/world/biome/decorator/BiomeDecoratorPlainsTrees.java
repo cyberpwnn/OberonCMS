@@ -49,6 +49,7 @@ import net.minecraftforge.event.terraingen.TerrainGen;
 import sharedcms.base.AresBiome;
 import sharedcms.base.AresBiomeDecorator;
 import sharedcms.content.Content;
+import sharedcms.content.world.decorator.DecorateArtifact;
 
 public class BiomeDecoratorPlainsTrees extends AresBiomeDecorator
 {
@@ -74,5 +75,9 @@ public class BiomeDecoratorPlainsTrees extends AresBiomeDecorator
 		this.clayPerChunk = 0;
 		this.generateLakes = false;
 		this.treesPerChunk = 0;
+		
+		addDecorator(new DecorateArtifact(1, 0.02, Content.Models.RUBBLE_ROCK, Content.Block.COLD_GRASS));
+		addDecorator(new DecorateArtifact(1, 0.09, Content.Models.RUBBLE_DIRT, Content.Block.COLD_GRASS));
+		addDecorator(new DecorateArtifact(1, 0.09, Content.Models.RUBBLE_DIRT, Content.Block.COLD_STONE));
 	}
 }

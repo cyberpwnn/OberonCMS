@@ -46,7 +46,6 @@ import net.minecraftforge.event.terraingen.ChunkProviderEvent;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
 import sharedcms.content.Content;
-import sharedcms.content.world.generator.WorldGeneratorCities;
 import sharedcms.util.GList;
 
 public class AresWorldChunkProvider implements IChunkProvider
@@ -439,13 +438,6 @@ public class AresWorldChunkProvider implements IChunkProvider
 		int l1;
 		int i2;
 		
-		for(k1 = 0; k1 < 1; ++k1)
-		{
-			l1 = k + this.rand.nextInt(16) + 8;
-			i2 = this.rand.nextInt(256);
-			int j2 = l + this.rand.nextInt(16) + 8;
-			(new WorldGeneratorCities(this.worldObj.getSeed())).generate(this.worldObj, this.rand, l1, i2, j2);
-		}
 		BiomeGenBase biomegenbase = this.worldObj.getBiomeGenForCoords(k + 16, l + 16);
 		this.rand.setSeed(this.worldObj.getSeed());
 		long i1 = this.rand.nextLong() / 2L * 2L + 1L;
@@ -454,8 +446,6 @@ public class AresWorldChunkProvider implements IChunkProvider
 		boolean flag = false;
 
 		MinecraftForge.EVENT_BUS.post(new PopulateChunkEvent.Pre(p_73153_1_, worldObj, rand, p_73153_2_, p_73153_3_, flag));
-
-		
 
 		if(this.mapFeaturesEnabled)
 		{

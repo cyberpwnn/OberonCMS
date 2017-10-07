@@ -57,7 +57,7 @@ public class BasicGenLayerZoom extends AresGenLayerZoom
 		GenLayerAddMushroomIsland genlayeraddmushroomisland = new GenLayerAddMushroomIsland(5L, genlayeraddisland);
 		GenLayerDeepOcean genlayerdeepocean = new GenLayerDeepOcean(4L, genlayeraddmushroomisland);
 		GenLayer genlayer2 = GenLayerZoom.magnify(1000L, genlayerdeepocean, 0);
-		byte b0 = 5;
+		byte b0 = 6;
 		GenLayer genlayer = GenLayerZoom.magnify(1000L, genlayer2, 0);
 		GenLayerRiverInit genlayerriverinit = new GenLayerRiverInit(100L, genlayer);
 		Object object = new BasicGenLayerBiome(seed, genlayer2);

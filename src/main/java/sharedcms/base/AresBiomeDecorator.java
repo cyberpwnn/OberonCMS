@@ -49,12 +49,15 @@ import net.minecraftforge.event.terraingen.DecorateBiomeEvent;
 import net.minecraftforge.event.terraingen.OreGenEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
 import sharedcms.content.Content;
+import sharedcms.content.world.decorator.DecorateScrambler;
 import sharedcms.content.world.generator.AresWorldGenFlowers;
 import sharedcms.content.world.generator.WorldGenTallAresGrass;
+import sharedcms.util.GList;
 
 public class AresBiomeDecorator extends BiomeDecorator
 {
 	protected Block[] tallGrassTypes;
+	private GList<AresDecorator> decorators;
 
 	public AresBiomeDecorator(AresBiome biome)
 	{
@@ -75,7 +78,7 @@ public class AresBiomeDecorator extends BiomeDecorator
 		this.reedGen = new WorldGenReed();
 		this.cactusGen = new WorldGenCactus();
 		this.waterlilyGen = new WorldGenWaterlily();
-		this.tallGrassTypes = new Block[] {Content.Block.THIN_GRASS, Content.Block.SHORT_GRASS, Content.Block.THIN_GRASS, Content.Block.SHORT_GRASS, Content.Block.THIN_GRASS, Content.Block.THIN_GRASS, Content.Block.THIN_GRASS, Content.Block.SHORT_GRASS, Content.Block.TALL_GRASS, Content.Block.FERN, Content.Block.SHORT_GRASS};
+		this.tallGrassTypes = new Block[] {Content.Block.THIN_GRASS, Content.Block.SHORT_GRASS, Content.Block.THIN_GRASS, Content.Block.SHORT_GRASS, Content.Block.THIN_GRASS, Content.Block.THIN_GRASS, Content.Block.THIN_GRASS, Content.Block.SHORT_GRASS, Content.Block.TALL_GRASS, Content.Block.FERN, Content.Block.SHORT_GRASS, Content.Block.SPOKED_GRASS, Content.Block.STUBBED_GRASS};
 		this.flowersPerChunk = 2;
 		this.grassPerChunk = 1;
 		this.sandPerChunk = 1;
@@ -83,16 +86,19 @@ public class AresBiomeDecorator extends BiomeDecorator
 		this.clayPerChunk = 1;
 		this.waterlilyPerChunk = 12;
 		this.generateLakes = true;
+		decorators = new GList<AresDecorator>();
+		
+		addDecorator(new DecorateScrambler(1000, 12, Blocks.grass, Blocks.sand, Content.Block.ARID_SAND, Content.Block.PODZOL, Content.Block.PODZOL_MOSSY, Content.Block.COLD_GRASS, Content.Block.GLACIAL_GRASS));
+	}
+	
+	public void addDecorator(AresDecorator g)
+	{
+		decorators.add(g);
 	}
 
 	public void decorateChunk(World p_150512_1_, Random p_150512_2_, BiomeGenBase p_150512_3_, int p_150512_4_, int p_150512_5_)
 	{
-		if(this.currentWorld != null)
-		{
-			
-		}
-
-		else
+		if(currentWorld == null)
 		{
 			this.currentWorld = p_150512_1_;
 			this.randomGenerator = p_150512_2_;
@@ -306,6 +312,17 @@ public class AresBiomeDecorator extends BiomeDecorator
 				l = this.randomGenerator.nextInt(this.randomGenerator.nextInt(this.randomGenerator.nextInt(240) + 8) + 8);
 				i1 = this.chunk_Z + this.randomGenerator.nextInt(16) + 8;
 				(new WorldGenLiquids(Blocks.flowing_lava)).generate(this.currentWorld, this.randomGenerator, k, l, i1);
+			}
+		}
+		
+		for(AresDecorator m : decorators)
+		{
+			for(j = 0; j < m.getTries(); j++)
+			{
+				k = this.chunk_X + this.randomGenerator.nextInt(16) + 8;
+				l = this.chunk_Z + this.randomGenerator.nextInt(16) + 8;
+				i1 = nextInt(this.currentWorld.getHeightValue(k, l) * 2);
+				m.generate(this.currentWorld, this.randomGenerator, k, i1, l);
 			}
 		}
 

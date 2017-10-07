@@ -99,12 +99,24 @@ import sharedcms.content.block.BlockRiverStone;
 import sharedcms.content.block.BlockRoughDirt;
 import sharedcms.content.block.BlockShortGrass;
 import sharedcms.content.block.BlockSmoothDirt;
+import sharedcms.content.block.BlockSpokedGrass;
+import sharedcms.content.block.BlockStubbedGrass;
 import sharedcms.content.block.BlockTallGrass;
 import sharedcms.content.block.BlockThinGrass;
 import sharedcms.content.effect.EffectDust;
 import sharedcms.content.effect.EffectFallingLeaf;
 import sharedcms.content.effect.EffectFirefly;
 import sharedcms.content.item.ItemCrusader;
+import sharedcms.content.structure.brush.Brush;
+import sharedcms.content.structure.brush.Brushable;
+import sharedcms.content.structure.brush.IBrush;
+import sharedcms.content.structure.brush.IBrushBuilder;
+import sharedcms.content.structure.model.IModel;
+import sharedcms.content.structure.model.IModelBuilder;
+import sharedcms.content.structure.model.IModelMaterial;
+import sharedcms.content.structure.model.Model;
+import sharedcms.content.structure.model.ModelMaterial;
+import sharedcms.content.structure.model.SmoothingMode;
 import sharedcms.content.tab.TabNatural;
 import sharedcms.content.world.biome.BiomeDesert;
 import sharedcms.content.world.biome.BiomeDesertArid;
@@ -201,6 +213,8 @@ public class Content implements IRegistrant
 		public static BlockDeadTwig DEAD_TWIG = new BlockDeadTwig("dead_twig", Material.plants, Sound.GRASS, 0);
 		public static BlockTallGrass TALL_GRASS = new BlockTallGrass("tall_grass", Material.plants, Sound.GRASS, 0);
 		public static BlockThinGrass THIN_GRASS = new BlockThinGrass("thin_grass", Material.plants, Sound.GRASS, 0);
+		public static BlockStubbedGrass STUBBED_GRASS = new BlockStubbedGrass("stubbed_grass", Material.plants, Sound.GRASS, 0);
+		public static BlockSpokedGrass SPOKED_GRASS = new BlockSpokedGrass("spoked_grass", Material.plants, Sound.GRASS, 0);
 		public static BlockFern FERN = new BlockFern("fern", Material.plants, Sound.GRASS, 0);
 		public static BlockShortGrass SHORT_GRASS = new BlockShortGrass("short_grass", Material.plants, Sound.GRASS, 0);
 		public static BlockFlowerDaisy FLOWER_DAISY = new BlockFlowerDaisy("flower_daisy", Material.plants, Sound.GRASS, 4);
@@ -412,7 +426,7 @@ public class Content implements IRegistrant
 	{
 		public static ItemCrusader SWORD_CRUSADER = new ItemCrusader("crusader");
 		public static ItemCrusader SWORD_CRUSADER_HIGH = new ItemCrusader("crusader_high");
-		
+
 		public static void s()
 		{
 
@@ -473,6 +487,119 @@ public class Content implements IRegistrant
 		{
 
 		}
+	}
+	
+	public static class Brushes
+	{
+		public static IBrush AIR = new IBrushBuilder()
+		{
+			@Override
+			public IBrush buildBrush()
+			{
+				IBrush brush = new Brush();
+				brush.getPalette().add(new Brushable(Blocks.air, 1));
+				
+				return brush;
+			}
+		}.buildBrush();
+		
+		public static IBrush RUBBLE_ROCK = new IBrushBuilder()
+		{
+			@Override
+			public IBrush buildBrush()
+			{
+				IBrush brush = new Brush();
+				brush.getPalette().add(new Brushable(Block.PATH_STONE, 5));
+				brush.getPalette().add(new Brushable(Block.PATH_STONE_BRICK_CRACKED, 10));
+				brush.getPalette().add(new Brushable(Block.PATH_STONE_BRICK_CRUSHED, 8));
+				brush.getPalette().add(new Brushable(Blocks.air, 8));
+				
+				return brush;
+			}
+		}.buildBrush();
+		
+		public static IBrush RUBBLE_SANDSTONE = new IBrushBuilder()
+		{
+			@Override
+			public IBrush buildBrush()
+			{
+				IBrush brush = new Brush();
+				brush.getPalette().add(new Brushable(Block.COLD_SANDSTONE, 5));
+				brush.getPalette().add(new Brushable(Block.COLD_SANDSTONE_BRICK, 10));
+				brush.getPalette().add(new Brushable(Block.ARID_STONE, 8));
+				brush.getPalette().add(new Brushable(Blocks.air, 8));
+				
+				return brush;
+			}
+		}.buildBrush();
+		
+		public static IBrush RUBBLE_DIRT = new IBrushBuilder()
+		{
+			@Override
+			public IBrush buildBrush()
+			{
+				IBrush brush = new Brush();
+				brush.getPalette().add(new Brushable(Block.PODZOL, 7));
+				brush.getPalette().add(new Brushable(Block.PODZOL_MOSSY, 5));
+				brush.getPalette().add(new Brushable(Block.COLD_DIRT, 15));
+				brush.getPalette().add(new Brushable(Block.SMOOTH_DIRT, 8));
+				brush.getPalette().add(new Brushable(Block.ROUGH_DIRT, 7));
+				brush.getPalette().add(new Brushable(Blocks.air, 8));
+				
+				return brush;
+			}
+		}.buildBrush();
+	}
+	
+	public static class Models
+	{
+		public static IModel RUBBLE_ROCK = new IModelBuilder()
+		{
+			@Override
+			public IModel buildModel()
+			{
+				IModelMaterial rubble = new ModelMaterial("rubble", Brushes.RUBBLE_ROCK);
+				IModel model = new Model();
+				model.put(0, 0, 0, rubble);
+				model.scale(3, 6, 3);
+				model.smooth(1, SmoothingMode.EDGES);
+				model.center();
+				
+				return model;
+			}
+		}.buildModel();
+		
+		public static IModel RUBBLE_SANDSTONE = new IModelBuilder()
+		{
+			@Override
+			public IModel buildModel()
+			{
+				IModelMaterial rubble = new ModelMaterial("rubble", Brushes.RUBBLE_SANDSTONE);
+				IModel model = new Model();
+				model.put(0, 0, 0, rubble);
+				model.scale(3, 6, 3);
+				model.smooth(1, SmoothingMode.EDGES);
+				model.center();
+				
+				return model;
+			}
+		}.buildModel();
+		
+		public static IModel RUBBLE_DIRT = new IModelBuilder()
+		{
+			@Override
+			public IModel buildModel()
+			{
+				IModelMaterial rubble = new ModelMaterial("rubble", Brushes.RUBBLE_DIRT);
+				IModel model = new Model();
+				model.put(0, 0, 0, rubble);
+				model.scale(3, 6, 3);
+				model.smooth(1, SmoothingMode.EDGES);
+				model.center();
+				
+				return model;
+			}
+		}.buildModel();
 	}
 
 	public static class BiomeDecorator
