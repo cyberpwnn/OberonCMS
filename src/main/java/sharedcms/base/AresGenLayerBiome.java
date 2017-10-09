@@ -16,7 +16,7 @@ public abstract class AresGenLayerBiome extends GenLayer
 		this.parent = genlayer;
 	}
 
-	public abstract AresBiome[] getAllowedBiomes();
+	public abstract AresBiome[] getAllowedBiomes(int x, int z);
 
 	@Override
 	public int[] getInts(int x, int z, int width, int depth)
@@ -28,7 +28,7 @@ public abstract class AresGenLayerBiome extends GenLayer
 			for(int dx = 0; dx < width; dx++)
 			{
 				this.initChunkSeed(dx + x, dz + z);
-				dest[(dx + dz * width)] = getAllowedBiomes()[nextInt(getAllowedBiomes().length)].biomeID;
+				dest[(dx + dz * width)] = getAllowedBiomes(dx + x, dz + z)[nextInt(getAllowedBiomes(dx + x, dz + z).length)].biomeID;
 			}
 		}
 

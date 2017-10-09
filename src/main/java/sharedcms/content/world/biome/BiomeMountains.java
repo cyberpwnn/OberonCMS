@@ -61,13 +61,13 @@ public class BiomeMountains extends AresBiome
 	@Override
 	public float getHeightVariation()
 	{
-		return super.getHeightVariation() + 0.3f;
+		return super.getHeightVariation() + 0.8f;
 	}
 
 	@Override
 	public float getHeight()
 	{
-		return super.getHeight() + 0.2f;
+		return super.getHeight() + 4.2f;
 	}
 
 	@Override

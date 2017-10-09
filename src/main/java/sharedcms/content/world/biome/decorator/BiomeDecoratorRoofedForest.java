@@ -3,8 +3,20 @@ package sharedcms.content.world.biome.decorator;
 import sharedcms.base.AresBiome;
 import sharedcms.base.AresBiomeDecorator;
 import sharedcms.content.Content;
+import sharedcms.content.Content.Block;
+import sharedcms.content.structure.artifact.Artifact;
+import sharedcms.content.structure.artifact.IArtifact;
+import sharedcms.content.structure.brush.Brush;
+import sharedcms.content.structure.brush.Brushable;
+import sharedcms.content.structure.brush.IBrush;
+import sharedcms.content.structure.model.IModel;
+import sharedcms.content.structure.model.IModelMaterial;
+import sharedcms.content.structure.model.Model;
+import sharedcms.content.structure.model.ModelMaterial;
+import sharedcms.content.structure.model.SmoothingMode;
 import sharedcms.content.world.decorator.DecorateArtifact;
 import sharedcms.content.world.decorator.DecoratePodzolSludge;
+import sharedcms.util.Location;
 
 public class BiomeDecoratorRoofedForest extends AresBiomeDecorator
 {

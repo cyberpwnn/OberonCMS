@@ -11,6 +11,7 @@ import cpw.mods.fml.relauncher.IFMLLoadingPlugin.MCVersion;
 @IFMLLoadingPlugin.TransformerExclusions({"sharedcms.asm"})
 public class ASMHandler implements IFMLLoadingPlugin
 {
+	public static boolean IN_MCP = false;
 	private List<String> k;
 
 	public String[] getASMTransformerClass()
@@ -19,7 +20,7 @@ public class ASMHandler implements IFMLLoadingPlugin
 		k = new ArrayList<String>();
 		System.out.println("Building Injector list");
 		buildInjectors();
-		
+
 		return k.toArray(new String[k.size()]);
 	}
 
@@ -30,6 +31,7 @@ public class ASMHandler implements IFMLLoadingPlugin
 		add("InjectorRenderer");
 		add("InjectorCamera");
 		add("InjectorBlurShader");
+		add("InjectorWorldRenderer");
 	}
 
 	private void add(String name)
@@ -50,7 +52,7 @@ public class ASMHandler implements IFMLLoadingPlugin
 
 	public void injectData(Map<String, Object> data)
 	{
-
+		IN_MCP = (Boolean) data.get("runtimeDeobfuscationEnabled") == false;
 	}
 
 	public String getAccessTransformerClass()

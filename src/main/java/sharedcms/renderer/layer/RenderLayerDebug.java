@@ -9,11 +9,16 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.BiomeGenBase;
 import sharedcms.Colors;
 import sharedcms.Status;
 import sharedcms.audio.openal.ProxySoundFilter;
+import sharedcms.base.AresBiome;
+import sharedcms.content.Content;
+import sharedcms.util.DimensionalLevel;
 import sharedcms.util.F;
 import sharedcms.util.GList;
+import sharedcms.util.Location;
 
 public class RenderLayerDebug extends RenderLayer
 {
@@ -30,12 +35,27 @@ public class RenderLayerDebug extends RenderLayer
 		String rvRefl = F.fd(ProxySoundFilter.reverbFilter.reflectionsDelay, 2);
 		String rvDel = F.fd(ProxySoundFilter.reverbFilter.lateReverbDelay, 2);
 		String rvRoll = F.fd(ProxySoundFilter.reverbFilter.roomRolloffFactor, 2);
-		
+
 		EntityPlayer ep = Minecraft.getMinecraft().thePlayer;
+		Location o = new Location(ep);
+		BiomeGenBase b = ep.worldObj.getBiomeGenForCoords((int) o.x, (int) o.z);
+		String biome = b.biomeName + " (" + b.biomeID + ")";
+		int l = DimensionalLevel.getLevel(o);
 		k.add(new TextElement("AUX_BANDWIDTH: " + Status.CHANNEL_USE + " / " + Status.CHANNEL_MAX + " (" + bw + ")", cc));
 		k.add(new TextElement("PARTICLE_USE : " + Status.PARTICLE_USE + " / 2000 (" + pw + ")", cp));
 		k.add(new TextElement("REVERB_STATE : " + "DEC: " + rvDecay + " GAN: " + rvGain + " DIF: " + rvDiff + " REF: " + rvRefl + " DEL: " + rvDel + " ROL: " + rvRoll, Color.GREEN));
-		
+		k.add(new TextElement("BIOME: " + biome));
+		k.add(new TextElement("LEVEL: " + l));
+
+		GList<String> bf = new GList<String>();
+
+		for(AresBiome i : Content.biomes(l))
+		{
+			bf.add(i.biomeName);
+		}
+
+		k.add(new TextElement("  BIOME_SET: " + bf.toString(", ")));
+
 		new RenderLayerMultiText(k, new SuperPosition(0, height / 2), 1f);
 	}
 

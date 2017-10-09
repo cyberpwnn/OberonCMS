@@ -87,8 +87,6 @@ public class AresBiomeDecorator extends BiomeDecorator
 		this.waterlilyPerChunk = 12;
 		this.generateLakes = true;
 		decorators = new GList<AresDecorator>();
-		
-		addDecorator(new DecorateScrambler(1000, 12, Blocks.grass, Blocks.sand, Content.Block.ARID_SAND, Content.Block.PODZOL, Content.Block.PODZOL_MOSSY, Content.Block.COLD_GRASS, Content.Block.GLACIAL_GRASS));
 	}
 	
 	public void addDecorator(AresDecorator g)

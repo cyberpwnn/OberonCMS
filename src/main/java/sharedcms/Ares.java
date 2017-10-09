@@ -28,6 +28,7 @@ import sharedcms.controller.client.AnimationController;
 import sharedcms.controller.client.AudioController;
 import sharedcms.controller.client.BackgroundBlurController;
 import sharedcms.controller.client.CameraController;
+import sharedcms.controller.client.ChunkAnimationController;
 import sharedcms.controller.client.ClientController;
 import sharedcms.controller.client.FXController;
 import sharedcms.controller.client.GuiController;
@@ -99,6 +100,7 @@ public class Ares implements IProxy, IRegistrant
 				register(new FXController());
 				register(new VFXController());
 				register(new SFXController());
+				register(new ChunkAnimationController());
 			}
 		};
 	}
