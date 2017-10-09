@@ -33,6 +33,7 @@ import sharedcms.registry.BaseRegistrar;
 import sharedcms.registry.IRegistrant;
 import sharedcms.registry.IRegistrar;
 import sharedcms.registry.RegistryPhase;
+import sharedcns.api.biome.LudicrousBiome;
 
 public class ContentController extends Controller
 {
@@ -132,10 +133,10 @@ public class ContentController extends Controller
 			}
 		});
 
-		createRegistrar(new BaseRegistrar<AresBiome>(AresBiome.class, RegistryPhase.PRE_INIT)
+		createRegistrar(new BaseRegistrar<LudicrousBiome>(LudicrousBiome.class, RegistryPhase.PRE_INIT)
 		{
 			@Override
-			public void register(AresBiome o)
+			public void register(LudicrousBiome o)
 			{
 				o.postInit();
 			}
