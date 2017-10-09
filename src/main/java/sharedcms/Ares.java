@@ -54,7 +54,7 @@ public class Ares implements IProxy, IRegistrant
 	@SidedProxy(clientSide = Info.PROXY_CLIENT, serverSide = Info.PROXY_SERVER)
 	public static ProxyCommon proxy;
 
-	private ControllerManager manager;
+	public ControllerManager manager;
 	public static Side side;
 
 	@Override

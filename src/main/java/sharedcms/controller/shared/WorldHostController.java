@@ -41,9 +41,15 @@ public class WorldHostController extends Controller
 	}
 
 	@SubscribeEvent
+	public void on(WorldEvent.Unload e)
+	{
+		meta.remove(e.world);
+	}
+	
+	@SubscribeEvent
 	public void on(WorldEvent.Save e)
 	{
-		meta.get(e.world).save();
+		
 	}
 
 	public static MetaWorld getWorldMeta(World world)

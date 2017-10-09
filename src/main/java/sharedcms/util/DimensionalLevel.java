@@ -25,6 +25,6 @@ public class DimensionalLevel
 
 	public static int getChunkLevel(int x, int z)
 	{
-		return getLevel(x * 16, z * 16);
+		return getLevel(x << 4, z << 4);
 	}
 }

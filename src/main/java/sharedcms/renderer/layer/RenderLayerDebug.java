@@ -10,15 +10,20 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
+import sharedcms.Ares;
 import sharedcms.Colors;
 import sharedcms.Status;
 import sharedcms.audio.openal.ProxySoundFilter;
 import sharedcms.base.AresBiome;
 import sharedcms.content.Content;
+import sharedcms.content.world.meta.objects.MetaWorld;
+import sharedcms.controller.shared.WorldHostController;
 import sharedcms.util.DimensionalLevel;
 import sharedcms.util.F;
 import sharedcms.util.GList;
 import sharedcms.util.Location;
+import sharedcns.api.biome.BiomeHumidity;
+import sharedcns.api.biome.BiomeTemperature;
 
 public class RenderLayerDebug extends RenderLayer
 {
@@ -41,12 +46,9 @@ public class RenderLayerDebug extends RenderLayer
 		BiomeGenBase b = ep.worldObj.getBiomeGenForCoords((int) o.x, (int) o.z);
 		String biome = b.biomeName + " (" + b.biomeID + ")";
 		int l = DimensionalLevel.getLevel(o);
-		k.add(new TextElement("AUX_BANDWIDTH: " + Status.CHANNEL_USE + " / " + Status.CHANNEL_MAX + " (" + bw + ")", cc));
-		k.add(new TextElement("PARTICLE_USE : " + Status.PARTICLE_USE + " / 2000 (" + pw + ")", cp));
-		k.add(new TextElement("REVERB_STATE : " + "DEC: " + rvDecay + " GAN: " + rvGain + " DIF: " + rvDiff + " REF: " + rvRefl + " DEL: " + rvDel + " ROL: " + rvRoll, Color.GREEN));
-		k.add(new TextElement("BIOME: " + biome));
-		k.add(new TextElement("LEVEL: " + l));
-
+		MetaWorld mw = WorldHostController.getWorldMeta(ep.worldObj);
+		String temp = "???";
+		String humi = "???";
 		GList<String> bf = new GList<String>();
 
 		for(AresBiome i : Content.biomes(l))
@@ -54,9 +56,26 @@ public class RenderLayerDebug extends RenderLayer
 			bf.add(i.biomeName);
 		}
 
-		k.add(new TextElement("  BIOME_SET: " + bf.toString(", ")));
+		if(mw != null)
+		{
+			BiomeTemperature t = (BiomeTemperature) BiomeTemperature.of((int) ((b.temperature / 2) * BiomeTemperature.length()));
+			BiomeHumidity h = (BiomeHumidity) BiomeHumidity.of((int) (b.rainfall * BiomeHumidity.length()));
+			temp = mw.getCsx().get(BiomeTemperature.class, t, o.x, o.z).toString() + " (" + mw.getCsx().getNormal(BiomeTemperature.class, t, o.x, o.z) + ")";
+			humi = mw.getCsx().get(BiomeHumidity.class, h, o.x, o.z).toString() + " (" + mw.getCsx().getNormal(BiomeHumidity.class, h, o.x, o.z) + ")";
+		}
+
+		k.add(new TextElement("Channel Use: " + Status.CHANNEL_USE + " / " + Status.CHANNEL_MAX + " (" + bw + ")", cc));
+		k.add(new TextElement("Particle Use : " + Status.PARTICLE_USE + " / 2000 (" + pw + ")", cp));
+		k.add(new TextElement("AL Status : " + "DEC: " + rvDecay + " GAN: " + rvGain + " DIF: " + rvDiff + " REF: " + rvRefl + " DEL: " + rvDel + " ROL: " + rvRoll, Color.GREEN));
+		k.add(new TextElement("World: " + ep.worldObj.provider.terrainType.getWorldTypeName()));
+		k.add(new TextElement("  Biome: " + biome));
+		k.add(new TextElement("  Level: " + l));
+		k.add(new TextElement("  Temperature: " + temp));
+		k.add(new TextElement("  Humidity: " + humi));
+		k.add(new TextElement("  Allowed Biomes: " + bf.toString(", ")));
 
 		new RenderLayerMultiText(k, new SuperPosition(0, height / 2), 1f);
+
 	}
 
 	protected MovingObjectPosition getMovingObjectPositionFromPlayer(World p_77621_1_, EntityPlayer p_77621_2_, boolean p_77621_3_)

@@ -12,7 +12,6 @@ import net.minecraft.block.Block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
 import sharedcms.audio.BlockSound;
 import sharedcms.audio.DSound;
 import sharedcms.audio.SFX;
@@ -152,6 +151,9 @@ import sharedcms.util.Location;
 import sharedcms.util.M;
 import sharedcms.util.Range;
 import sharedcms.voxel.VoxelRegistry;
+import sharedcns.api.biome.BiomeHumidity;
+import sharedcns.api.biome.BiomeTemperature;
+import sharedcns.api.biome.ConditionalSimplexNoiseGenerator;
 
 public class Content implements IRegistrant
 {
@@ -1267,5 +1269,16 @@ public class Content implements IRegistrant
 		Content.Biome.s();
 		Content.Effect.s();
 		Content.SoundMaterial.s();
+	}
+
+	public static void constructGeneratorSimplexConditions(ConditionalSimplexNoiseGenerator csx, net.minecraft.world.WorldType type)
+	{
+		System.out.println("Constructing CSGs for world type " + type.getWorldTypeName());
+		
+		if(type.equals(WorldType.ARES))
+		{
+			csx.addGenerator(BiomeTemperature.class, 350);
+			csx.addGenerator(BiomeHumidity.class, 375);
+		}
 	}
 }
