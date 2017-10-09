@@ -15,16 +15,16 @@ public class BiomePlains extends LBiomeBase
 		setBiomeHumidity(BiomeHumidity.DAMP);
 		setBiomeTemperature(BiomeTemperature.WARM);
 		setSurfaceBuffer(new SolidSurfaceBuffer(Content.Block.COLD_GRASS, Content.Block.COLD_DIRT, Content.Block.COLD_STONE));
-		ShrubBuffer s = new ShrubBuffer(12, 0.8, true);
-		s.addSoil(Content.Block.COLD_GRASS);
+		ShrubBuffer normal = new ShrubBuffer(12, 0.8, true);
+		normal.addSoil(Content.Block.COLD_GRASS);
 		
 		for(AresBlockShrub i : Content.flowers())
 		{
-			s.addBlock(i, i.getWeight());
+			normal.addBlock(i, i.getWeight());
 		}
 		
 		
-		addScatterBuffer(s);
+		addScatterBuffer(normal);
 		
 	}
 }

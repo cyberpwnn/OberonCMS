@@ -77,7 +77,17 @@ public class ShrubBuffer extends LudicrousScatterBuffer
 	@Override
 	public boolean canDecorate(World w, Random r, DecorationPass pass, Block surface, int x, int y, int z, BiomeTemperatureModifier temperatureModifier, BiomeHumidityModifier humidityModifier, BiomeTemperature temp, BiomeHumidity hum)
 	{
-		if(!humidities.contains(hum) || !temperatures.contains(temp) || !soil.contains(surface))
+		if(!humidities.contains(hum) && !humidities.isEmpty())
+		{
+			return false;
+		}
+		
+		if(!temperatures.contains(temp) && !temperatures.isEmpty())
+		{
+			return false;
+		}
+		
+		if(!soil.contains(surface))
 		{
 			return false;
 		}
