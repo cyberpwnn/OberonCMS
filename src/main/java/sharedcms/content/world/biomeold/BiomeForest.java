@@ -1,4 +1,4 @@
-package sharedcms.content.world.biome;
+package sharedcms.content.world.biomeold;
 
 import java.awt.Color;
 import java.util.List;
@@ -13,39 +13,38 @@ import sharedcms.content.Content;
 import sharedcms.content.world.generator.WorldGenBigTessellatedTreeGen;
 import sharedcms.content.world.generator.WorldTessellatedTreeGen;
 
-public class BiomeRedwoods extends AresBiome
+public class BiomeForest extends AresBiome
 {
-	public BiomeRedwoods(int id)
+	public BiomeForest(int id)
 	{
 		super(id);
+	}
+	
+	@Override
+	public List<Type> getBiomeTypes(List<Type> list)
+	{
+		list.add(Type.DENSE);
+		list.add(Type.FOREST);
+		list.add(Type.CONIFEROUS);
+		return list;
 	}
 
 	@Override
 	public PrecipitationType getPrecipitationType()
 	{
-		return PrecipitationType.NONE;
-	}
-
-	@Override
-	public List<Type> getBiomeTypes(List<Type> list)
-	{
-		list.add(Type.DRY);
-		list.add(Type.COLD);
-		list.add(Type.FOREST);
-		list.add(Type.MOUNTAIN);
-		return list;
+		return super.getPrecipitationType();
 	}
 
 	@Override
 	public Block getTopBlock()
 	{
-		return Content.Block.PODZOL;
+		return super.getTopBlock();
 	}
 
 	@Override
 	public Block getFillerBlock()
 	{
-		return Content.Block.ROUGH_DIRT;
+		return super.getFillerBlock();
 	}
 
 	@Override
@@ -57,7 +56,7 @@ public class BiomeRedwoods extends AresBiome
 	@Override
 	public float getTemperature()
 	{
-		return 1.25f;
+		return super.getTemperature();
 	}
 
 	@Override
@@ -69,7 +68,7 @@ public class BiomeRedwoods extends AresBiome
 	@Override
 	public float getHeight()
 	{
-		return super.getHeight() + 0.3f;
+		return super.getHeight();
 	}
 
 	@Override
@@ -81,19 +80,19 @@ public class BiomeRedwoods extends AresBiome
 	@Override
 	public BiomeDecorator getDecorator()
 	{
-		return Content.BiomeDecorator.REDWOODS;
+		return Content.BiomeDecorator.FOREST;
 	}
 
 	@Override
 	public WorldGenTrees getTreeGenerator()
 	{
-		return new WorldTessellatedTreeGen(Content.Block.LOG_REDWOOD, Content.Block.LEAVES_REDWOOD, false, 18, 0, 0, false);
+		return new WorldTessellatedTreeGen(Content.Block.LOG_OAK, Content.Block.LEAVES_OAK, false, 5, 0, 0, false);
 	}
 
 	@Override
 	public WorldGenBigTree getBigTreeGenerator()
 	{
-		return new WorldGenBigTessellatedTreeGen(Content.Block.LOG_REDWOOD, Content.Block.LEAVES_REDWOOD, false);
+		return new WorldGenBigTessellatedTreeGen(Content.Block.LOG_OAK, Content.Block.LEAVES_OAK, false);
 	}
 
 	@Override
@@ -125,10 +124,10 @@ public class BiomeRedwoods extends AresBiome
 	{
 		return super.getFlowers();
 	}
-
+	
 	@Override
 	public int getFlowersPerChunk()
 	{
-		return 12;
+		return 9;
 	}
 }

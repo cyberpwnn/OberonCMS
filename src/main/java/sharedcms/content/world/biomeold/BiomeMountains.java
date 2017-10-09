@@ -1,25 +1,22 @@
-package sharedcms.content.world.biome;
+package sharedcms.content.world.biomeold;
 
 import java.awt.Color;
-import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.world.biome.BiomeDecorator;
-import net.minecraft.world.biome.BiomeGenBase.FlowerEntry;
 import net.minecraft.world.gen.feature.WorldGenBigTree;
 import net.minecraft.world.gen.feature.WorldGenTrees;
 import net.minecraftforge.common.BiomeDictionary.Type;
 import sharedcms.base.AresBiome;
-import sharedcms.base.AresBlockShrub;
 import sharedcms.content.Content;
 import sharedcms.content.world.generator.WorldGenBigTessellatedTreeGen;
 import sharedcms.content.world.generator.WorldTessellatedTreeGen;
 import sharedcms.content.world.generator.WorldTreeGenerator;
 
-public class BiomeGlacier extends AresBiome
+public class BiomeMountains extends AresBiome
 {
-	public BiomeGlacier(int id)
+	public BiomeMountains(int id)
 	{
 		super(id);
 	}
@@ -27,7 +24,6 @@ public class BiomeGlacier extends AresBiome
 	@Override
 	public List<Type> getBiomeTypes(List<Type> list)
 	{
-		list.add(Type.COLD);
 		list.add(Type.MOUNTAIN);
 		return list;
 	}
@@ -35,19 +31,19 @@ public class BiomeGlacier extends AresBiome
 	@Override
 	public PrecipitationType getPrecipitationType()
 	{
-		return PrecipitationType.SNOW;
+		return super.getPrecipitationType();
 	}
 
 	@Override
 	public Block getTopBlock()
 	{
-		return Content.Block.GLACIAL_GRASS;
+		return super.getTopBlock();
 	}
 
 	@Override
 	public Block getFillerBlock()
 	{
-		return Content.Block.GLACIAL_DIRT;
+		return super.getFillerBlock();
 	}
 
 	@Override
@@ -59,19 +55,19 @@ public class BiomeGlacier extends AresBiome
 	@Override
 	public float getTemperature()
 	{
-		return 0f;
+		return 0.8f;
 	}
 
 	@Override
 	public float getHeightVariation()
 	{
-		return super.getHeightVariation() + 0.07f;
+		return super.getHeightVariation() + 0.8f;
 	}
 
 	@Override
 	public float getHeight()
 	{
-		return super.getHeight() + 0.7f;
+		return super.getHeight() + 4.2f;
 	}
 
 	@Override
@@ -83,20 +79,19 @@ public class BiomeGlacier extends AresBiome
 	@Override
 	public BiomeDecorator getDecorator()
 	{
-		return Content.BiomeDecorator.GLACIER;
+		return Content.BiomeDecorator.PLAINS;
 	}
 
 	@Override
 	public WorldGenTrees getTreeGenerator()
 	{
-		return new WorldTessellatedTreeGen(Content.Block.LOG_GLACIAL, Content.Block.LEAVES_GLACIAL, false, 5, 0, 0, false);
+		return new WorldTessellatedTreeGen(Content.Block.LOG_SPRUCE, Content.Block.LEAVES_SPRUCE, false, 5, 0, 0, false);
 	}
 
 	@Override
 	public WorldGenBigTree getBigTreeGenerator()
 	{
-		return new WorldGenBigTessellatedTreeGen(Content.Block.LOG_GLACIAL, Content.Block.LEAVES_GLACIAL, false);
-	}
+		return new WorldGenBigTessellatedTreeGen(Content.Block.LOG_SPRUCE, Content.Block.LEAVES_SPRUCE, false);	}
 
 	@Override
 	public List<SpawnListEntry> getCreatureSpawnList()
@@ -125,23 +120,12 @@ public class BiomeGlacier extends AresBiome
 	@Override
 	public List<FlowerEntry> getFlowers()
 	{
-		List<FlowerEntry> f = new ArrayList<FlowerEntry>();
-		f.clear();
-
-		for(AresBlockShrub i : Content.flowers())
-		{
-			if(i.isGlacial())
-			{
-				f.add(new FlowerEntry(i, 0, i.getWeight()));
-			}
-		}
-
-		return f;
+		return super.getFlowers();
 	}
-
+	
 	@Override
 	public int getFlowersPerChunk()
 	{
-		return 3;
+		return 4;
 	}
 }

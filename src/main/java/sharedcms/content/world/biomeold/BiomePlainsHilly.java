@@ -1,4 +1,4 @@
-package sharedcms.content.world.biome;
+package sharedcms.content.world.biomeold;
 
 import java.awt.Color;
 import java.util.List;
@@ -11,27 +11,28 @@ import net.minecraftforge.common.BiomeDictionary.Type;
 import sharedcms.base.AresBiome;
 import sharedcms.content.Content;
 import sharedcms.content.world.generator.WorldGenBigTessellatedTreeGen;
-import sharedcms.content.world.generator.WorldTessellatedTreeGen;
 import sharedcms.content.world.generator.WorldTreeGenerator;
 
-public class BiomeMountains extends AresBiome
+public class BiomePlainsHilly extends AresBiome
 {
-	public BiomeMountains(int id)
+	public BiomePlainsHilly(int id)
 	{
 		super(id);
-	}
-	
-	@Override
-	public List<Type> getBiomeTypes(List<Type> list)
-	{
-		list.add(Type.MOUNTAIN);
-		return list;
 	}
 
 	@Override
 	public PrecipitationType getPrecipitationType()
 	{
 		return super.getPrecipitationType();
+	}
+	
+	@Override
+	public List<Type> getBiomeTypes(List<Type> list)
+	{
+		list.add(Type.LUSH);
+		list.add(Type.PLAINS);
+		list.add(Type.HILLS);
+		return list;
 	}
 
 	@Override
@@ -55,19 +56,19 @@ public class BiomeMountains extends AresBiome
 	@Override
 	public float getTemperature()
 	{
-		return 0.8f;
+		return 0.55f;
 	}
 
 	@Override
 	public float getHeightVariation()
 	{
-		return super.getHeightVariation() + 0.8f;
+		return super.getHeightVariation() + 0.05f;
 	}
 
 	@Override
 	public float getHeight()
 	{
-		return super.getHeight() + 4.2f;
+		return super.getHeight();
 	}
 
 	@Override
@@ -85,13 +86,13 @@ public class BiomeMountains extends AresBiome
 	@Override
 	public WorldGenTrees getTreeGenerator()
 	{
-		return new WorldTessellatedTreeGen(Content.Block.LOG_SPRUCE, Content.Block.LEAVES_SPRUCE, false, 5, 0, 0, false);
+		return new WorldTreeGenerator(false, 5, 0, 0, false);
 	}
 
 	@Override
 	public WorldGenBigTree getBigTreeGenerator()
 	{
-		return new WorldGenBigTessellatedTreeGen(Content.Block.LOG_SPRUCE, Content.Block.LEAVES_SPRUCE, false);	}
+		return new WorldGenBigTessellatedTreeGen(Content.Block.LOG_OAK, Content.Block.LEAVES_OAK, false);	}
 
 	@Override
 	public List<SpawnListEntry> getCreatureSpawnList()
@@ -126,6 +127,6 @@ public class BiomeMountains extends AresBiome
 	@Override
 	public int getFlowersPerChunk()
 	{
-		return 4;
+		return 16;
 	}
 }

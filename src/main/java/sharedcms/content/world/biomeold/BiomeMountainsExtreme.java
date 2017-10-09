@@ -1,42 +1,37 @@
-package sharedcms.content.world.biome;
+package sharedcms.content.world.biomeold;
 
 import java.awt.Color;
-import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.world.biome.BiomeDecorator;
-import net.minecraft.world.biome.BiomeGenBase.FlowerEntry;
 import net.minecraft.world.gen.feature.WorldGenBigTree;
 import net.minecraft.world.gen.feature.WorldGenTrees;
 import net.minecraftforge.common.BiomeDictionary.Type;
 import sharedcms.base.AresBiome;
-import sharedcms.base.AresBlockShrub;
 import sharedcms.content.Content;
 import sharedcms.content.world.generator.WorldGenBigTessellatedTreeGen;
+import sharedcms.content.world.generator.WorldTessellatedTreeGen;
 import sharedcms.content.world.generator.WorldTreeGenerator;
 
-public class BiomePlains extends AresBiome
+public class BiomeMountainsExtreme extends AresBiome
 {
-	public BiomePlains(int id)
+	public BiomeMountainsExtreme(int id)
 	{
 		super(id);
+	}
 
-		setColor(Color.red.getRGB());
+	@Override
+	public PrecipitationType getPrecipitationType()
+	{
+		return super.getPrecipitationType();
 	}
 
 	@Override
 	public List<Type> getBiomeTypes(List<Type> list)
 	{
-		list.add(Type.LUSH);
-		list.add(Type.PLAINS);
+		list.add(Type.MOUNTAIN);
 		return list;
-	}
-	
-	@Override
-	public PrecipitationType getPrecipitationType()
-	{
-		return super.getPrecipitationType();
 	}
 
 	@Override
@@ -60,19 +55,19 @@ public class BiomePlains extends AresBiome
 	@Override
 	public float getTemperature()
 	{
-		return 0.65f;
+		return 0.58f;
 	}
 
 	@Override
 	public float getHeightVariation()
 	{
-		return super.getHeightVariation();
+		return super.getHeightVariation() + 0.4f;
 	}
 
 	@Override
 	public float getHeight()
 	{
-		return super.getHeight();
+		return super.getHeight() + 0.3f;
 	}
 
 	@Override
@@ -84,19 +79,19 @@ public class BiomePlains extends AresBiome
 	@Override
 	public BiomeDecorator getDecorator()
 	{
-		return Content.BiomeDecorator.PLAINS;
+		return Content.BiomeDecorator.MOUNTAINS;
 	}
 
 	@Override
 	public WorldGenTrees getTreeGenerator()
 	{
-		return new WorldTreeGenerator(false, 5, 0, 0, false);
+		return new WorldTessellatedTreeGen(Content.Block.LOG_SPRUCE, Content.Block.LEAVES_SPRUCE, false, 5, 0, 0, false);
 	}
 
 	@Override
 	public WorldGenBigTree getBigTreeGenerator()
 	{
-		return new WorldGenBigTessellatedTreeGen(Content.Block.LOG_OAK, Content.Block.LEAVES_OAK, false);
+		return new WorldGenBigTessellatedTreeGen(Content.Block.LOG_SPRUCE, Content.Block.LEAVES_SPRUCE, false);
 	}
 
 	@Override
@@ -124,8 +119,14 @@ public class BiomePlains extends AresBiome
 	}
 
 	@Override
+	public List<FlowerEntry> getFlowers()
+	{
+		return super.getFlowers();
+	}
+
+	@Override
 	public int getFlowersPerChunk()
 	{
-		return 16;
+		return 7;
 	}
 }

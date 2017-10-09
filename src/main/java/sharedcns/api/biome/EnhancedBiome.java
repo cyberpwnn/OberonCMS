@@ -10,14 +10,16 @@ import sharedcms.base.AresBiome;
 
 public class EnhancedBiome extends AresBiome implements IBiome
 {
-	private IBiomePaver paver;
-	private List<IBiomeDecorator> decorators;
+	private ISurfaceBuffer paver;
+	private List<IScatterBuffer> decorators;
+	private int level;
 
 	public EnhancedBiome(int id)
 	{
 		super(id);
+		level = 0;
 		paver = new DefaultBiomePaver();
-		decorators = new ArrayList<IBiomeDecorator>();
+		decorators = new ArrayList<IScatterBuffer>();
 	}
 
 	@Override
@@ -27,7 +29,7 @@ public class EnhancedBiome extends AresBiome implements IBiome
 	}
 
 	@Override
-	public List<IBiomeDecorator> getDecorators()
+	public List<IScatterBuffer> getScatterBuffers()
 	{
 		return decorators;
 	}
@@ -53,47 +55,47 @@ public class EnhancedBiome extends AresBiome implements IBiome
 	@Override
 	public Block getTopBlock(int x, int y, int z, BiomeTemperatureModifier tempModifier, BiomeHumidityModifier humidityModifier, BiomeTemperature temp, BiomeHumidity humidity)
 	{
-		return getPaver().getTopBlock(x, y, z, tempModifier, humidityModifier, temp, humidity);
+		return getSurfaceBuffer().getTopBlock(x, y, z, tempModifier, humidityModifier, temp, humidity);
 	}
 
 	@Override
 	public Block getFillerBlock(int x, int y, int z, BiomeTemperatureModifier tempModifier, BiomeHumidityModifier humidityModifier, BiomeTemperature temp, BiomeHumidity humidity)
 	{
-		return getPaver().getFillerBlock(x, y, z, tempModifier, humidityModifier, temp, humidity);
+		return getSurfaceBuffer().getFillerBlock(x, y, z, tempModifier, humidityModifier, temp, humidity);
 	}
 
 	@Override
 	public Block getRockBlock(int x, int y, int z, BiomeTemperatureModifier tempModifier, BiomeHumidityModifier humidityModifier, BiomeTemperature temp, BiomeHumidity humidity)
 	{
-		return getPaver().getRockBlock(x, y, z, tempModifier, humidityModifier, temp, humidity);
+		return getSurfaceBuffer().getRockBlock(x, y, z, tempModifier, humidityModifier, temp, humidity);
 	}
 
 	@Override
 	public void decorate(World w, Random r, int x, int y, int z, DecorationPass pass, Block surface, BiomeTemperatureModifier tempModifier, BiomeHumidityModifier humidityModifier, BiomeTemperature temp, BiomeHumidity humidity)
 	{
-		for(IBiomeDecorator i : getDecorators())
+		for(IScatterBuffer i : getScatterBuffers())
 		{
-			if(i.canDecorate(w, r, pass, surface, x, y, z, tempModifier, humidityModifier))
+			if(i.canDecorate(w, r, pass, surface, x, y, z, tempModifier, humidityModifier, temp, humidity))
 			{
-				i.decorate(w, r, pass, surface, x, y, z, tempModifier, humidityModifier);
+				i.decorate(w, r, pass, surface, x, y, z, tempModifier, humidityModifier, temp, humidity);
 			}
 		}
 	}
 
 	@Override
-	public void addDecorator(IBiomeDecorator decorator)
+	public void addScatterBuffer(IScatterBuffer decorator)
 	{
-		getDecorators().add(decorator);
+		getScatterBuffers().add(decorator);
 	}
 
 	@Override
-	public IBiomePaver getPaver()
+	public ISurfaceBuffer getSurfaceBuffer()
 	{
 		return paver;
 	}
 
 	@Override
-	public void setPaver(IBiomePaver paver)
+	public void setSurfaceBuffer(ISurfaceBuffer paver)
 	{
 		this.paver = paver;
 	}
@@ -108,5 +110,17 @@ public class EnhancedBiome extends AresBiome implements IBiome
 	public void setBiomeTemperature(BiomeTemperature t)
 	{
 		temperature = t.getTemperature();
+	}
+
+	@Override
+	public int getLevel()
+	{
+		return level;
+	}
+
+	@Override
+	public void setLevel(int level)
+	{
+		this.level = level;
 	}
 }

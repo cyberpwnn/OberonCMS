@@ -1,4 +1,4 @@
-package sharedcms.content.world.biome;
+package sharedcms.content.world.biomeold;
 
 import java.awt.Color;
 import java.util.List;
@@ -10,17 +10,24 @@ import net.minecraft.world.gen.feature.WorldGenTrees;
 import net.minecraftforge.common.BiomeDictionary.Type;
 import sharedcms.base.AresBiome;
 import sharedcms.content.Content;
+import sharedcms.content.world.generator.WorldDeadTreeGenerator;
 import sharedcms.content.world.generator.WorldGenBigTessellatedTreeGen;
-import sharedcms.content.world.generator.WorldTessellatedTreeGen;
-import sharedcms.content.world.generator.WorldTreeGenerator;
 
-public class BiomeMountainsExtreme extends AresBiome
+public class BiomeDesertArid extends AresBiome
 {
-	public BiomeMountainsExtreme(int id)
+	public BiomeDesertArid(int id)
 	{
 		super(id);
 	}
 
+	@Override
+	public List<Type> getBiomeTypes(List<Type> list)
+	{
+		list.add(Type.DRY);
+		list.add(Type.HOT);
+		return list;
+	}
+	
 	@Override
 	public PrecipitationType getPrecipitationType()
 	{
@@ -28,46 +35,39 @@ public class BiomeMountainsExtreme extends AresBiome
 	}
 
 	@Override
-	public List<Type> getBiomeTypes(List<Type> list)
-	{
-		list.add(Type.MOUNTAIN);
-		return list;
-	}
-
-	@Override
 	public Block getTopBlock()
 	{
-		return super.getTopBlock();
+		return Content.Block.ARID_SAND;
 	}
 
 	@Override
 	public Block getFillerBlock()
 	{
-		return super.getFillerBlock();
+		return Content.Block.ARID_STONE;
 	}
 
 	@Override
 	public float getRainfall()
 	{
-		return 1f;
+		return 0f;
 	}
 
 	@Override
 	public float getTemperature()
 	{
-		return 0.58f;
+		return 1.8f;
 	}
 
 	@Override
 	public float getHeightVariation()
 	{
-		return super.getHeightVariation() + 0.4f;
+		return super.getHeightVariation();
 	}
 
 	@Override
 	public float getHeight()
 	{
-		return super.getHeight() + 0.3f;
+		return super.getHeight();
 	}
 
 	@Override
@@ -79,19 +79,19 @@ public class BiomeMountainsExtreme extends AresBiome
 	@Override
 	public BiomeDecorator getDecorator()
 	{
-		return Content.BiomeDecorator.MOUNTAINS;
+		return Content.BiomeDecorator.DESERT_ARID;
 	}
 
 	@Override
 	public WorldGenTrees getTreeGenerator()
 	{
-		return new WorldTessellatedTreeGen(Content.Block.LOG_SPRUCE, Content.Block.LEAVES_SPRUCE, false, 5, 0, 0, false);
+		return new WorldDeadTreeGenerator(false, 7, 0, 0, false);
 	}
 
 	@Override
 	public WorldGenBigTree getBigTreeGenerator()
 	{
-		return new WorldGenBigTessellatedTreeGen(Content.Block.LOG_SPRUCE, Content.Block.LEAVES_SPRUCE, false);
+		return new WorldGenBigTessellatedTreeGen(Content.Block.LOG_OAK, Content.Block.LEAVES_OAK, false);
 	}
 
 	@Override
@@ -127,6 +127,6 @@ public class BiomeMountainsExtreme extends AresBiome
 	@Override
 	public int getFlowersPerChunk()
 	{
-		return 7;
+		return 0;
 	}
 }

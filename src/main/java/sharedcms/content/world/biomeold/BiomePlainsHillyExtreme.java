@@ -1,4 +1,4 @@
-package sharedcms.content.world.biome;
+package sharedcms.content.world.biomeold;
 
 import java.awt.Color;
 import java.util.List;
@@ -10,26 +10,14 @@ import net.minecraft.world.gen.feature.WorldGenTrees;
 import net.minecraftforge.common.BiomeDictionary.Type;
 import sharedcms.base.AresBiome;
 import sharedcms.content.Content;
-import sharedcms.content.world.generator.ProxyBigTreeGenerator;
 import sharedcms.content.world.generator.WorldGenBigTessellatedTreeGen;
-import sharedcms.content.world.generator.WorldGenCustomTree;
-import sharedcms.content.world.generator.WorldTessellatedTreeGen;
-import sharedcms.content.world.generator.WorldTreeGenTops;
+import sharedcms.content.world.generator.WorldTreeGenerator;
 
-public class BiomeRoofedForest extends AresBiome
+public class BiomePlainsHillyExtreme extends AresBiome
 {
-	public BiomeRoofedForest(int id)
+	public BiomePlainsHillyExtreme(int id)
 	{
 		super(id);
-	}
-	
-	@Override
-	public List<Type> getBiomeTypes(List<Type> list)
-	{
-		list.add(Type.DENSE);
-		list.add(Type.FOREST);
-		list.add(Type.CONIFEROUS);
-		return list;
 	}
 
 	@Override
@@ -37,11 +25,20 @@ public class BiomeRoofedForest extends AresBiome
 	{
 		return super.getPrecipitationType();
 	}
+	
+	@Override
+	public List<Type> getBiomeTypes(List<Type> list)
+	{
+		list.add(Type.LUSH);
+		list.add(Type.PLAINS);
+		list.add(Type.HILLS);
+		return list;
+	}
 
 	@Override
 	public Block getTopBlock()
 	{
-		return Content.Block.PODZOL_MOSSY;
+		return super.getTopBlock();
 	}
 
 	@Override
@@ -59,13 +56,13 @@ public class BiomeRoofedForest extends AresBiome
 	@Override
 	public float getTemperature()
 	{
-		return super.getTemperature();
+		return 0.42f;
 	}
 
 	@Override
 	public float getHeightVariation()
 	{
-		return super.getHeightVariation() + 0.1f;
+		return super.getHeightVariation() + 0.08f;
 	}
 
 	@Override
@@ -83,19 +80,19 @@ public class BiomeRoofedForest extends AresBiome
 	@Override
 	public BiomeDecorator getDecorator()
 	{
-		return Content.BiomeDecorator.ROOFED_FOREST;
+		return Content.BiomeDecorator.PLAINS;
 	}
 
 	@Override
 	public WorldGenTrees getTreeGenerator()
 	{
-		return new WorldTreeGenTops(Content.Block.LOG_MOSSY, Content.Block.LEAVES_DARK);
+		return new WorldTreeGenerator(false, 5, 0, 0, false);
 	}
 
 	@Override
 	public WorldGenBigTree getBigTreeGenerator()
 	{
-		return new WorldGenCustomTree(Content.Block.LOG_MOSSY, Content.Block.LEAVES_OAK, false);
+		return new WorldGenBigTessellatedTreeGen(Content.Block.LOG_OAK, Content.Block.LEAVES_OAK, false);
 	}
 
 	@Override
@@ -131,6 +128,6 @@ public class BiomeRoofedForest extends AresBiome
 	@Override
 	public int getFlowersPerChunk()
 	{
-		return 9;
+		return 16;
 	}
 }

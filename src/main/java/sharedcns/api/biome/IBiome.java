@@ -10,14 +10,18 @@ public interface IBiome
 {
 	public int getId();
 
-	public void addDecorator(IBiomeDecorator decorator);
+	public void addScatterBuffer(IScatterBuffer scatterBuffer);
 	
-	public List<IBiomeDecorator> getDecorators();
+	public List<IScatterBuffer> getScatterBuffers();
 
-	public IBiomePaver getPaver();
+	public ISurfaceBuffer getSurfaceBuffer();
 	
-	public void setPaver(IBiomePaver paver);
+	public void setSurfaceBuffer(ISurfaceBuffer surfaceBuffer);
 
+	public int getLevel();
+	
+	public void setLevel(int level);
+	
 	public String getName();
 
 	public BiomeTemperature getBiomeTemperature();

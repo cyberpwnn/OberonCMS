@@ -1,33 +1,26 @@
-package sharedcms.content.world.biome;
+package sharedcms.content.world.biomeold;
 
 import java.awt.Color;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.world.biome.BiomeDecorator;
 import net.minecraft.world.gen.feature.WorldGenBigTree;
 import net.minecraft.world.gen.feature.WorldGenTrees;
 import net.minecraftforge.common.BiomeDictionary.Type;
 import sharedcms.base.AresBiome;
 import sharedcms.content.Content;
-import sharedcms.content.world.generator.WorldDeadTreeGenerator;
 import sharedcms.content.world.generator.WorldGenBigTessellatedTreeGen;
+import sharedcms.content.world.generator.WorldTreeGenerator;
 
-public class BiomeDesertArid extends AresBiome
+public class BiomeDesert extends AresBiome
 {
-	public BiomeDesertArid(int id)
+	public BiomeDesert(int id)
 	{
 		super(id);
 	}
 
-	@Override
-	public List<Type> getBiomeTypes(List<Type> list)
-	{
-		list.add(Type.DRY);
-		list.add(Type.HOT);
-		return list;
-	}
-	
 	@Override
 	public PrecipitationType getPrecipitationType()
 	{
@@ -37,13 +30,21 @@ public class BiomeDesertArid extends AresBiome
 	@Override
 	public Block getTopBlock()
 	{
-		return Content.Block.ARID_SAND;
+		return Blocks.sand;
+	}
+
+	@Override
+	public List<Type> getBiomeTypes(List<Type> list)
+	{
+		list.add(Type.DRY);
+		list.add(Type.HOT);
+		return list;
 	}
 
 	@Override
 	public Block getFillerBlock()
 	{
-		return Content.Block.ARID_STONE;
+		return Blocks.sandstone;
 	}
 
 	@Override
@@ -55,7 +56,7 @@ public class BiomeDesertArid extends AresBiome
 	@Override
 	public float getTemperature()
 	{
-		return 1.8f;
+		return 2f;
 	}
 
 	@Override
@@ -79,13 +80,13 @@ public class BiomeDesertArid extends AresBiome
 	@Override
 	public BiomeDecorator getDecorator()
 	{
-		return Content.BiomeDecorator.DESERT_ARID;
+		return Content.BiomeDecorator.DESERT;
 	}
 
 	@Override
 	public WorldGenTrees getTreeGenerator()
 	{
-		return new WorldDeadTreeGenerator(false, 7, 0, 0, false);
+		return new WorldTreeGenerator(false, 5, 0, 0, false);
 	}
 
 	@Override

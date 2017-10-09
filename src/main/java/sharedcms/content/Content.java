@@ -13,7 +13,6 @@ import net.minecraft.world.World;
 import sharedcms.audio.BlockSound;
 import sharedcms.audio.DSound;
 import sharedcms.audio.SFX;
-import sharedcms.base.AresBiome;
 import sharedcms.base.AresBlockShrub;
 import sharedcms.base.AresNaturalLeavesBlock;
 import sharedcms.content.block.BlockAridSand;
@@ -118,15 +117,7 @@ import sharedcms.content.structure.model.Model;
 import sharedcms.content.structure.model.ModelMaterial;
 import sharedcms.content.structure.model.SmoothingMode;
 import sharedcms.content.tab.TabNatural;
-import sharedcms.content.world.biome.BiomeDesert;
-import sharedcms.content.world.biome.BiomeDesertArid;
-import sharedcms.content.world.biome.BiomeForest;
-import sharedcms.content.world.biome.BiomeGlacier;
-import sharedcms.content.world.biome.BiomeMountains;
-import sharedcms.content.world.biome.BiomeOrientalPrairie;
-import sharedcms.content.world.biome.BiomePlains;
-import sharedcms.content.world.biome.BiomeRedwoods;
-import sharedcms.content.world.biome.BiomeRoofedForest;
+import sharedcms.content.world.biome.LBiomePlains;
 import sharedcms.content.world.biome.decorator.BiomeDecoratorDefault;
 import sharedcms.content.world.biome.decorator.BiomeDecoratorDesert;
 import sharedcms.content.world.biome.decorator.BiomeDecoratorDesertArid;
@@ -138,6 +129,15 @@ import sharedcms.content.world.biome.decorator.BiomeDecoratorOriental;
 import sharedcms.content.world.biome.decorator.BiomeDecoratorPlains;
 import sharedcms.content.world.biome.decorator.BiomeDecoratorRedwoods;
 import sharedcms.content.world.biome.decorator.BiomeDecoratorRoofedForest;
+import sharedcms.content.world.biomeold.BiomeDesert;
+import sharedcms.content.world.biomeold.BiomeDesertArid;
+import sharedcms.content.world.biomeold.BiomeForest;
+import sharedcms.content.world.biomeold.BiomeGlacier;
+import sharedcms.content.world.biomeold.BiomeMountains;
+import sharedcms.content.world.biomeold.BiomeOrientalPrairie;
+import sharedcms.content.world.biomeold.BiomePlains;
+import sharedcms.content.world.biomeold.BiomeRedwoods;
+import sharedcms.content.world.biomeold.BiomeRoofedForest;
 import sharedcms.content.world.generator.WorldGeneratorEmpty;
 import sharedcms.content.world.type.WorldTypeAres;
 import sharedcms.controller.shared.ContentController;
@@ -150,6 +150,7 @@ import sharedcms.voxel.VoxelRegistry;
 import sharedcns.api.biome.BiomeHumidity;
 import sharedcns.api.biome.BiomeTemperature;
 import sharedcns.api.biome.ConditionalSimplexNoiseGenerator;
+import sharedcns.api.biome.LudicrousBiome;
 
 public class Content implements IRegistrant
 {
@@ -470,25 +471,26 @@ public class Content implements IRegistrant
 
 		}
 	}
-
+	
 	public static class Biome
 	{
-		public static BiomePlains PLAINS = new BiomePlains(nextBiomeId());
-
-		public static BiomeForest FOREST = new BiomeForest(nextBiomeId());
-
-		public static BiomeMountains MOUNTAINS = new BiomeMountains(nextBiomeId());
-
-		public static BiomeDesert DESERT = new BiomeDesert(nextBiomeId());
-
-		public static BiomeDesertArid DESERT_ARID = new BiomeDesertArid(nextBiomeId());
-
-		public static BiomeRedwoods REDWOODS = new BiomeRedwoods(nextBiomeId());
-
-		public static BiomeOrientalPrairie ORIENTAL_PRAIRIE = new BiomeOrientalPrairie(nextBiomeId());
 		
-		public static BiomeRoofedForest ROOFED_FOREST = new BiomeRoofedForest(nextBiomeId());
+		public static void s()
+		{
 
+		}
+	}
+
+	public static class BiomeOld
+	{
+		public static BiomePlains PLAINS = new BiomePlains(nextBiomeId());
+		public static BiomeForest FOREST = new BiomeForest(nextBiomeId());
+		public static BiomeMountains MOUNTAINS = new BiomeMountains(nextBiomeId());
+		public static BiomeDesert DESERT = new BiomeDesert(nextBiomeId());
+		public static BiomeDesertArid DESERT_ARID = new BiomeDesertArid(nextBiomeId());
+		public static BiomeRedwoods REDWOODS = new BiomeRedwoods(nextBiomeId());
+		public static BiomeOrientalPrairie ORIENTAL_PRAIRIE = new BiomeOrientalPrairie(nextBiomeId());
+		public static BiomeRoofedForest ROOFED_FOREST = new BiomeRoofedForest(nextBiomeId());
 		public static BiomeGlacier GLACIER = new BiomeGlacier(nextBiomeId());
 
 		
@@ -500,17 +502,17 @@ public class Content implements IRegistrant
 
 	public static class BiomeDecorator
 	{
-		public static BiomeDecoratorDefault DEFAULT = new BiomeDecoratorDefault(Biome.PLAINS);
-		public static BiomeDecoratorEmpty EMPTY = new BiomeDecoratorEmpty(Biome.PLAINS);
-		public static BiomeDecoratorPlains PLAINS = new BiomeDecoratorPlains(Biome.PLAINS);
-		public static BiomeDecoratorDesert DESERT = new BiomeDecoratorDesert(Biome.DESERT);
-		public static BiomeDecoratorDesertArid DESERT_ARID = new BiomeDecoratorDesertArid(Biome.DESERT_ARID);
-		public static BiomeDecoratorMountains MOUNTAINS = new BiomeDecoratorMountains(Biome.MOUNTAINS);
-		public static BiomeDecoratorForest FOREST = new BiomeDecoratorForest(Biome.FOREST);
-		public static BiomeDecoratorRedwoods REDWOODS = new BiomeDecoratorRedwoods(Biome.REDWOODS);
-		public static BiomeDecoratorOriental ORIENTAL = new BiomeDecoratorOriental(Biome.ORIENTAL_PRAIRIE);
-		public static BiomeDecoratorGlacier GLACIER = new BiomeDecoratorGlacier(Biome.GLACIER);
-		public static BiomeDecoratorRoofedForest ROOFED_FOREST = new BiomeDecoratorRoofedForest(Biome.ROOFED_FOREST);
+		public static BiomeDecoratorDefault DEFAULT = new BiomeDecoratorDefault(BiomeOld.PLAINS);
+		public static BiomeDecoratorEmpty EMPTY = new BiomeDecoratorEmpty(BiomeOld.PLAINS);
+		public static BiomeDecoratorPlains PLAINS = new BiomeDecoratorPlains(BiomeOld.PLAINS);
+		public static BiomeDecoratorDesert DESERT = new BiomeDecoratorDesert(BiomeOld.DESERT);
+		public static BiomeDecoratorDesertArid DESERT_ARID = new BiomeDecoratorDesertArid(BiomeOld.DESERT_ARID);
+		public static BiomeDecoratorMountains MOUNTAINS = new BiomeDecoratorMountains(BiomeOld.MOUNTAINS);
+		public static BiomeDecoratorForest FOREST = new BiomeDecoratorForest(BiomeOld.FOREST);
+		public static BiomeDecoratorRedwoods REDWOODS = new BiomeDecoratorRedwoods(BiomeOld.REDWOODS);
+		public static BiomeDecoratorOriental ORIENTAL = new BiomeDecoratorOriental(BiomeOld.ORIENTAL_PRAIRIE);
+		public static BiomeDecoratorGlacier GLACIER = new BiomeDecoratorGlacier(BiomeOld.GLACIER);
+		public static BiomeDecoratorRoofedForest ROOFED_FOREST = new BiomeDecoratorRoofedForest(BiomeOld.ROOFED_FOREST);
 
 		public static void s()
 		{
@@ -986,9 +988,9 @@ public class Content implements IRegistrant
 		return b;
 	}
 
-	public static List<AresBiome> biomes()
+	public static List<LudicrousBiome> biomes()
 	{
-		List<AresBiome> b = new ArrayList<AresBiome>();
+		List<LudicrousBiome> b = new ArrayList<LudicrousBiome>();
 
 		if(hasExclusiveBiomes())
 		{
@@ -998,7 +1000,7 @@ public class Content implements IRegistrant
 				{
 					try
 					{
-						b.add((AresBiome) i.get(null));
+						b.add((LudicrousBiome) i.get(null));
 					}
 
 					catch(Exception e)
@@ -1015,7 +1017,7 @@ public class Content implements IRegistrant
 			{
 				try
 				{
-					b.add((AresBiome) i.get(null));
+					b.add((LudicrousBiome) i.get(null));
 				}
 
 				catch(Exception e)
@@ -1133,7 +1135,7 @@ public class Content implements IRegistrant
 		}
 	}
 
-	public static List<AresBiome> biomes(int level)
+	public static List<LudicrousBiome> biomes(int level)
 	{
 		return biomes();
 	}

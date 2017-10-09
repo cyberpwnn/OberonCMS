@@ -1,22 +1,24 @@
-package sharedcms.content.world.biome;
+package sharedcms.content.world.biomeold;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
 import net.minecraft.world.biome.BiomeDecorator;
+import net.minecraft.world.biome.BiomeGenBase.FlowerEntry;
 import net.minecraft.world.gen.feature.WorldGenBigTree;
 import net.minecraft.world.gen.feature.WorldGenTrees;
 import net.minecraftforge.common.BiomeDictionary.Type;
 import sharedcms.base.AresBiome;
+import sharedcms.base.AresBlockShrub;
 import sharedcms.content.Content;
 import sharedcms.content.world.generator.WorldGenBigTessellatedTreeGen;
-import sharedcms.content.world.generator.WorldTreeGenerator;
+import sharedcms.content.world.generator.WorldTessellatedTreeGen;
 
-public class BiomeDesert extends AresBiome
+public class BiomeOrientalPrairie extends AresBiome
 {
-	public BiomeDesert(int id)
+	public BiomeOrientalPrairie(int id)
 	{
 		super(id);
 	}
@@ -26,43 +28,45 @@ public class BiomeDesert extends AresBiome
 	{
 		return super.getPrecipitationType();
 	}
+	
+	@Override
+	public List<Type> getBiomeTypes(List<Type> list)
+	{
+		list.add(Type.LUSH);
+		list.add(Type.PLAINS);
+		list.add(Type.WET);
+		list.add(Type.MAGICAL);
+		return list;
+	}
 
 	@Override
 	public Block getTopBlock()
 	{
-		return Blocks.sand;
-	}
-
-	@Override
-	public List<Type> getBiomeTypes(List<Type> list)
-	{
-		list.add(Type.DRY);
-		list.add(Type.HOT);
-		return list;
+		return super.getTopBlock();
 	}
 
 	@Override
 	public Block getFillerBlock()
 	{
-		return Blocks.sandstone;
+		return super.getFillerBlock();
 	}
 
 	@Override
 	public float getRainfall()
 	{
-		return 0f;
+		return 1f;
 	}
 
 	@Override
 	public float getTemperature()
 	{
-		return 2f;
+		return 1f;
 	}
 
 	@Override
 	public float getHeightVariation()
 	{
-		return super.getHeightVariation();
+		return super.getHeightVariation() + 0.02f;
 	}
 
 	@Override
@@ -80,19 +84,25 @@ public class BiomeDesert extends AresBiome
 	@Override
 	public BiomeDecorator getDecorator()
 	{
-		return Content.BiomeDecorator.DESERT;
+		return Content.BiomeDecorator.ORIENTAL;
 	}
 
 	@Override
 	public WorldGenTrees getTreeGenerator()
 	{
-		return new WorldTreeGenerator(false, 5, 0, 0, false);
+		return new WorldTessellatedTreeGen(Content.Block.LOG_BIRCH, Content.Block.LEAVES_CHERRY_BLOSSOM, false, 1, 0, 0, false, true);
 	}
 
 	@Override
 	public WorldGenBigTree getBigTreeGenerator()
 	{
-		return new WorldGenBigTessellatedTreeGen(Content.Block.LOG_OAK, Content.Block.LEAVES_OAK, false);
+		WorldGenBigTessellatedTreeGen w = new WorldGenBigTessellatedTreeGen(Content.Block.LOG_BIRCH, Content.Block.LEAVES_CHERRY_BLOSSOM, false, true, 120);
+		w.branchDensity = 0.5;
+		w.branchSlope = 0.1f;
+		w.scaleWidth = 8f;
+		w.leafDistanceLimit = 7;
+		
+		return w;
 	}
 
 	@Override
@@ -122,12 +132,23 @@ public class BiomeDesert extends AresBiome
 	@Override
 	public List<FlowerEntry> getFlowers()
 	{
-		return super.getFlowers();
-	}
+		List<FlowerEntry> f = new ArrayList<FlowerEntry>();
+		f.clear();
 
+		for(AresBlockShrub i : Content.flowers())
+		{
+			if(i.isOriental())
+			{
+				f.add(new FlowerEntry(i, 0, i.getWeight()));
+			}
+		}
+
+		return f;
+	}
+	
 	@Override
 	public int getFlowersPerChunk()
 	{
-		return 0;
+		return 9;
 	}
 }
