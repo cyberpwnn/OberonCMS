@@ -5,6 +5,7 @@ import java.util.Random;
 import net.minecraft.world.World;
 import sharedcms.content.world.generator.SimplexNoiseGenerator;
 import sharedcms.util.GMap;
+import sharedcms.util.M;
 
 public class ConditionalSimplexNoiseGenerator
 {
@@ -28,51 +29,55 @@ public class ConditionalSimplexNoiseGenerator
 		scales.put(e, scale);
 	}
 
-	private double getNoise(Class<? extends Enum> e, Enum<?> f, double x, double z)
+	private double getNoise(Class<? extends Enum> e, double x, double z)
 	{
-		return generators.get(e).getNoise(x / scales.get(e), 1337, z / scales.get(e));
+		double noise = generators.get(e).getNoise(x / scales.get(e), 1337, z / scales.get(e));
+		
+		return noise;
 	}
 
-	public double getNormal(Class<? extends Enum> e, Enum<?> f, double x, double z)
+	public double getNormal(BiomeTemperature f, double x, double z)
 	{
-		return ((getNoise(e, f, x, z) / 2.0) + 0.5 + getNormalFor(e, f)) / 2.0;
+		return ((getNoise(f.getDeclaringClass(), x, z) / 2.0) + 0.5 + getNormalFor(f)) / 2.0;
+	}
+	
+	public double getNormal(BiomeHumidity f, double x, double z)
+	{
+		return ((getNoise(f.getDeclaringClass(), x, z) / 2.0) + 0.5 + getNormalFor(f)) / 2.0;
 	}
 
-	public double getNormalFor(Class<? extends Enum> e, Enum<?> f)
+	public double getNormalFor(BiomeTemperature f)
 	{
-		try
-		{
-			double total = ((Integer) e.getMethod("length").invoke(null)).doubleValue();
-			double of = ((Integer) f.getClass().getMethod("ordinal").invoke(f)).doubleValue();
+		double total = f.length();
+		double of = f.ordinal();
 
-			return of / total;
-		}
-
-		catch(Exception xe)
-		{
-			xe.printStackTrace();
-		}
-
-		return 0.5;
+		return of / total;
 	}
 
-	public Enum<?> get(Class<? extends Enum> e, Enum<?> f, double x, double z)
+	public double getNormalFor(BiomeHumidity f)
 	{
-		try
-		{
-			double total = ((Integer) e.getMethod("length").invoke(null)).doubleValue();
-			double normal = getNormal(e, f, x, z);
-			int ordinal = (int) (total * normal);
+		double total = f.length();
+		double of = f.ordinal();
 
-			return (Enum<?>) e.getMethod("of", int.class).invoke(null, ordinal);
-		}
+		return of / total;
+	}
+	
+	public BiomeTemperature get(BiomeTemperature f, double x, double z)
+	{
+		double total = f.length();
+		double normal = getNormal(f, x, z);
+		int ordinal = (int) (total * normal);
 
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-		}
+		return (BiomeTemperature) f.of(ordinal);
+	}
+	
+	public BiomeHumidity get(BiomeHumidity f, double x, double z)
+	{
+		double total = f.length();
+		double normal = getNormal(f, x, z);
+		int ordinal = (int) (total * normal);
 
-		return null;
+		return (BiomeHumidity) f.of(ordinal);
 	}
 
 	public long getNextSeed()

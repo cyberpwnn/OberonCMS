@@ -33,27 +33,15 @@ public class WorldHostController extends Controller
 	{
 		
 	}
-	
-	@SubscribeEvent
-	public void on(WorldEvent.Load e)
-	{
-		meta.put(e.world, new MetaWorld(e.world));
-	}
-
-	@SubscribeEvent
-	public void on(WorldEvent.Unload e)
-	{
-		meta.remove(e.world);
-	}
-	
-	@SubscribeEvent
-	public void on(WorldEvent.Save e)
-	{
-		
-	}
 
 	public static MetaWorld getWorldMeta(World world)
 	{
+		if(meta.get(world) == null)
+		{
+			System.out.println("No meta world, creating");
+			meta.put(world, new MetaWorld(world));
+		}
+		
 		return meta.get(world);
 	}
 	

@@ -23,7 +23,7 @@ public class ShrubBuffer extends LudicrousScatterBuffer
 	private List<BiomeHumidity> humidities;
 	private boolean topOnly;
 	
-	public ShrubBuffer(int strength, double chance, int minLightLevel, boolean topOnly)
+	public ShrubBuffer(int strength, double chance, boolean topOnly)
 	{
 		super(strength, chance);
 		

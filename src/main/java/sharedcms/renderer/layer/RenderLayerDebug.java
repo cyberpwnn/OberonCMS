@@ -52,16 +52,17 @@ public class RenderLayerDebug extends RenderLayer
 
 		if(mw != null)
 		{
-			BiomeTemperature t = (BiomeTemperature) BiomeTemperature.of((int) ((b.temperature / 2) * BiomeTemperature.length()));
-			BiomeHumidity h = (BiomeHumidity) BiomeHumidity.of((int) (b.rainfall * BiomeHumidity.length()));
-			temp = mw.getCsx().get(BiomeTemperature.class, t, o.x, o.z).toString() + " (" + mw.getCsx().getNormal(BiomeTemperature.class, t, o.x, o.z) + ")";
-			humi = mw.getCsx().get(BiomeHumidity.class, h, o.x, o.z).toString() + " (" + mw.getCsx().getNormal(BiomeHumidity.class, h, o.x, o.z) + ")";
+			BiomeTemperature t =  (BiomeTemperature) BiomeTemperature.of((int) ((b.temperature / 2) * BiomeTemperature.length()));
+			BiomeHumidity h =  (BiomeHumidity) BiomeHumidity.of((int) (b.rainfall * BiomeHumidity.length()));
+			temp = mw.getCsx().get(t, o.x, o.z).toString() + " (" + mw.getCsx().getNormal(t, o.x, o.z) + ")";
+			humi = mw.getCsx().get(h, o.x, o.z).toString() + " (" + mw.getCsx().getNormal(h, o.x, o.z) + ")";
 		}
 
 		k.add(new TextElement("Channel Use: " + Status.CHANNEL_USE + " / " + Status.CHANNEL_MAX + " (" + bw + ")", cc));
 		k.add(new TextElement("Particle Use : " + Status.PARTICLE_USE + " / 2000 (" + pw + ")", cp));
 		k.add(new TextElement("AL Status : " + "DEC: " + rvDecay + " GAN: " + rvGain + " DIF: " + rvDiff + " REF: " + rvRefl + " DEL: " + rvDel + " ROL: " + rvRoll, Color.GREEN));
 		k.add(new TextElement("World: " + ep.worldObj.provider.terrainType.getWorldTypeName()));
+		k.add(new TextElement("  Generation Time: " + Status.CHUNK_GEN_TIME + " ms"));
 		k.add(new TextElement("  Biome: " + biome));
 		k.add(new TextElement("  Level: " + l));
 		k.add(new TextElement("  Temperature: " + temp));

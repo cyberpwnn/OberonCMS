@@ -117,6 +117,7 @@ import sharedcms.content.structure.model.Model;
 import sharedcms.content.structure.model.ModelMaterial;
 import sharedcms.content.structure.model.SmoothingMode;
 import sharedcms.content.tab.TabNatural;
+import sharedcms.content.world.biome.BiomePlains;
 import sharedcms.content.world.generator.WorldGeneratorEmpty;
 import sharedcms.content.world.type.WorldTypeAres;
 import sharedcms.controller.shared.ContentController;
@@ -453,6 +454,8 @@ public class Content implements IRegistrant
 	
 	public static class Biome
 	{
+		public static BiomePlains PLAINS = new BiomePlains();
+		
 		public static void s()
 		{
 
