@@ -3,9 +3,7 @@ package sharedcms.content;
 import java.awt.Color;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import cpw.mods.fml.relauncher.Side;
 import net.minecraft.block.Block.SoundType;
@@ -146,10 +144,8 @@ import sharedcms.controller.shared.ContentController;
 import sharedcms.fx.BlockEffect;
 import sharedcms.fx.SimpleBlockEffect;
 import sharedcms.registry.IRegistrant;
-import sharedcms.util.GList;
 import sharedcms.util.Location;
 import sharedcms.util.M;
-import sharedcms.util.Range;
 import sharedcms.voxel.VoxelRegistry;
 import sharedcns.api.biome.BiomeHumidity;
 import sharedcns.api.biome.BiomeTemperature;
@@ -158,7 +154,6 @@ import sharedcns.api.biome.ConditionalSimplexNoiseGenerator;
 public class Content implements IRegistrant
 {
 	public static int biomeid = 0;
-	public static Map<AresBiome, Range> biomeLettuce;
 
 	public static int nextBiomeId()
 	{
@@ -478,50 +473,22 @@ public class Content implements IRegistrant
 
 	public static class Biome
 	{
-		@BiomeDefault
-		@BiomeName("Plains")
-		@BiomeMold(height = 1f, variation = 0.16f)
-		@BiomeLevel(width = 4, interlace = 5)
 		public static BiomePlains PLAINS = new BiomePlains(nextBiomeId());
 
-		@BiomeName("Forest")
-		@BiomeMold(height = 1.4f, variation = 0.22f)
-		@BiomeLevel(width = 7, interlace = 4)
 		public static BiomeForest FOREST = new BiomeForest(nextBiomeId());
 
-		@BiomeName("Mountains")
-		@BiomeMold(height = 5f, variation = 1.76f)
-		@BiomeLevel(width = 4, interlace = 4)
 		public static BiomeMountains MOUNTAINS = new BiomeMountains(nextBiomeId());
 
-		@BiomeName("Desert")
-		@BiomeMold(height = 3f, variation = 0.26f)
-		@BiomeLevel(width = 38, interlace = 9)
 		public static BiomeDesert DESERT = new BiomeDesert(nextBiomeId());
 
-		@BiomeName("Desert Arid")
-		@BiomeMold(height = 3.12f, variation = 0.26f)
-		@BiomeLevel(width = 43, interlace = 4)
 		public static BiomeDesertArid DESERT_ARID = new BiomeDesertArid(nextBiomeId());
 
-		@BiomeName("Redwoods")
-		@BiomeMold(height = 4f, variation = 0.23f)
-		@BiomeLevel(width = 49, interlace = 8)
 		public static BiomeRedwoods REDWOODS = new BiomeRedwoods(nextBiomeId());
 
-		@BiomeName("Oriental Praire")
-		@BiomeMold(height = 3.3f, variation = 0.36f)
-		@BiomeLevel(width = 57, interlace = 3)
 		public static BiomeOrientalPrairie ORIENTAL_PRAIRIE = new BiomeOrientalPrairie(nextBiomeId());
 		
-		@BiomeName("Roofed Forest")
-		@BiomeMold(height = 1.5f, variation = 0.26f)
-		@BiomeLevel(width = 62, interlace = 12)
 		public static BiomeRoofedForest ROOFED_FOREST = new BiomeRoofedForest(nextBiomeId());
 
-		@BiomeName("Glacier")
-		@BiomeMold(height = 9f, variation = 2.46f)
-		@BiomeLevel(width = 100000, interlace = 4)
 		public static BiomeGlacier GLACIER = new BiomeGlacier(nextBiomeId());
 
 		
@@ -1061,95 +1028,6 @@ public class Content implements IRegistrant
 		return b;
 	}
 
-	public static List<AresBiome> biomes(int level)
-	{
-		List<AresBiome> b = biomes();
-		GList<AresBiome> a = new GList<AresBiome>();
-
-		for(AresBiome i : b)
-		{
-			BiomeLevel l = getBiomeLevel(i);
-
-			if(l != null)
-			{
-				int min = getLettuce(i).getA();
-				int max = getLettuce(i).getB();
-				
-				if(level >= min && level <= max)
-				{
-					a.add(i);
-				}
-			}
-
-			else
-			{
-				System.out.println("Null");
-				a.add(i);
-			}
-		}
-
-		if(a.isEmpty())
-		{
-			System.out.println("WARNING! Could not find any biomes for level " + level + " using defaults");
-
-			for(AresBiome i : b)
-			{
-				if(isBiomeDefault(i))
-				{
-					a.add(i);
-				}
-			}
-		}
-
-		return a;
-	}
-
-	public static BiomeLevel getBiomeLevel(AresBiome biome)
-	{
-		for(Field i : Biome.class.getDeclaredFields())
-		{
-			try
-			{
-				AresBiome b = (AresBiome) i.get(null);
-
-				if(b.biomeID == biome.biomeID)
-				{
-					return i.getDeclaredAnnotation(BiomeLevel.class);
-				}
-			}
-
-			catch(Exception e)
-			{
-				e.printStackTrace();
-			}
-		}
-
-		return null;
-	}
-
-	public static boolean isBiomeDefault(AresBiome biome)
-	{
-		for(Field i : Biome.class.getDeclaredFields())
-		{
-			try
-			{
-				AresBiome b = (AresBiome) i.get(null);
-
-				if(b.biomeID == biome.biomeID)
-				{
-					return i.getDeclaredAnnotation(BiomeDefault.class) != null;
-				}
-			}
-
-			catch(Exception e)
-			{
-				e.printStackTrace();
-			}
-		}
-
-		return false;
-	}
-
 	private static boolean isExclusive(Field f)
 	{
 		return f.isAnnotationPresent(DebugExclusive.class);
@@ -1173,7 +1051,6 @@ public class Content implements IRegistrant
 	{
 		VoxelRegistry.registerForTessellator(Blocks.cobblestone);
 		VoxelRegistry.registerForTessellator(Blocks.mossy_cobblestone);
-		compileBiomeLettuce();
 		
 		try
 		{
@@ -1199,14 +1076,7 @@ public class Content implements IRegistrant
 
 			for(Field i : Biome.class.getDeclaredFields())
 			{
-				BiomeName bn = i.getDeclaredAnnotation(BiomeName.class);
-				BiomeMold bm = i.getDeclaredAnnotation(BiomeMold.class);
-				AresBiome b = (AresBiome) i.get(null);
-				b.biomeName = bn.value();
-				b.heightVariation = bm.variation();
-				b.rootHeight = bm.height();
-				
-				cms.register(b);
+				cms.register(i.get(null));
 			}
 
 			for(Field i : BiomeDecorator.class.getDeclaredFields())
@@ -1239,25 +1109,6 @@ public class Content implements IRegistrant
 		}
 	}
 	
-	public static void compileBiomeLettuce()
-	{
-		biomeLettuce = new HashMap<AresBiome, Range>();
-		int currentLevel = 0;
-		
-		for(AresBiome i : biomes())
-		{
-			int min = currentLevel;
-			int max = min + getBiomeLevel(i).width() + getBiomeLevel(i).interlace();
-			currentLevel += getBiomeLevel(i).width();
-			biomeLettuce.put(i, new Range(min, max));
-		}
-	}
-	
-	public static Range getLettuce(AresBiome biome)
-	{
-		return biomeLettuce.get(biome);
-	}
-
 	public static void init()
 	{
 		Content.Tab.s();
@@ -1280,5 +1131,10 @@ public class Content implements IRegistrant
 			csx.addGenerator(BiomeTemperature.class, 350);
 			csx.addGenerator(BiomeHumidity.class, 375);
 		}
+	}
+
+	public static List<AresBiome> biomes(int level)
+	{
+		return biomes();
 	}
 }

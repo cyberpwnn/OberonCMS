@@ -49,12 +49,6 @@ public class RenderLayerDebug extends RenderLayer
 		MetaWorld mw = WorldHostController.getWorldMeta(ep.worldObj);
 		String temp = "???";
 		String humi = "???";
-		GList<String> bf = new GList<String>();
-
-		for(AresBiome i : Content.biomes(l))
-		{
-			bf.add(i.biomeName);
-		}
 
 		if(mw != null)
 		{
@@ -72,7 +66,6 @@ public class RenderLayerDebug extends RenderLayer
 		k.add(new TextElement("  Level: " + l));
 		k.add(new TextElement("  Temperature: " + temp));
 		k.add(new TextElement("  Humidity: " + humi));
-		k.add(new TextElement("  Allowed Biomes: " + bf.toString(", ")));
 
 		new RenderLayerMultiText(k, new SuperPosition(0, height / 2), 1f);
 
