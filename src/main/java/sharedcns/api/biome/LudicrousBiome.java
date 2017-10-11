@@ -6,4 +6,9 @@ public class LudicrousBiome extends EnhancedBiome
 	{
 		super(id);
 	}
+	
+	public String toString()
+	{
+		return biomeName;
+	}
 }
