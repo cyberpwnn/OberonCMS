@@ -16,7 +16,9 @@ public class BiomeOperator implements IBiomeOperator
 	public BiomeBuffer getBiomes(int x, int z)
 	{
 		IBiome[] b = biomes.getBiomes().toArray(new IBiome[biomes.size()]);
-		double n = GEN.getNoise("biomeset", x, z, 0.5, 1);
+		double k = GEN.getNoise("biomeset-tilt", x, z, 30, 0);
+		double m = k + GEN.getNoise("biomeset-spread", x, z, 10, 0);
+		double n = GEN.getNoise("biomeset", x + m, z + m, 0.5, 1);
 		
 		IBiome bi = b[(int) (n * b.length)];
 		BiomeBuffer bb = new BiomeBuffer();

@@ -4,9 +4,15 @@ import net.minecraft.world.World;
 
 public class LudicrousBiome extends EnhancedBiome
 {
+	protected float height;
+	protected float variation;
+	
 	public LudicrousBiome(int id)
 	{
 		super(id);
+		
+		height = 1f;
+		variation = 0.1f;
 	}
 
 	public String toString()
@@ -63,5 +69,17 @@ public class LudicrousBiome extends EnhancedBiome
 				return cap;
 			}
 		}
+	}
+
+	@Override
+	public float getHeightVariation()
+	{
+		return variation;
+	}
+
+	@Override
+	public float getHeight()
+	{
+		return height;
 	}
 }

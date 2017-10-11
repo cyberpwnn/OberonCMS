@@ -19,6 +19,8 @@ public class BiomeForest extends LBiomeBase
 	public BiomeForest(int level)
 	{
 		super(level);
+		height -= 0.1;
+		variation += 0.15;
 		setBiomeHumidity(BiomeHumidity.DAMP);
 		setBiomeTemperature(BiomeTemperature.WARM);
 		setSurfaceBuffer(new SolidSurfaceBuffer(Content.Block.COLD_GRASS, Content.Block.COLD_DIRT, Content.Block.COLD_STONE));

@@ -11,7 +11,9 @@ import net.minecraft.block.BlockSapling;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.Direction;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.minecraft.world.gen.feature.WorldGenMegaPineTree;
 import net.minecraftforge.common.util.ForgeDirection;
 import sharedcms.content.Content;
 import sharedcns.api.biome.BiomeHumidity;
@@ -30,11 +32,13 @@ public class TreeBuffer extends LudicrousScatterBuffer
 	private TreeModel model;
 	private int wbonus;
 	private int wrbonus;
+	private int eh;
 
 	public TreeBuffer(TreeModel model, int strength, Block logBlock, Block leavesBlock)
 	{
 		super(strength, 1);
 
+		eh = 9;
 		this.wbonus = 0;
 		this.wrbonus = 0;
 		this.model = model;
@@ -43,10 +47,10 @@ public class TreeBuffer extends LudicrousScatterBuffer
 		this.logBlock = logBlock;
 		soil = new ArrayList<Block>();
 	}
-	
+
 	public void updateForGen(World w, int x, int z)
 	{
-		
+
 	}
 
 	public List<Block> getSoil()
@@ -139,7 +143,7 @@ public class TreeBuffer extends LudicrousScatterBuffer
 	public void decorate(World w, Random r, DecorationPass pass, Block surface, int x, int y, int z, BiomeTemperatureModifier temperatureModifier, BiomeHumidityModifier humidityModifier, BiomeTemperature temp, BiomeHumidity hum)
 	{
 		updateForGen(w, x, z);
-		
+
 		if(model.equals(TreeModel.BASIC))
 		{
 			generateBasic(w, r, x, y, z);
@@ -148,6 +152,11 @@ public class TreeBuffer extends LudicrousScatterBuffer
 		if(model.equals(TreeModel.CANOPY))
 		{
 			generateCanopy(w, r, x, y, z);
+		}
+
+		if(model.equals(TreeModel.CONIFEROUS))
+		{
+			generateConiferous(w, r, x, y, z);
 		}
 	}
 
@@ -158,7 +167,7 @@ public class TreeBuffer extends LudicrousScatterBuffer
 
 	protected boolean func_150523_a(Block p_150523_1_)
 	{
-		return p_150523_1_.getMaterial() == Material.air || p_150523_1_.getMaterial() == Material.leaves || p_150523_1_ == Blocks.grass || p_150523_1_ == Blocks.dirt || p_150523_1_ == Blocks.log || p_150523_1_ == Blocks.log2 || p_150523_1_ == Blocks.sapling || p_150523_1_ == Blocks.vine;
+		return true;
 	}
 
 	protected boolean isReplaceable(World world, int x, int y, int z)
@@ -564,5 +573,210 @@ public class TreeBuffer extends LudicrousScatterBuffer
 	private void onPlantGrow(World world, int x, int y, int z, int sourceX, int sourceY, int sourceZ)
 	{
 		world.getBlock(x, y, z).onPlantGrow(world, x, y, z, sourceX, sourceY, sourceZ);
+	}
+
+	protected int func_150533_a(Random p_150533_1_)
+	{
+		int i = p_150533_1_.nextInt(3) + this.treeHeight;
+
+		if(this.eh > 1)
+		{
+			i += p_150533_1_.nextInt(this.eh);
+		}
+
+		return i;
+	}
+
+	protected boolean func_150537_a(World p_150537_1_, Random p_150537_2_, int p_150537_3_, int p_150537_4_, int p_150537_5_, int p_150537_6_)
+	{
+		return this.func_150536_b(p_150537_1_, p_150537_2_, p_150537_3_, p_150537_4_, p_150537_5_, p_150537_6_) && this.func_150532_c(p_150537_1_, p_150537_2_, p_150537_3_, p_150537_4_, p_150537_5_);
+	}
+
+	private boolean func_150536_b(World p_150536_1_, Random p_150536_2_, int p_150536_3_, int p_150536_4_, int p_150536_5_, int p_150536_6_)
+	{
+		boolean flag = true;
+
+		if(p_150536_4_ >= 1 && p_150536_4_ + p_150536_6_ + 1 <= 256)
+		{
+			for(int i1 = p_150536_4_; i1 <= p_150536_4_ + 1 + p_150536_6_; ++i1)
+			{
+				byte b0 = 2;
+
+				if(i1 == p_150536_4_)
+				{
+					b0 = 1;
+				}
+
+				if(i1 >= p_150536_4_ + 1 + p_150536_6_ - 2)
+				{
+					b0 = 2;
+				}
+			}
+
+			return flag;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	private boolean func_150532_c(World p_150532_1_, Random p_150532_2_, int p_150532_3_, int p_150532_4_, int p_150532_5_)
+	{
+		Block block = p_150532_1_.getBlock(p_150532_3_, p_150532_4_ - 1, p_150532_5_);
+
+		boolean isSoil = block.canSustainPlant(p_150532_1_, p_150532_3_, p_150532_4_ - 1, p_150532_5_, ForgeDirection.UP, (BlockSapling) Blocks.sapling);
+		if(isSoil && p_150532_4_ >= 2)
+		{
+			onPlantGrow(p_150532_1_, p_150532_3_, p_150532_4_ - 1, p_150532_5_, p_150532_3_, p_150532_4_, p_150532_5_);
+			onPlantGrow(p_150532_1_, p_150532_3_ + 1, p_150532_4_ - 1, p_150532_5_, p_150532_3_, p_150532_4_, p_150532_5_);
+			onPlantGrow(p_150532_1_, p_150532_3_, p_150532_4_ - 1, p_150532_5_ + 1, p_150532_3_, p_150532_4_, p_150532_5_);
+			onPlantGrow(p_150532_1_, p_150532_3_ + 1, p_150532_4_ - 1, p_150532_5_ + 1, p_150532_3_, p_150532_4_, p_150532_5_);
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	public boolean generateConiferous(World p_76484_1_, Random p_76484_2_, int p_76484_3_, int p_76484_4_, int p_76484_5_)
+	{
+		int l = this.func_150533_a(p_76484_2_);
+
+		this.func_150541_c(p_76484_1_, p_76484_3_, p_76484_5_, p_76484_4_ + l, 0, p_76484_2_);
+
+		for(int i1 = 0; i1 < l; ++i1)
+		{
+			Block block = p_76484_1_.getBlock(p_76484_3_, p_76484_4_ + i1, p_76484_5_);
+
+			if(block.isAir(p_76484_1_, p_76484_3_, p_76484_4_ + i1, p_76484_5_) || block.isLeaves(p_76484_1_, p_76484_3_, p_76484_4_ + i1, p_76484_5_))
+			{
+				this.setBlockAndNotifyAdequately(p_76484_1_, p_76484_3_, p_76484_4_ + i1, p_76484_5_, logBlock, 0);
+			}
+
+			if(i1 < l - 1)
+			{
+				block = p_76484_1_.getBlock(p_76484_3_ + 1, p_76484_4_ + i1, p_76484_5_);
+
+				if(block.isAir(p_76484_1_, p_76484_3_ + 1, p_76484_4_ + i1, p_76484_5_) || block.isLeaves(p_76484_1_, p_76484_3_ + 1, p_76484_4_ + i1, p_76484_5_))
+				{
+					this.setBlockAndNotifyAdequately(p_76484_1_, p_76484_3_ + 1, p_76484_4_ + i1, p_76484_5_, logBlock, 0);
+				}
+
+				block = p_76484_1_.getBlock(p_76484_3_ + 1, p_76484_4_ + i1, p_76484_5_ + 1);
+
+				if(block.isAir(p_76484_1_, p_76484_3_ + 1, p_76484_4_ + i1, p_76484_5_ + 1) || block.isLeaves(p_76484_1_, p_76484_3_ + 1, p_76484_4_ + i1, p_76484_5_ + 1))
+				{
+					this.setBlockAndNotifyAdequately(p_76484_1_, p_76484_3_ + 1, p_76484_4_ + i1, p_76484_5_ + 1, logBlock, 0);
+				}
+
+				block = p_76484_1_.getBlock(p_76484_3_, p_76484_4_ + i1, p_76484_5_ + 1);
+
+				if(block.isAir(p_76484_1_, p_76484_3_, p_76484_4_ + i1, p_76484_5_ + 1) || block.isLeaves(p_76484_1_, p_76484_3_, p_76484_4_ + i1, p_76484_5_ + 1))
+				{
+					this.setBlockAndNotifyAdequately(p_76484_1_, p_76484_3_, p_76484_4_ + i1, p_76484_5_ + 1, logBlock, 0);
+				}
+			}
+		}
+
+		return true;
+	}
+
+	private void func_150541_c(World p_150541_1_, int p_150541_2_, int p_150541_3_, int p_150541_4_, int p_150541_5_, Random p_150541_6_)
+	{
+		int i1 = p_150541_6_.nextInt(5);
+
+		i1 += this.treeHeight;
+
+		int j1 = 0;
+
+		for(int k1 = p_150541_4_ - i1; k1 <= p_150541_4_; ++k1)
+		{
+			int l1 = p_150541_4_ - k1;
+			int i2 = p_150541_5_ + MathHelper.floor_float((float) l1 / (float) i1 * 3.5F);
+			this.func_150535_a(p_150541_1_, p_150541_2_, k1, p_150541_3_, i2 + (l1 > 0 && i2 == j1 && (k1 & 1) == 0 ? 1 : 0), p_150541_6_);
+			j1 = i2;
+		}
+	}
+
+	protected void func_150535_a(World p_150535_1_, int p_150535_2_, int p_150535_3_, int p_150535_4_, int p_150535_5_, Random p_150535_6_)
+	{
+		int i1 = p_150535_5_ * p_150535_5_;
+
+		for(int j1 = p_150535_2_ - p_150535_5_; j1 <= p_150535_2_ + p_150535_5_ + 1; ++j1)
+		{
+			int k1 = j1 - p_150535_2_;
+
+			for(int l1 = p_150535_4_ - p_150535_5_; l1 <= p_150535_4_ + p_150535_5_ + 1; ++l1)
+			{
+				int i2 = l1 - p_150535_4_;
+				int j2 = k1 - 1;
+				int k2 = i2 - 1;
+
+				if(k1 * k1 + i2 * i2 <= i1 || j2 * j2 + k2 * k2 <= i1 || k1 * k1 + k2 * k2 <= i1 || j2 * j2 + i2 * i2 <= i1)
+				{
+					Block block = p_150535_1_.getBlock(j1, p_150535_3_, l1);
+
+					if(block.isAir(p_150535_1_, j1, p_150535_3_, l1) || block.isLeaves(p_150535_1_, j1, p_150535_3_, l1))
+					{
+						this.setBlockAndNotifyAdequately(p_150535_1_, j1, p_150535_3_, l1, leavesBlock, 0);
+					}
+				}
+			}
+		}
+	}
+
+	public void func_150524_b(World p_150524_1_, Random p_150524_2_, int p_150524_3_, int p_150524_4_, int p_150524_5_)
+	{
+		this.func_150539_c(p_150524_1_, p_150524_2_, p_150524_3_ - 1, p_150524_4_, p_150524_5_ - 1);
+		this.func_150539_c(p_150524_1_, p_150524_2_, p_150524_3_ + 2, p_150524_4_, p_150524_5_ - 1);
+		this.func_150539_c(p_150524_1_, p_150524_2_, p_150524_3_ - 1, p_150524_4_, p_150524_5_ + 2);
+		this.func_150539_c(p_150524_1_, p_150524_2_, p_150524_3_ + 2, p_150524_4_, p_150524_5_ + 2);
+
+		for(int l = 0; l < 5; ++l)
+		{
+			int i1 = p_150524_2_.nextInt(64);
+			int j1 = i1 % 8;
+			int k1 = i1 / 8;
+
+			if(j1 == 0 || j1 == 7 || k1 == 0 || k1 == 7)
+			{
+				this.func_150539_c(p_150524_1_, p_150524_2_, p_150524_3_ - 3 + j1, p_150524_4_, p_150524_5_ - 3 + k1);
+			}
+		}
+	}
+
+	private void func_150539_c(World p_150539_1_, Random p_150539_2_, int p_150539_3_, int p_150539_4_, int p_150539_5_)
+	{
+		for(int l = -2; l <= 2; ++l)
+		{
+			for(int i1 = -2; i1 <= 2; ++i1)
+			{
+				if(Math.abs(l) != 2 || Math.abs(i1) != 2)
+				{
+					this.func_150540_a(p_150539_1_, p_150539_3_ + l, p_150539_4_, p_150539_5_ + i1);
+				}
+			}
+		}
+	}
+
+	private void func_150540_a(World p_150540_1_, int p_150540_2_, int p_150540_3_, int p_150540_4_)
+	{
+		for(int l = p_150540_3_ + 2; l >= p_150540_3_ - 3; --l)
+		{
+			Block block = p_150540_1_.getBlock(p_150540_2_, l, p_150540_4_);
+
+			if(block.canSustainPlant(p_150540_1_, p_150540_2_, l, p_150540_4_, ForgeDirection.UP, (BlockSapling) Blocks.sapling))
+			{
+				this.setBlockAndNotifyAdequately(p_150540_1_, p_150540_2_, l, p_150540_4_, Blocks.dirt, 2);
+				break;
+			}
+
+			if(block.isAir(p_150540_1_, p_150540_2_, l, p_150540_4_) && l < p_150540_3_)
+			{
+				break;
+			}
+		}
 	}
 }
