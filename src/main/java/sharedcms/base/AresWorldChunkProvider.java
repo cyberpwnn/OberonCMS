@@ -10,7 +10,6 @@ import static net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.VILL
 import java.util.List;
 import java.util.Random;
 
-import cpw.mods.fml.common.eventhandler.Event.Result;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.entity.EnumCreatureType;
@@ -23,8 +22,6 @@ import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
-import net.minecraft.world.gen.ChunkProviderGenerate;
-import net.minecraft.world.gen.ChunkProviderServer;
 import net.minecraft.world.gen.MapGenBase;
 import net.minecraft.world.gen.MapGenCaves;
 import net.minecraft.world.gen.MapGenRavine;
@@ -36,24 +33,22 @@ import net.minecraft.world.gen.structure.MapGenScatteredFeature;
 import net.minecraft.world.gen.structure.MapGenStronghold;
 import net.minecraft.world.gen.structure.MapGenVillage;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.terraingen.ChunkProviderEvent;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
 import sharedcms.Status;
 import sharedcms.content.Content;
 import sharedcms.content.world.meta.objects.MetaWorld;
 import sharedcms.controller.shared.WorldHostController;
-import sharedcms.util.F;
 import sharedcms.util.GList;
 import sharedcms.util.M;
 import sharedcns.api.biome.BiomeHumidity;
 import sharedcns.api.biome.BiomeHumidityModifier;
 import sharedcns.api.biome.BiomeTemperature;
 import sharedcns.api.biome.BiomeTemperatureModifier;
-import sharedcns.api.biome.ConditionalSimplexNoiseGenerator;
 import sharedcns.api.biome.DecorationPass;
 import sharedcns.api.biome.IBiome;
 import sharedcns.api.biome.IScatterBuffer;
+import sharedcns.api.biome.LudicrousScatterBuffer;
 
 public class AresWorldChunkProvider implements IChunkProvider
 {
@@ -269,7 +264,7 @@ public class AresWorldChunkProvider implements IChunkProvider
 		chunk.generateSkylightMap();
 		long time = M.ms() - ns;
 		Status.CHUNK_GEN_TIME = time;
-		
+
 		return chunk;
 	}
 
@@ -416,7 +411,7 @@ public class AresWorldChunkProvider implements IChunkProvider
 		boolean flag = false;
 
 		MinecraftForge.EVENT_BUS.post(new PopulateChunkEvent.Pre(provider, worldObj, rand, x, z, flag));
-				
+
 		for(DecorationPass pass : DecorationPass.values())
 		{
 			if(biomegenbase instanceof IBiome)
@@ -425,20 +420,37 @@ public class AresWorldChunkProvider implements IChunkProvider
 
 				for(IScatterBuffer i : b.getScatterBuffers())
 				{
-					for(k1 = 0; k1 < (double) i.getStrength() * i.getChance(); k1++)
+					if(!i.getDecorationPass().equals(pass))
+					{
+						continue;
+					}
+
+					double rx = rand.nextDouble() * i.getChance();
+
+					for(k1 = 0; k1 < (double) i.getStrength() * rx; k1++)
 					{
 						World w = worldObj;
 						Random r = rand;
-						Integer vx = k + r.nextInt(16);
-						Integer vz = l + r.nextInt(16);
-						Integer vy = w.getHeightValue(vx, vz);
+						Integer vx = k + r.nextInt(16) + 8;
+						Integer vz = l + r.nextInt(16) + 8;
+						Integer vy = w.getHeightValue(vx, vz) - 1;
 						Block surface = w.getBlock(vx, vy, vz);
 						MetaWorld mw = WorldHostController.getWorldMeta(w);
-						BiomeTemperature temp = mw.getCsx().get(b.getBiomeTemperature(), vx, vz);
+						BiomeTemperature temp = mw.getTemperatureEnum(b.getBiomeTemperature(), vx, vz);
 						BiomeTemperatureModifier temperatureModifier = b.getBiomeTemperature().getModification(temp);
-						BiomeHumidity hum = mw.getCsx().get(b.getBiomeHumidity(), vx, vz);
+						BiomeHumidity hum = mw.getHumidityEnum(b.getBiomeHumidity(), vx, vz);
 						BiomeHumidityModifier humidityModifier = b.getBiomeHumidity().getModification(hum);
-						
+
+						if(i instanceof LudicrousScatterBuffer)
+						{
+							LudicrousScatterBuffer lu = (LudicrousScatterBuffer) i;
+
+							if(!lu.isHumidityBound(hum) || !lu.isTemperatureBound(temp))
+							{
+								continue;
+							}
+						}
+
 						if(i.canDecorate(w, r, pass, surface, vx, vy, vz, temperatureModifier, humidityModifier, temp, hum))
 						{
 							i.decorate(w, r, pass, surface, vx, vy, vz, temperatureModifier, humidityModifier, temp, hum);
