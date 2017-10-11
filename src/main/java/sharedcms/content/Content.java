@@ -117,19 +117,23 @@ import sharedcms.content.structure.model.Model;
 import sharedcms.content.structure.model.ModelMaterial;
 import sharedcms.content.structure.model.SmoothingMode;
 import sharedcms.content.tab.TabNatural;
+import sharedcms.content.world.biome.BiomeForest;
 import sharedcms.content.world.biome.BiomePlains;
 import sharedcms.content.world.generator.WorldGeneratorEmpty;
+import sharedcms.content.world.meta.objects.MetaWorld;
 import sharedcms.content.world.type.WorldTypeAres;
 import sharedcms.controller.shared.ContentController;
 import sharedcms.fx.BlockEffect;
 import sharedcms.fx.SimpleBlockEffect;
 import sharedcms.registry.IRegistrant;
+import sharedcms.util.F;
+import sharedcms.util.GEN;
+import sharedcms.util.GList;
+import sharedcms.util.GMap;
 import sharedcms.util.Location;
 import sharedcms.util.M;
+import sharedcms.util.SimplexProperties;
 import sharedcms.voxel.VoxelRegistry;
-import sharedcns.api.biome.BiomeHumidity;
-import sharedcns.api.biome.BiomeTemperature;
-import sharedcns.api.biome.ConditionalSimplexNoiseGenerator;
 import sharedcns.api.biome.LudicrousBiome;
 
 public class Content implements IRegistrant
@@ -451,11 +455,12 @@ public class Content implements IRegistrant
 
 		}
 	}
-	
+
 	public static class Biome
 	{
-		public static BiomePlains PLAINS = new BiomePlains();
-		
+		public static BiomePlains PLAINS = new BiomePlains(0);
+		public static BiomeForest FOREST = new BiomeForest(10);
+
 		public static void s()
 		{
 
@@ -995,6 +1000,7 @@ public class Content implements IRegistrant
 	{
 		VoxelRegistry.registerForTessellator(Blocks.cobblestone);
 		VoxelRegistry.registerForTessellator(Blocks.mossy_cobblestone);
+		GEN.addGenerator(new SimplexProperties("biomeset", 100 * biomes().size(), 120));
 		
 		try
 		{
@@ -1047,7 +1053,7 @@ public class Content implements IRegistrant
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static void init()
 	{
 		Content.Tab.s();
@@ -1058,21 +1064,5 @@ public class Content implements IRegistrant
 		Content.Biome.s();
 		Content.Effect.s();
 		Content.SoundMaterial.s();
-	}
-
-	public static void constructGeneratorSimplexConditions(ConditionalSimplexNoiseGenerator csx, net.minecraft.world.WorldType type)
-	{
-		System.out.println("Constructing CSGs for world type " + type.getWorldTypeName());
-		
-		if(type.equals(WorldType.ARES))
-		{
-			csx.addGenerator(BiomeTemperature.class, 350);
-			csx.addGenerator(BiomeHumidity.class, 375);
-		}
-	}
-
-	public static List<LudicrousBiome> biomes(int level)
-	{
-		return biomes();
 	}
 }

@@ -10,11 +10,9 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
-import sharedcms.Ares;
 import sharedcms.Colors;
 import sharedcms.Status;
 import sharedcms.audio.openal.ProxySoundFilter;
-import sharedcms.base.AresBiome;
 import sharedcms.content.Content;
 import sharedcms.content.world.meta.objects.MetaWorld;
 import sharedcms.controller.shared.WorldHostController;
@@ -24,6 +22,7 @@ import sharedcms.util.GList;
 import sharedcms.util.Location;
 import sharedcns.api.biome.BiomeHumidity;
 import sharedcns.api.biome.BiomeTemperature;
+import sharedcns.api.biome.IBiome;
 
 public class RenderLayerDebug extends RenderLayer
 {
@@ -50,12 +49,13 @@ public class RenderLayerDebug extends RenderLayer
 		String temp = "???";
 		String humi = "???";
 
-		if(mw != null)
+		if(mw != null && b instanceof IBiome)
 		{
-			BiomeTemperature t =  (BiomeTemperature) BiomeTemperature.of((int) ((b.temperature / 2) * BiomeTemperature.length()));
-			BiomeHumidity h =  (BiomeHumidity) BiomeHumidity.of((int) (b.rainfall * BiomeHumidity.length()));
-			temp = mw.getCsx().get(t, o.x, o.z).toString() + " (" + mw.getCsx().getNormal(t, o.x, o.z) + ")";
-			humi = mw.getCsx().get(h, o.x, o.z).toString() + " (" + mw.getCsx().getNormal(h, o.x, o.z) + ")";
+			IBiome ib = (IBiome) b;
+			BiomeTemperature t = mw.getTemperatureEnum(ib.getBiomeTemperature(), o.x, o.z);
+			BiomeHumidity h = mw.getHumidityEnum(ib.getBiomeHumidity(), o.x, o.z);
+			temp = t.toString() + " (" + F.f(mw.getTemperature(t, o.x, o.z), 3) + ")";
+			humi = h.toString() + " (" + F.f(mw.getHumidity(h, o.x, o.z), 3) + ")";
 		}
 
 		k.add(new TextElement("Channel Use: " + Status.CHANNEL_USE + " / " + Status.CHANNEL_MAX + " (" + bw + ")", cc));
@@ -64,6 +64,7 @@ public class RenderLayerDebug extends RenderLayer
 		k.add(new TextElement("World: " + ep.worldObj.provider.terrainType.getWorldTypeName()));
 		k.add(new TextElement("  Generation Time: " + Status.CHUNK_GEN_TIME + " ms"));
 		k.add(new TextElement("  Biome: " + biome));
+		k.add(new TextElement("    Allowed: " + new GList<IBiome>(Content.WorldType.ARES.getBiomeOperator().getBiomes((int)o.x, (int) o.z).getBiomes()).toString(", ")));
 		k.add(new TextElement("  Level: " + l));
 		k.add(new TextElement("  Temperature: " + temp));
 		k.add(new TextElement("  Humidity: " + humi));

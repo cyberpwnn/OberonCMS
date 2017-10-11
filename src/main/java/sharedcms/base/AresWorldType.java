@@ -9,16 +9,29 @@ import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.WorldChunkManager;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.layer.GenLayer;
+import sharedcns.api.biome.IBiomeOperator;
 
 public abstract class AresWorldType extends WorldType
 {
 	private int worldTypeId;
-	
-	public AresWorldType(String name, int id)
+	private IBiomeOperator biomeOperator;
+
+	public AresWorldType(String name, int id, IBiomeOperator operator)
 	{
 		super(name);
-		
+
+		this.biomeOperator = operator;
 		worldTypeId = id;
+	}
+
+	public int getWorldTypeId()
+	{
+		return worldTypeId;
+	}
+
+	public IBiomeOperator getBiomeOperator()
+	{
+		return biomeOperator;
 	}
 
 	@Override
@@ -96,7 +109,7 @@ public abstract class AresWorldType extends WorldType
 	@Override
 	public void onGUICreateWorldPress()
 	{
-		
+
 	}
 
 	@Override

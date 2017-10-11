@@ -19,19 +19,13 @@ public class ShrubBuffer extends LudicrousScatterBuffer
 {
 	private List<Block> soil;
 	private Map<Block, Integer> blocks;
-	private List<BiomeTemperature> temperatures;
-	private List<BiomeHumidity> humidities;
-	private boolean topOnly;
 	
-	public ShrubBuffer(int strength, double chance, boolean topOnly)
+	public ShrubBuffer(int strength)
 	{
-		super(strength, chance);
+		super(strength, 1);
 		
 		soil = new ArrayList<Block>();
 		blocks = new HashMap<Block, Integer>();
-		temperatures = new ArrayList<BiomeTemperature>();
-		humidities = new ArrayList<BiomeHumidity>();
-		this.topOnly = topOnly;
 	}
 	
 	public void addSoil(Block b)
@@ -42,16 +36,6 @@ public class ShrubBuffer extends LudicrousScatterBuffer
 	public void addBlock(Block b, int weight)
 	{
 		blocks.put(b, weight);
-	}
-	
-	public void bindTemperature(BiomeTemperature temp)
-	{
-		temperatures.add(temp);
-	}
-	
-	public void bindHumidity(BiomeHumidity hum)
-	{
-		humidities.add(hum);
 	}
 	
 	public Block pick(Random r)
@@ -77,22 +61,7 @@ public class ShrubBuffer extends LudicrousScatterBuffer
 	@Override
 	public boolean canDecorate(World w, Random r, DecorationPass pass, Block surface, int x, int y, int z, BiomeTemperatureModifier temperatureModifier, BiomeHumidityModifier humidityModifier, BiomeTemperature temp, BiomeHumidity hum)
 	{
-		if(!humidities.contains(hum) && !humidities.isEmpty())
-		{
-			return false;
-		}
-		
-		if(!temperatures.contains(temp) && !temperatures.isEmpty())
-		{
-			return false;
-		}
-		
 		if(!soil.contains(surface))
-		{
-			return false;
-		}
-		
-		if(topOnly && w.getHeightValue(x, z) > y)
 		{
 			return false;
 		}

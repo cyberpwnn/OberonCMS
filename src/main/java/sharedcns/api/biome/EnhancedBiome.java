@@ -4,9 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.MathHelper;
+import net.minecraft.world.ColorizerFoliage;
 import net.minecraft.world.World;
 import sharedcms.base.AresBiome;
 import sharedcms.content.world.meta.objects.MetaWorld;
@@ -24,6 +29,17 @@ public class EnhancedBiome extends AresBiome implements IBiome
 		level = 0;
 		paver = new DefaultBiomePaver();
 		decorators = new ArrayList<IScatterBuffer>();
+	}
+
+	@SideOnly(Side.CLIENT)
+	public int getBiomeFoliageColor(int x, int y, int z)
+	{
+		MetaWorld mw = WorldHostController.getWorldMeta(Minecraft.getMinecraft().theWorld);
+		float ftemp = (float) mw.getTemperature(getBiomeTemperature(), x, z);
+		float ffall = (float) mw.getHumidity(getBiomeHumidity(), x, z);
+		double d0 = (double) MathHelper.clamp_float(ftemp, 0.0F, 1.0F);
+		double d1 = (double) MathHelper.clamp_float(ffall, 0.0F, 1.0F);
+		return getModdedBiomeFoliageColor(ColorizerFoliage.getFoliageColor(d0, d1));
 	}
 
 	@Override
@@ -144,9 +160,9 @@ public class EnhancedBiome extends AresBiome implements IBiome
 		int vz = chunkZ;
 		World w = world;
 		MetaWorld mw = WorldHostController.getWorldMeta(w);
-		BiomeTemperature temp =  mw.getCsx().get(getBiomeTemperature(), vx, vz);
+		BiomeTemperature temp = mw.getTemperatureEnum(getBiomeTemperature(), vx, vz);
 		BiomeTemperatureModifier temperatureModifier = getBiomeTemperature().getModification(temp);
-		BiomeHumidity hum =  mw.getCsx().get(getBiomeHumidity(), vx, vz);
+		BiomeHumidity hum = mw.getHumidityEnum(getBiomeHumidity(), vx, vz);
 		BiomeHumidityModifier humidityModifier = getBiomeHumidity().getModification(hum);
 		blockTop = getSurfaceBuffer().getTopBlock(vx, vy, vz, temperatureModifier, humidityModifier, temp, hum);
 		blockFiller = getSurfaceBuffer().getFillerBlock(vx, vy, vz, temperatureModifier, humidityModifier, temp, hum);
@@ -159,7 +175,7 @@ public class EnhancedBiome extends AresBiome implements IBiome
 		for(int l1 = 255; l1 >= 0; --l1)
 		{
 			int i2 = (j1 * 16 + i1) * k1 + l1;
-			
+
 			if(l1 <= 0 + random.nextInt(5))
 			{
 				blocks[i2] = Blocks.bedrock;
@@ -243,9 +259,9 @@ public class EnhancedBiome extends AresBiome implements IBiome
 				{
 					k = -1;
 				}
-				
+
 				block2 = blocks[i2];
-			
+
 				if(block2 == Blocks.stone)
 				{
 					blocks[i2] = getSurfaceBuffer().getRockBlock(vx, vy, vz, temperatureModifier, humidityModifier, temp, hum);

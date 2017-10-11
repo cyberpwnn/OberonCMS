@@ -12,7 +12,7 @@ public class DimensionalLevel
 		return getLevel((int) l.x, (int) l.z);
 	}
 
-	public static int getLevel(int x, int z)
+	private static int getLevelNoise(int x, int z)
 	{
 		double distance = new Location().distance(new Location(x, 0, z));
 		double noise = 0;
@@ -21,6 +21,11 @@ public class DimensionalLevel
 		noise += distance * Info.LEVEL_DISTANCE_MULTIPLIER;
 
 		return (int) Math.abs(noise);
+	}
+	
+	public static int getLevel(int x, int z)
+	{
+		return Math.abs(getLevelNoise(x, z) - getLevelNoise(0, 0));
 	}
 
 	public static int getChunkLevel(int x, int z)

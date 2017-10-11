@@ -3,21 +3,18 @@ package sharedcms.content.world.type;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.WorldChunkManager;
 import net.minecraft.world.chunk.IChunkProvider;
-import net.minecraft.world.gen.layer.GenLayer;
-import net.minecraft.world.gen.layer.GenLayerBiome;
-import net.minecraft.world.gen.layer.GenLayerBiomeEdge;
-import net.minecraft.world.gen.layer.GenLayerZoom;
 import sharedcms.base.AresWorldType;
+import sharedcms.content.Content;
 import sharedcms.content.world.chunk.manager.BasicChunkManager;
 import sharedcms.content.world.chunk.provider.ChunkProviderSimple;
-import sharedcms.content.world.genlayer.BasicGenLayerBiome;
-import sharedcms.content.world.genlayer.BasicGenLayerZoom;
+import sharedcns.api.biome.BiomeBuffer;
+import sharedcns.api.biome.BiomeOperator;
 
 public class WorldTypeAres extends AresWorldType
 {
 	public WorldTypeAres(String name, int id)
 	{
-		super(name, id);
+		super(name, id, new BiomeOperator(new BiomeBuffer(Content.biomes())));
 	}
 
 	@Override

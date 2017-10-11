@@ -6,7 +6,9 @@ import net.minecraft.world.gen.layer.GenLayer;
 import sharedcms.base.AresBiome;
 import sharedcms.base.AresGenLayerBiome;
 import sharedcms.content.Content;
-import sharedcms.util.DimensionalLevel;
+import sharedcms.util.GList;
+import sharedcns.api.biome.BiomeBuffer;
+import sharedcns.api.biome.IBiome;
 import sharedcns.api.biome.LudicrousBiome;
 
 public class BasicGenLayerBiome extends AresGenLayerBiome
@@ -22,10 +24,15 @@ public class BasicGenLayerBiome extends AresGenLayerBiome
 	}
 
 	@Override
-	public AresBiome[] getAllowedBiomes(int x, int z)
+	public LudicrousBiome[] getAllowedBiomes(int x, int z)
 	{
-		int level = DimensionalLevel.getChunkLevel(x, z);
-		List<LudicrousBiome> biomes = Content.biomes(level);
+		BiomeBuffer buffer = Content.WorldType.ARES.getBiomeOperator().getBiomes(x, z);
+		List<LudicrousBiome> biomes = new GList<LudicrousBiome>();
+		
+		for(IBiome i : buffer.getBiomes())
+		{
+			biomes.add((LudicrousBiome) i);
+		}
 		
 		return biomes.toArray(new LudicrousBiome[biomes.size()]);
 	}
