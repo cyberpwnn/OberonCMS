@@ -5,7 +5,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import sharedcms.base.AresBlock;
 import sharedcms.base.AresNaturalBlock;
 
-public class BlockColdDirt extends AresNaturalBlock
+public class BlockColdDirt extends BlockColoredBase
 {
 	public BlockColdDirt(String unlocalizedName, Material material, SoundType type)
 	{

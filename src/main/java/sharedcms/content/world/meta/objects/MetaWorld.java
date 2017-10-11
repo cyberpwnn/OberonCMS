@@ -23,6 +23,7 @@ public class MetaWorld
 			genTemperatureKey = "ares-" + world.getSeed() + "-temperature";
 			genHumidityKey = "ares-" + world.getSeed() + "-humidity";
 
+			GEN.addGenerator(new SimplexProperties("canopy-height", 1337, 27));
 			GEN.addGenerator(new SimplexProperties(genTemperatureKey, world.getSeed(), 170));
 			GEN.addGenerator(new SimplexProperties(genHumidityKey, world.getSeed(), 150));
 			GEN.addGenerator(new SimplexProperties(genTemperatureKey + "-2", world.getSeed(), 31));

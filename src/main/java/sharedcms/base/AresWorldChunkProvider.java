@@ -39,6 +39,7 @@ import sharedcms.Status;
 import sharedcms.content.Content;
 import sharedcms.content.world.meta.objects.MetaWorld;
 import sharedcms.controller.shared.WorldHostController;
+import sharedcms.util.GEN;
 import sharedcms.util.GList;
 import sharedcms.util.M;
 import sharedcns.api.biome.BiomeHumidity;
@@ -52,7 +53,6 @@ import sharedcns.api.biome.LudicrousScatterBuffer;
 
 public class AresWorldChunkProvider implements IChunkProvider
 {
-	/** RNG. */
 	private Random rand;
 	private NoiseGeneratorOctaves noiseOct1;
 	private NoiseGeneratorOctaves noiseOct2;
@@ -75,16 +75,11 @@ public class AresWorldChunkProvider implements IChunkProvider
 	private final float[] parabolicField;
 	private double[] stoneNoise = new double[256];
 	private MapGenBase caveGenerator = new MapGenCaves();
-	/** Holds Stronghold Generator */
 	private MapGenStronghold strongholdGenerator = new MapGenStronghold();
-	/** Holds Village Generator */
 	private MapGenVillage villageGenerator = new MapGenVillage();
-	/** Holds Mineshaft Generator */
 	private MapGenMineshaft mineshaftGenerator = new MapGenMineshaft();
 	private MapGenScatteredFeature scatteredFeatureGenerator = new MapGenScatteredFeature();
-	/** Holds ravine generator */
 	private MapGenBase ravineGenerator = new MapGenRavine();
-	/** The biomes that are used to generate the chunk */
 	private BiomeGenBase[] biomesForGeneration;
 	double[] noise1;
 	double[] noise2;
@@ -283,7 +278,7 @@ public class AresWorldChunkProvider implements IChunkProvider
 		int l = 0;
 		int i1 = 0;
 		double d4 = 8.5D;
-
+		
 		for(int j1 = 0; j1 < 5; ++j1)
 		{
 			for(int k1 = 0; k1 < 5; ++k1)
@@ -325,7 +320,8 @@ public class AresWorldChunkProvider implements IChunkProvider
 				f1 /= f2;
 				f = f * 0.9F + 0.1F;
 				f1 = (f1 * 4.0F - 1.0F) / 8.0F;
-				double d12 = this.noise4[i1] / 8000.0D;
+
+				double d12 = (this.noise4[i1]) / 8000.0D;
 
 				if(d12 < 0.0D)
 				{
@@ -374,7 +370,7 @@ public class AresWorldChunkProvider implements IChunkProvider
 
 					double d7 = this.noise2[l] / 512.0D;
 					double d8 = this.noise3[l] / 512.0D;
-					double d9 = (this.noise1[l] / 10.0D + 1.0D) / 2.0D;
+					double d9 = (this.noise1[l] / 10D + 1.0D) / 2.0D;
 					double d10 = MathHelper.denormalizeClamp(d7, d8, d9) - d6;
 
 					if(j2 > 29)

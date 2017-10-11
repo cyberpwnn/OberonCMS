@@ -43,6 +43,51 @@ public class TreeBuffer extends LudicrousScatterBuffer
 		this.logBlock = logBlock;
 		soil = new ArrayList<Block>();
 	}
+	
+	public void updateForGen(World w, int x, int z)
+	{
+		
+	}
+
+	public List<Block> getSoil()
+	{
+		return soil;
+	}
+
+	public void setSoil(List<Block> soil)
+	{
+		this.soil = soil;
+	}
+
+	public TreeModel getModel()
+	{
+		return model;
+	}
+
+	public void setModel(TreeModel model)
+	{
+		this.model = model;
+	}
+
+	public int getWbonus()
+	{
+		return wbonus;
+	}
+
+	public void setWbonus(int wbonus)
+	{
+		this.wbonus = wbonus;
+	}
+
+	public int getWrbonus()
+	{
+		return wrbonus;
+	}
+
+	public void setWrbonus(int wrbonus)
+	{
+		this.wrbonus = wrbonus;
+	}
 
 	public Block getLogBlock()
 	{
@@ -93,6 +138,8 @@ public class TreeBuffer extends LudicrousScatterBuffer
 	@Override
 	public void decorate(World w, Random r, DecorationPass pass, Block surface, int x, int y, int z, BiomeTemperatureModifier temperatureModifier, BiomeHumidityModifier humidityModifier, BiomeTemperature temp, BiomeHumidity hum)
 	{
+		updateForGen(w, x, z);
+		
 		if(model.equals(TreeModel.BASIC))
 		{
 			generateBasic(w, r, x, y, z);
@@ -100,7 +147,7 @@ public class TreeBuffer extends LudicrousScatterBuffer
 
 		if(model.equals(TreeModel.CANOPY))
 		{
-
+			generateCanopy(w, r, x, y, z);
 		}
 	}
 
@@ -261,8 +308,8 @@ public class TreeBuffer extends LudicrousScatterBuffer
 
 		return false;
 	}
-	
-	public boolean generate(World w, Random r, int x, int y, int z)
+
+	public boolean generateCanopy(World w, Random r, int x, int y, int z)
 	{
 		int l = r.nextInt(3) + r.nextInt(2) + treeHeight;
 		boolean flag = true;
@@ -349,7 +396,7 @@ public class TreeBuffer extends LudicrousScatterBuffer
 							this.setBlockAndNotifyAdequately(w, k3 + 1, k2, l1, logBlock, 1);
 							this.setBlockAndNotifyAdequately(w, k3, k2, l1 + 1, logBlock, 1);
 							this.setBlockAndNotifyAdequately(w, k3 + 1, k2, l1 + 1, logBlock, 1);
-							
+
 							if(j2 < 4)
 							{
 								this.setBlockAndNotifyAdequately(w, k3 - 1, k2, l1, logBlock, 1);
@@ -359,7 +406,6 @@ public class TreeBuffer extends LudicrousScatterBuffer
 								this.setBlockAndNotifyAdequately(w, k3, k2, l1 + 2, logBlock, 1);
 								this.setBlockAndNotifyAdequately(w, k3 + 2, k2, l1 + 2, logBlock, 1);
 							}
-							
 
 							i2 = k2;
 						}
@@ -442,11 +488,11 @@ public class TreeBuffer extends LudicrousScatterBuffer
 										}
 									}
 								}
-								
+
 								if(wbonus > 0)
 								{
 									int vv = wbonus;
-									
+
 									while(vv > -4)
 									{
 										for(l2 = -6 - vv; l2 <= 6 + vv; ++l2)
@@ -462,7 +508,7 @@ public class TreeBuffer extends LudicrousScatterBuffer
 												}
 											}
 										}
-										
+
 										vv -= wbonus / 2;
 									}
 								}
@@ -498,7 +544,7 @@ public class TreeBuffer extends LudicrousScatterBuffer
 			return false;
 		}
 	}
-	
+
 	private void setBlockAndNotifyAdequately(World w, int k3, int k2, int l1, Block logBlock2, int i)
 	{
 		w.setBlock(k3, k2, l1, logBlock2);
@@ -510,7 +556,7 @@ public class TreeBuffer extends LudicrousScatterBuffer
 
 		if(block.isAir(p_150526_1_, p_150526_2_, p_150526_3_, p_150526_4_))
 		{
-			
+
 			p_150526_1_.setBlock(p_150526_2_, p_150526_3_, p_150526_4_, getLeavesBlock(rand));
 		}
 	}
