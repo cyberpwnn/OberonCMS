@@ -20,9 +20,23 @@ public class BiomeOperator implements IBiomeOperator
 		double m = k + GEN.getNoise("biomeset-spread", x, z, 10, 0);
 		double n = GEN.getNoise("biomeset", x + m, z + m, 0.5, 1);
 		
-		IBiome bi = b[(int) (n * b.length)];
+		IBiome t = null;
+		double max = 1;
+				
+		for(IBiome i : b)
+		{
+			double g = GEN.getNoise("biome-" + i.getId(), x - n, z - n, 0.5, 1);
+			double dist = Math.abs(g - n);
+			
+			if(dist < max)
+			{
+				max = dist;
+				t = i;
+			}
+		}
+		
 		BiomeBuffer bb = new BiomeBuffer();
-		bb.put(bi);
+		bb.put(t);
 		
 		return bb;
 	}

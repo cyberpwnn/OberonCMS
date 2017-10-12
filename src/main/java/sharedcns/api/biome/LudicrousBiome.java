@@ -1,18 +1,21 @@
 package sharedcns.api.biome;
 
 import net.minecraft.world.World;
+import sharedcms.util.GEN;
+import sharedcms.util.SimplexProperties;
 
 public class LudicrousBiome extends EnhancedBiome
 {
 	protected float height;
 	protected float variation;
-	
+
 	public LudicrousBiome(int id)
 	{
 		super(id);
-		
+
 		height = 1f;
 		variation = 0.1f;
+		GEN.addGenerator(new SimplexProperties("biome-" + id, id * 16646 + id, 214 + (id * 2) + (Math.random() * 5)));
 	}
 
 	public String toString()
@@ -63,7 +66,7 @@ public class LudicrousBiome extends EnhancedBiome
 			{
 				return i;
 			}
-			
+
 			if(i > cap)
 			{
 				return cap;

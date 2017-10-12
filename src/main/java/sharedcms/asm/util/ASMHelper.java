@@ -8,11 +8,19 @@ import net.minecraft.launchwrapper.IClassTransformer;
 
 public abstract class ASMHelper implements IClassTransformer
 {
+	public static int transformed = 12;
 	protected boolean obfuscated;
 
 	@Override
 	public byte[] transform(String name, String transformedName, byte[] bytes)
 	{
+		transformed++;
+		
+		if(transformed % 17 == 0)
+		{
+			System.out.println("Transforming Classes: " + transformed);
+		}
+		
 		Accept a = getClass().getDeclaredAnnotation(Accept.class);
 		boolean k = false;
 

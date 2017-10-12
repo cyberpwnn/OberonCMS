@@ -118,7 +118,7 @@ import sharedcms.content.structure.model.ModelMaterial;
 import sharedcms.content.structure.model.SmoothingMode;
 import sharedcms.content.tab.TabNatural;
 import sharedcms.content.world.biome.BiomeCanopy;
-import sharedcms.content.world.biome.BiomeDesert;
+import sharedcms.content.world.biome.BiomeLake;
 import sharedcms.content.world.biome.BiomeForest;
 import sharedcms.content.world.biome.BiomeMountains;
 import sharedcms.content.world.biome.BiomePlains;
@@ -460,8 +460,8 @@ public class Content implements IRegistrant
 		public static BiomePlains PLAINS = new BiomePlains(0);
 		public static BiomeForest FOREST = new BiomeForest(10);
 		public static BiomeCanopy CANOPY = new BiomeCanopy(20);
+		public static BiomeLake LAKE = new BiomeLake(30);
 		public static BiomeMountains MOUNTAINS = new BiomeMountains(40);
-		public static BiomeDesert DESERT = new BiomeDesert(30);
 
 		public static void s()
 		{
@@ -1002,12 +1002,12 @@ public class Content implements IRegistrant
 	{
 		VoxelRegistry.registerForTessellator(Blocks.cobblestone);
 		VoxelRegistry.registerForTessellator(Blocks.mossy_cobblestone);
-		GEN.addGenerator(new SimplexProperties("biomeset", 100 * biomes().size(), 120));
+		GEN.addGenerator(new SimplexProperties("biomeset", 25 * biomes().size(), 120));
 		GEN.addGenerator(new SimplexProperties("biomeset-tilt", 19 * biomes().size(), 120));
 		GEN.addGenerator(new SimplexProperties("biomeset-spread", 23 * biomes().size(), 120));
 		GEN.addGenerator(new SimplexProperties("terrain-variation", 175, 120));
 		GEN.addGenerator(new SimplexProperties("terrain-streakset", 125, 280));
-		
+
 		try
 		{
 			for(Field i : Block.class.getDeclaredFields())
