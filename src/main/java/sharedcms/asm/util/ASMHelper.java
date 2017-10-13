@@ -18,7 +18,7 @@ public abstract class ASMHelper implements IClassTransformer
 		
 		if(transformed % 17 == 0)
 		{
-			System.out.println("Transforming Classes: " + transformed);
+			System.out.println("Transform #" + transformed);
 		}
 		
 		Accept a = getClass().getDeclaredAnnotation(Accept.class);

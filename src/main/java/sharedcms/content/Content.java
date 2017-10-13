@@ -106,6 +106,7 @@ import sharedcms.content.effect.EffectDust;
 import sharedcms.content.effect.EffectFallingLeaf;
 import sharedcms.content.effect.EffectFirefly;
 import sharedcms.content.item.ItemCrusader;
+import sharedcms.content.item.ItemGladius;
 import sharedcms.content.structure.brush.Brush;
 import sharedcms.content.structure.brush.Brushable;
 import sharedcms.content.structure.brush.IBrush;
@@ -416,6 +417,11 @@ public class Content implements IRegistrant
 		public static ItemCrusader SWORD_CRUSADER_VENERATED = new ItemCrusader("crusader_venerated");
 		public static ItemCrusader SWORD_CRUSADER_DAMNED = new ItemCrusader("crusader_damned");
 		public static ItemCrusader SWORD_CRUSADER_MALEVOLENT = new ItemCrusader("crusader_malevolent");
+		public static ItemGladius SWORD_GLADIUS = new ItemGladius("gladius");
+		public static ItemGladius SWORD_GLADIUS_ACCLAIMED = new ItemGladius("gladius_acclaimed");
+		public static ItemGladius SWORD_GLADIUS_ATROCIOUS = new ItemGladius("gladius_atrocious");
+		public static ItemGladius SWORD_GLADIUS_DISTINGUISHED = new ItemGladius("gladius_distinguished");
+		public static ItemGladius SWORD_GLADIUS_NEFARIOUS = new ItemGladius("gladius_nefarious");
 
 		public static void s()
 		{
