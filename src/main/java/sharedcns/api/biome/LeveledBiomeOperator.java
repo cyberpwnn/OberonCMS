@@ -3,19 +3,24 @@ package sharedcns.api.biome;
 import java.util.Set;
 
 import sharedcms.util.DimensionalLevel;
+import sharedcms.util.GEN;
 import sharedcms.util.GList;
 
 public class LeveledBiomeOperator extends BiomeOperator implements IBiomeOperator
 {
 	private LevelSpliterator levelSplit;
-	
-	public LeveledBiomeOperator(BiomeBuffer b)
+	private GList<LeveledBiome> biomeLevels;
+	private GList<BiomeSimplexEffect> biomeEffects;
+
+	public LeveledBiomeOperator(BiomeBuffer b, GList<LeveledBiome> biomeLevels, GList<BiomeSimplexEffect> biomeEffects)
 	{
 		super(b);
-		
-		levelSplit = new LevelSpliterator(b.size());
-		
-		for(IBiome i : b.getBiomes())
+
+		this.biomeLevels = biomeLevels;
+		this.biomeEffects = biomeEffects;
+		levelSplit = new LevelSpliterator(biomeLevels.size());
+
+		for(LeveledBiome i : biomeLevels)
 		{
 			levelSplit.add(i.getLevel());
 		}
@@ -29,15 +34,17 @@ public class LeveledBiomeOperator extends BiomeOperator implements IBiomeOperato
 		int level = DimensionalLevel.getLevel(x, z);
 		int biomeLevel = levelSplit.getSplitLevel(level);
 		IBiome sel = null;
-		
-		for(IBiome i : b)
+
+		for(LeveledBiome i : biomeLevels)
 		{
 			if(i.getLevel() == biomeLevel)
 			{
-				bb.put(i);
+				bb.put(i.getBiome());
 			}
 		}
-		
+
+		bb = applyEffects(bb, x, z, biomeLevel, level);
+
 		return bb;
 	}
 
