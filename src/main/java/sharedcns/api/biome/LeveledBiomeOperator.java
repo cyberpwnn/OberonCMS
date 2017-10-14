@@ -48,6 +48,47 @@ public class LeveledBiomeOperator extends BiomeOperator implements IBiomeOperato
 		return bb;
 	}
 
+	private BiomeBuffer applyEffects(BiomeBuffer bb, int x, int z, int biomeLevel, int level)
+	{
+		BiomeBuffer bx = new BiomeBuffer();
+
+		GList<BiomeSimplexEffect> fx = new GList<BiomeSimplexEffect>();
+
+		for(BiomeSimplexEffect i : biomeEffects)
+		{
+			if(biomeLevel <= i.getLevelMax() && biomeLevel >= i.getLevelMin())
+			{
+				fx.add(i);
+			}
+		}
+
+		for(BiomeSimplexEffect i : fx)
+		{
+			if(i.getEffect().equals(BiomeEffectType.STREAK))
+			{
+				double biomeNoise = GEN.getNoise("terrain-streakset-" + i.getUid(), x, z, i.getSwirl(), 1);
+				double noise = GEN.getNoise(i.getBiome().getName().toUpperCase() + "-" + i.getUid(), (z / i.getMass()) + biomeNoise, (x / i.getMass()) + biomeNoise, 0.5, 1);
+
+				if(noise > 0.5 - i.getScale() && noise < 0.5 + i.getScale() && bx.size() == 0)
+				{
+					bx.put(i.getBiome());
+				}
+			}
+
+			if(bx.size() == 1)
+			{
+				return bx;
+			}
+		}
+
+		if(bx.size() == 0)
+		{
+			return bb;
+		}
+
+		return bx;
+	}
+
 	public int distanceToAnyBiome(BiomeBuffer buffer, int level)
 	{
 		Set<IBiome> b = buffer.getBiomes();
