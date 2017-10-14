@@ -13,7 +13,7 @@ public class LudicrousBiome extends EnhancedBiome
 	{
 		super(id);
 
-		height = 1f;
+		height = 0f;
 		variation = 0.1f;
 		GEN.addGenerator(new SimplexProperties("biome-" + id, id * 16646 + id, 214 + (id * 2) + (Math.random() * 5)));
 	}
