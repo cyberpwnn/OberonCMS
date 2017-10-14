@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import cpw.mods.fml.relauncher.Side;
 import net.minecraft.block.Block.SoundType;
@@ -123,6 +124,7 @@ import sharedcms.content.world.biome.BiomeDesert;
 import sharedcms.content.world.biome.BiomeForest;
 import sharedcms.content.world.biome.BiomeMountains;
 import sharedcms.content.world.biome.BiomePlains;
+import sharedcms.content.world.biome.BiomeRiver;
 import sharedcms.content.world.generator.WorldGeneratorEmpty;
 import sharedcms.content.world.type.WorldTypeAres;
 import sharedcms.controller.shared.ContentController;
@@ -130,15 +132,21 @@ import sharedcms.fx.BlockEffect;
 import sharedcms.fx.SimpleBlockEffect;
 import sharedcms.registry.IRegistrant;
 import sharedcms.util.GEN;
+import sharedcms.util.GList;
 import sharedcms.util.Location;
 import sharedcms.util.M;
 import sharedcms.util.SimplexProperties;
 import sharedcms.voxel.VoxelRegistry;
+import sharedcns.api.biome.BiomeEffectType;
+import sharedcns.api.biome.BiomeSimplexEffect;
+import sharedcns.api.biome.LeveledBiome;
 import sharedcns.api.biome.LudicrousBiome;
 
 public class Content implements IRegistrant
 {
 	public static int biomeid = 0;
+	private static GList<LeveledBiome> biomeLevels = new GList<LeveledBiome>();
+	private static GList<BiomeSimplexEffect> biomeEffects = new GList<BiomeSimplexEffect>();
 
 	public static int nextBiomeId()
 	{
@@ -466,12 +474,70 @@ public class Content implements IRegistrant
 		public static BiomePlains PLAINS = new BiomePlains(0);
 		public static BiomeForest FOREST = new BiomeForest(10);
 		public static BiomeCanopy CANOPY = new BiomeCanopy(20);
-		public static BiomeDesert LAKE = new BiomeDesert(30);
+		public static BiomeDesert DESERT = new BiomeDesert(30);
 		public static BiomeMountains MOUNTAINS = new BiomeMountains(40);
+		public static BiomeRiver RIVER = new BiomeRiver(40);
 
 		public static void s()
 		{
 
+		}
+	}
+
+	public static class BiomeLevel
+	{
+		public static LeveledBiome BIOME_A = new LeveledBiome(Biome.PLAINS, 5);
+		public static LeveledBiome BIOME_B = new LeveledBiome(Biome.PLAINS, 7);
+		public static LeveledBiome BIOME_C = new LeveledBiome(Biome.FOREST, 7);
+		public static LeveledBiome BIOME_D = new LeveledBiome(Biome.FOREST, 10);
+		public static LeveledBiome BIOME_E = new LeveledBiome(Biome.FOREST, 15);
+		public static LeveledBiome BIOME_F = new LeveledBiome(Biome.CANOPY, 15);
+		public static LeveledBiome BIOME_G = new LeveledBiome(Biome.CANOPY, 20);
+		public static LeveledBiome BIOME_H = new LeveledBiome(Biome.PLAINS, 20);
+		public static LeveledBiome BIOME_I = new LeveledBiome(Biome.PLAINS, 25);
+		public static LeveledBiome BIOME_J = new LeveledBiome(Biome.DESERT, 25);
+		public static LeveledBiome BIOME_K = new LeveledBiome(Biome.DESERT, 30);
+
+		public static void s()
+		{
+			try
+			{
+				for(Field i : BiomeLevel.class.getDeclaredFields())
+				{
+					biomeLevels.add((LeveledBiome) i.get(null));
+				}
+			}
+
+			catch(Exception e)
+			{
+
+			}
+		}
+	}
+
+	public static class BiomeEffect
+	{
+		public static BiomeSimplexEffect RIVER = new BiomeSimplexEffect(Biome.RIVER, 1000, 3, 20, BiomeEffectType.STREAK, 0.011, 35, 2);
+		public static BiomeSimplexEffect RIDGE = new BiomeSimplexEffect(Biome.MOUNTAINS, 2000, 9, 20, BiomeEffectType.STREAK, 0.025, 15, 4);
+
+		public static void s()
+		{
+			try
+			{
+				for(Field i : BiomeEffect.class.getDeclaredFields())
+				{
+					BiomeSimplexEffect f = (BiomeSimplexEffect) i.get(null);
+					biomeEffects.add(f);
+					Random r = new Random(400 * f.getUid());
+					GEN.addGenerator(new SimplexProperties("terrain-streakset-" + f.getUid(), 125 * f.getUid() + r.nextLong(), 280));
+					GEN.addGenerator(new SimplexProperties(f.getBiome().getName().toUpperCase() + "-" + f.getUid(), f.getUid() - r.nextLong(), 200));
+				}
+			}
+
+			catch(Exception e)
+			{
+
+			}
 		}
 	}
 
@@ -1066,6 +1132,22 @@ public class Content implements IRegistrant
 		}
 	}
 
+	public static GList<LeveledBiome> biomeLevels()
+	{
+		biomeLevels.clear();
+		BiomeLevel.s();
+
+		return biomeLevels;
+	}
+
+	public static GList<BiomeSimplexEffect> biomeEffects()
+	{
+		biomeEffects.clear();
+		BiomeEffect.s();
+
+		return biomeEffects;
+	}
+
 	public static void init()
 	{
 		Content.Tab.s();
@@ -1074,6 +1156,8 @@ public class Content implements IRegistrant
 		Content.Item.s();
 		Content.WorldType.s();
 		Content.Biome.s();
+		Content.BiomeLevel.s();
+		Content.BiomeEffect.s();
 		Content.Effect.s();
 		Content.SoundMaterial.s();
 	}
