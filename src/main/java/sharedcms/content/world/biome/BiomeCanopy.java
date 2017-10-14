@@ -22,7 +22,6 @@ public class BiomeCanopy extends LBiomeBase
 	public BiomeCanopy(int level)
 	{
 		super(level);
-		height -= 0.3;
 		variation += 0.16;
 		setBiomeHumidity(BiomeHumidity.DAMP);
 		setBiomeTemperature(BiomeTemperature.CHILLY);
