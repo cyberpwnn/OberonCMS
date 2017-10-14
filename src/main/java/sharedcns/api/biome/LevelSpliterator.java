@@ -16,7 +16,7 @@ public class LevelSpliterator
 	public void add(int level)
 	{
 		levels[next++] = level;
-
+		
 		if(next == size())
 		{
 			recalculateMaxs();
