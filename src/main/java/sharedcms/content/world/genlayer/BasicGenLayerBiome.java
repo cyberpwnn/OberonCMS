@@ -26,7 +26,7 @@ public class BasicGenLayerBiome extends AresGenLayerBiome
 	@Override
 	public LudicrousBiome[] getAllowedBiomes(int x, int z)
 	{
-		BiomeBuffer buffer = Content.WorldType.ARES.getBiomeOperator().getBiomes(x, z);
+		BiomeBuffer buffer = Content.WorldType.ARES.getBiomeOperator().getBiomes(x * 4, z * 4);
 		List<LudicrousBiome> biomes = new GList<LudicrousBiome>();
 		
 		for(IBiome i : buffer.getBiomes())
