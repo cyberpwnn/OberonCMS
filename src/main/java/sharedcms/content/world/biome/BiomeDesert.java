@@ -23,7 +23,6 @@ public class BiomeDesert extends LBiomeBase
 	public BiomeDesert(int level)
 	{
 		super(level);
-		height -= 0.5;
 		variation += 0.16;
 		setBiomeHumidity(BiomeHumidity.DRY);
 		setBiomeTemperature(BiomeTemperature.HOT);
