@@ -7,26 +7,38 @@ import sharedcms.util.GList;
 
 public class LeveledBiomeOperator extends BiomeOperator implements IBiomeOperator
 {
+	private LevelSpliterator levelSplit;
+	
 	public LeveledBiomeOperator(BiomeBuffer b)
 	{
 		super(b);
+		
+		levelSplit = new LevelSpliterator(b.size());
+		
+		for(IBiome i : b.getBiomes())
+		{
+			levelSplit.add(i.getLevel());
+		}
 	}
 
 	@Override
 	public BiomeBuffer getBiomes(int x, int z)
 	{
-		BiomeBuffer list = new BiomeBuffer(new GList<IBiome>(biomes.getBiomes()));
-		int l = DimensionalLevel.getLevel(x, z);
-		int d = distanceToAnyBiome(list, l);
-		int k = 1;
-		k += d > 3 && d < 10 ? 0 : 1;
+		IBiome[] b = biomes.getBiomes().toArray(new IBiome[biomes.size()]);
+		BiomeBuffer bb = new BiomeBuffer();
+		int level = DimensionalLevel.getLevel(x, z);
+		int biomeLevel = levelSplit.getSplitLevel(level);
+		IBiome sel = null;
 		
-		while(list.size() > k)
+		for(IBiome i : b)
 		{
-			clip(list, DimensionalLevel.getLevel(x, z));
+			if(i.getLevel() == biomeLevel)
+			{
+				bb.put(i);
+			}
 		}
 		
-		return list;
+		return bb;
 	}
 
 	public int distanceToAnyBiome(BiomeBuffer buffer, int level)

@@ -8,13 +8,13 @@ import sharedcms.content.Content;
 import sharedcms.content.world.chunk.manager.BasicChunkManager;
 import sharedcms.content.world.chunk.provider.ChunkProviderSimple;
 import sharedcns.api.biome.BiomeBuffer;
-import sharedcns.api.biome.BiomeOperator;
+import sharedcns.api.biome.LeveledBiomeOperator;
 
 public class WorldTypeAres extends AresWorldType
 {
 	public WorldTypeAres(String name, int id)
 	{
-		super(name, id, new BiomeOperator(new BiomeBuffer(Content.biomes())));
+		super(name, id, new LeveledBiomeOperator(new BiomeBuffer(Content.biomes())));
 	}
 
 	@Override
