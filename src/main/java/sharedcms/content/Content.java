@@ -119,7 +119,7 @@ import sharedcms.content.structure.model.ModelMaterial;
 import sharedcms.content.structure.model.SmoothingMode;
 import sharedcms.content.tab.TabNatural;
 import sharedcms.content.world.biome.BiomeCanopy;
-import sharedcms.content.world.biome.BiomeLake;
+import sharedcms.content.world.biome.BiomeDesert;
 import sharedcms.content.world.biome.BiomeForest;
 import sharedcms.content.world.biome.BiomeMountains;
 import sharedcms.content.world.biome.BiomePlains;
@@ -466,7 +466,7 @@ public class Content implements IRegistrant
 		public static BiomePlains PLAINS = new BiomePlains(0);
 		public static BiomeForest FOREST = new BiomeForest(10);
 		public static BiomeCanopy CANOPY = new BiomeCanopy(20);
-		public static BiomeLake LAKE = new BiomeLake(30);
+		public static BiomeDesert LAKE = new BiomeDesert(30);
 		public static BiomeMountains MOUNTAINS = new BiomeMountains(40);
 
 		public static void s()
