@@ -14,7 +14,7 @@ public class WorldTypeAres extends AresWorldType
 {
 	public WorldTypeAres(String name, int id)
 	{
-		super(name, id, new LeveledBiomeOperator(new BiomeBuffer(Content.biomes())));
+		super(name, id, new LeveledBiomeOperator(new BiomeBuffer(Content.biomes()), Content.biomeLevels(), Content.biomeEffects()));
 	}
 
 	@Override
