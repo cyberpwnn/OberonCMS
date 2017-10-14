@@ -19,8 +19,8 @@ public class BiomeMountains extends LBiomeBase
 	public BiomeMountains(int level)
 	{
 		super(level);
-		height += 1.1;
-		variation += 0.55;
+		height += 1.8;
+		variation += 0.45;
 		setBiomeHumidity(BiomeHumidity.DAMP);
 		setBiomeTemperature(BiomeTemperature.CHILLY);
 		setSurfaceBuffer(new SolidSurfaceBuffer(Content.Block.COLD_GRASS, Content.Block.COLD_DIRT, Content.Block.COLD_STONE));
