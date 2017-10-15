@@ -67,27 +67,7 @@ public class GuiController extends Controller
 			@Override
 			public void doWork()
 			{
-				try
-				{
-					Thread.sleep(500);
-				}
-
-				catch(InterruptedException e)
-				{
-
-				}
-
 				work.run();
-
-				try
-				{
-					Thread.sleep(500);
-				}
-
-				catch(InterruptedException e)
-				{
-
-				}
 			}
 		});
 	}
