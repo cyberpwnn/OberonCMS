@@ -22,6 +22,7 @@ import sharedcms.content.effect.EffectFallingLeaf;
 import sharedcms.content.effect.EffectFirefly;
 import sharedcms.content.item.ItemCrusader;
 import sharedcms.content.item.ItemGladius;
+import sharedcms.content.item.ItemSpada;
 import sharedcms.content.structure.brush.Brush;
 import sharedcms.content.structure.brush.Brushable;
 import sharedcms.content.structure.brush.IBrush;
@@ -366,6 +367,11 @@ public class Content implements IRegistrant
 		public static ItemGladius SWORD_GLADIUS_ATROCIOUS = new ItemGladius("gladius_atrocious");
 		public static ItemGladius SWORD_GLADIUS_DISTINGUISHED = new ItemGladius("gladius_distinguished");
 		public static ItemGladius SWORD_GLADIUS_NEFARIOUS = new ItemGladius("gladius_nefarious");
+		public static ItemSpada SWORD_SPADA = new ItemSpada("spada");
+		public static ItemSpada SWORD_SPADA_IMPERIAL = new ItemSpada("spada_imperial");
+		public static ItemSpada SWORD_SPADA_NOBLE = new ItemSpada("spada_noble");
+		public static ItemSpada SWORD_SPADA_DESPICABLE = new ItemSpada("spada_despicable");
+		public static ItemSpada SWORD_SPADA_DASTARDLY = new ItemSpada("spada_dastardly");
 
 		public static void s()
 		{
