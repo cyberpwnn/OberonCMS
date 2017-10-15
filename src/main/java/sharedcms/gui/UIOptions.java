@@ -4,15 +4,21 @@ import java.awt.Color;
 
 import com.google.common.net.HostSpecifier;
 
+import net.minecraft.block.Block.SoundType;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.SoundCategory;
 import net.minecraft.client.gui.GuiIngameMenu;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.util.ChatComponentText;
 import sharedcms.Info;
+import sharedcms.audio.DSound;
+import sharedcms.audio.SFX;
 import sharedcms.config.GConfig;
 import sharedcms.config.GG;
 import sharedcms.config.graphics.GraphicsLevel;
 import sharedcms.config.graphics.GraphicsManager;
+import sharedcms.content.Content;
 import sharedcms.gui.base.LUI;
 import sharedcms.gui.component.IComponent;
 import sharedcms.gui.components.HButton;
@@ -35,6 +41,7 @@ public class UIOptions extends LUI
 	private HSlider sliderVertex;
 	private HPanel panelGraphics;
 	private HPanel panelGameplay;
+	private HPanel panelSound;
 	private long lastSave = M.ms();
 	private boolean changedSettingRender = false;
 	private boolean changedSetting = false;
@@ -55,12 +62,14 @@ public class UIOptions extends LUI
 	{
 		buildOptionsPanel();
 		buildGraphicsPanel();
+		buildSoundPanel();
 	}
 
 	private void visibility(String panel)
 	{
 		panelGameplay.setVisible(false);
 		panelGraphics.setVisible(false);
+		panelSound.setVisible(false);
 
 		if(panel.equals("gameplay"))
 		{
@@ -70,6 +79,11 @@ public class UIOptions extends LUI
 		if(panel.equals("graphics"))
 		{
 			panelGraphics.setVisible(true);
+		}
+
+		if(panel.equals("sound"))
+		{
+			panelSound.setVisible(true);
 		}
 	}
 
@@ -83,6 +97,156 @@ public class UIOptions extends LUI
 		parent.add(h);
 
 		return h;
+	}
+
+	private void buildSoundPanel()
+	{
+		panelSound = new HPanel(canvas.getScaledX(0.70f), canvas.getScaledY(0.9f));
+		panelSound.getLayout().getMargin().setMarginUp(20);
+		panelSound.getLayout().getMargin().setMarginLeft(5);
+		panelSound.getLayout().getPadding().setPaddingUp(15);
+		canvas.centerHeight(panelSound);
+		canvas.add(panelSound);
+
+		HLabel title = addLabel(panelSound, "Sound Options", 18);
+
+		HPanel panelSep = new HPanel(panelSound.getSize().getX() - (panelSound.getLayout().getMargin().getMarginLeft() * 2), panelSound.getSize().getY() - (panelSound.getSize().getY() / 6));
+		panelSep.setLayout(new LinearLayout(LinearDirection.HORIZONTAL));
+		panelSep.getLayout().getPadding().setPaddingLeft(5);
+		panelSep.setOpacity(0);
+		panelSound.add(panelSep);
+
+		HPanel panel1 = new HPanel((panelSep.getSize().getX() / 3) - 5, panelSep.getSize().getY());
+		panel1.getLayout().getPadding().setPaddingUp(6);
+		panel1.getLayout().getMargin().setMarginUp(5);
+		panel1.getLayout().getMargin().setMarginLeft(5);
+		panel1.setOpacity(0);
+		panelSep.add(panel1);
+
+		HLabel labelMouse = addLabel(panel1, "Master", 12);
+
+		HSlider sliderMaster = new HSlider((int) (panel1.getSize().getX() / 1.5), 0, 100)
+		{
+			@Override
+			public void slid(Point p)
+			{
+				super.slid(p);
+				Minecraft.getMinecraft().gameSettings.setSoundLevel(SoundCategory.MASTER, (float) getValue() / 100f);
+			}
+		};
+
+		sliderMaster.setValue((int) (Minecraft.getMinecraft().gameSettings.getSoundLevel(SoundCategory.MASTER) * 100f));
+		sliderMaster.setFontSize(12);
+		panel1.add(sliderMaster);
+
+		HLabel labelMusic = addLabel(panel1, "Music", 12);
+
+		HSlider sliderMusic = new HSlider((int) (panel1.getSize().getX() / 1.5), 0, 100)
+		{
+			@Override
+			public void slid(Point p)
+			{
+				super.slid(p);
+				Minecraft.getMinecraft().gameSettings.setSoundLevel(SoundCategory.MUSIC, (float) getValue() / 100f);
+				Minecraft.getMinecraft().gameSettings.setSoundLevel(SoundCategory.RECORDS, (float) getValue() / 100f);
+			}
+		};
+
+		sliderMusic.setValue((int) (Minecraft.getMinecraft().gameSettings.getSoundLevel(SoundCategory.MUSIC) * 100f));
+		sliderMusic.setFontSize(12);
+		panel1.add(sliderMusic);
+
+		HLabel labelSounds = addLabel(panel1, "Sounds", 12);
+
+		HSlider sliderSounds = new HSlider((int) (panel1.getSize().getX() / 1.5), 0, 100)
+		{
+			@Override
+			public void slid(Point p)
+			{
+				super.slid(p);
+
+				for(SoundCategory i : SoundCategory.values())
+				{
+					if(i.equals(SoundCategory.MASTER) || i.equals(SoundCategory.MUSIC) || i.equals(SoundCategory.RECORDS))
+					{
+						continue;
+					}
+
+					Minecraft.getMinecraft().gameSettings.setSoundLevel(i, (float) getValue() / 100f);
+				}
+			}
+		};
+
+		sliderSounds.setValue((int) (Minecraft.getMinecraft().gameSettings.getSoundLevel(SoundCategory.AMBIENT) * 100f));
+		sliderSounds.setFontSize(12);
+		panel1.add(sliderSounds);
+
+		HPanel panel2 = new HPanel((panelSep.getSize().getX() / 3) - 5, panelSep.getSize().getY());
+		panel2.getLayout().getPadding().setPaddingUp(6);
+		panel2.getLayout().getMargin().setMarginUp(5);
+		panel2.getLayout().getMargin().setMarginLeft(5);
+		panel2.setOpacity(0);
+		panelSep.add(panel2);
+
+		HLabel labelReverb = addLabel(panel2, "Reverb Decay", 12);
+
+		HSlider sliderDisplacement = new HSlider((int) (panel1.getSize().getX() / 1.5), 0, 100)
+		{
+			@Override
+			public void slid(Point p)
+			{
+				super.slid(p);
+
+				Info.REVERB_DECAY = getValue() / 10f;
+			}
+		};
+
+		sliderDisplacement.setValue((int) (Info.REVERB_DECAY * 10));
+		sliderDisplacement.setFontSize(12);
+		panel2.add(sliderDisplacement);
+
+		HLabel labelReverbGain = addLabel(panel2, "Reverb Gain", 12);
+
+		HSlider sliderGain = new HSlider((int) (panel1.getSize().getX() / 1.5), 0, 100)
+		{
+			@Override
+			public void slid(Point p)
+			{
+				super.slid(p);
+
+				Info.REVERB_GAIN = getValue() / 100f;
+			}
+		};
+
+		sliderGain.setValue((int) (Info.REVERB_GAIN * 100));
+		sliderGain.setFontSize(12);
+		panel2.add(sliderGain);
+		
+		HLabel labelReverbDiff = addLabel(panel2, "Reverb Diffusion", 12);
+
+		HSlider sliderDiff = new HSlider((int) (panel1.getSize().getX() / 1.5), 0, 100)
+		{
+			@Override
+			public void slid(Point p)
+			{
+				super.slid(p);
+
+				Info.REVERB_DIFFUSION = getValue() / 100f;
+			}
+		};
+
+		sliderDiff.setValue((int) (Info.REVERB_DIFFUSION * 100));
+		sliderDiff.setFontSize(12);
+		panel2.add(sliderDiff);
+
+		HPanel panel3 = new HPanel((panelSep.getSize().getX() / 3), panelSep.getSize().getY());
+		panel3.getLayout().getPadding().setPaddingUp(6);
+		panel3.getLayout().getMargin().setMarginUp(5);
+		panel3.getLayout().getMargin().setMarginLeft(5);
+		panel3.setOpacity(0);
+		panelSep.add(panel3);
+
+		HLabel labelNetwork = addLabel(panel3, "Other", 12);
 	}
 
 	private void buildGraphicsPanel()
@@ -200,7 +364,7 @@ public class UIOptions extends LUI
 
 		HLabel labelViewDistance = addLabel(panel1, "View Distance", 9);
 
-		HSlider sliderViewDistance = new HSlider((int) (panel1.getSize().getX() / 1.5), 0, 32)
+		HSlider sliderViewDistance = new HSlider((int) (panel1.getSize().getX() / 1.5), 0, 10)
 		{
 			@Override
 			public void slid(Point p)
@@ -594,15 +758,19 @@ public class UIOptions extends LUI
 		sidebar.setColor(Color.black);
 		panelGameplay.setColor(Color.black);
 		panelGraphics.setColor(Color.black);
+		panelSound.setColor(Color.black);
 
 		sidebar.setOpacity(0.45);
 		panelGameplay.setOpacity(0.45);
 		panelGraphics.setOpacity(0.45);
+		panelSound.setOpacity(0.45);
 	}
 
 	@Override
 	public void onGuiClose()
 	{
+		Info.save();
+		
 		if(changedSetting)
 		{
 			GConfig.forceSaveALL();
