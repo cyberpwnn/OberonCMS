@@ -1,4 +1,4 @@
-package sharedcms.renderer.animation.anim.player;
+package sharedcms.renderer.animation.weapon.crusader;
 
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,7 +15,7 @@ import sharedcms.renderer.animation.util.SmoothVector3f;
 
 import org.lwjgl.util.vector.Vector3f;
 
-public class Animation_Attack_Combo2
+public class CrusaderAttack3
 {
 	public static void animate(EntityPlayer player, ModelBendsPlayer model, Data_Player data)
 	{

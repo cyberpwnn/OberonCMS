@@ -1,4 +1,4 @@
-package sharedcms.renderer.animation.anim.player;
+package sharedcms.renderer.animation.weapon.gladius;
 
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,7 +14,7 @@ import sharedcms.renderer.animation.util.SmoothVector3f;
 
 import org.lwjgl.util.vector.Vector3f;
 
-public class Animation_Attack_Combo0
+public class GladiusAttack1
 {
 	public static void animate(EntityPlayer player, ModelBendsPlayer model, Data_Player data)
 	{
@@ -41,9 +41,9 @@ public class Animation_Attack_Combo0
 		((ModelRendererBends) model.bipedHead).rotation.setSmoothX(model.headRotationX);
 		((ModelRendererBends) model.bipedHead).pre_rotation.setSmoothX(-model.bipedBody.rotateAngleX, 0.9f);
 		((ModelRendererBends) model.bipedHead).pre_rotation.setSmoothY(-model.bipedBody.rotateAngleY - 30.0f, 0.9f);
-		((ModelRendererBends) model.bipedRightArm).pre_rotation.setSmoothZ(60.0f, 0.3f);
+		((ModelRendererBends) model.bipedRightArm).pre_rotation.setSmoothZ(-10.0f, 0.3f);
 		((ModelRendererBends) model.bipedRightArm).rotation.setSmoothX(-20.0f + armSwing * 100.0f, 3.0f);
-		((ModelRendererBends) model.bipedRightArm).rotation.setSmoothX(60.0f - armSwing * 180.0f, 3.0f);
+		((ModelRendererBends) model.bipedRightArm).rotation.setSmoothX(160.0f - armSwing * 180.0f, 3.0f);
 		((ModelRendererBends) model.bipedRightArm).rotation.setSmoothY(0.0f, 0.9f);
 		((ModelRendererBends) model.bipedRightArm).rotation.setSmoothZ(0.0f, 0.9f);
 		((ModelRendererBends) model.bipedLeftArm).rotation.setSmoothZ(20.0f, 0.3f);
