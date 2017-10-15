@@ -6,6 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import sharedcms.content.item.ItemCrusader;
 import sharedcms.content.item.ItemGladius;
+import sharedcms.content.item.ItemSpada;
 import sharedcms.content.weapon.WeaponType;
 import sharedcms.renderer.animation.anim.Animation;
 import sharedcms.renderer.animation.client.model.entity.ModelBendsPlayer;
@@ -20,6 +21,10 @@ import sharedcms.renderer.animation.weapon.gladius.GladiusAttack1;
 import sharedcms.renderer.animation.weapon.gladius.GladiusAttack2;
 import sharedcms.renderer.animation.weapon.gladius.GladiusAttack3;
 import sharedcms.renderer.animation.weapon.gladius.GladiusAttack4;
+import sharedcms.renderer.animation.weapon.spada.SpadaAttack1;
+import sharedcms.renderer.animation.weapon.spada.SpadaAttack2;
+import sharedcms.renderer.animation.weapon.spada.SpadaAttack3;
+import sharedcms.renderer.animation.weapon.spada.SpadaAttack4;
 
 public class Animation_Attack extends Animation
 {
@@ -49,6 +54,11 @@ public class Animation_Attack extends Animation
 			if(item.getItem() instanceof ItemGladius)
 			{
 				wt = WeaponType.GLADIUS;
+			}
+			
+			if(item.getItem() instanceof ItemSpada)
+			{
+				wt = WeaponType.SPADA;
 			}
 		}
 		
@@ -115,6 +125,42 @@ public class Animation_Attack extends Animation
 					else if(data.currentAttack == 4)
 					{
 						GladiusAttack4.animate((EntityPlayer) argEntity, model, data);
+						BendsPack.animate(model, "player", "attack_3");
+					}
+				}
+				
+				else if(data.ticksAfterPunch < 60.0f)
+				{
+					Animation_Attack_Stance.animate((EntityPlayer) argEntity, model, data);
+					BendsPack.animate(model, "player", "attack_stance");
+				}
+			}
+			
+			else if(wt.equals(WeaponType.SPADA))
+			{
+				if(data.ticksAfterPunch < 8.0f)
+				{
+					if(data.currentAttack == 1)
+					{
+						SpadaAttack1.animate((EntityPlayer) argEntity, model, data);
+						BendsPack.animate(model, "player", "attack_0");
+					}
+					
+					else if(data.currentAttack == 2)
+					{
+						SpadaAttack2.animate((EntityPlayer) argEntity, model, data);
+						BendsPack.animate(model, "player", "attack_1");
+					}
+					
+					else if(data.currentAttack == 3)
+					{
+						SpadaAttack3.animate((EntityPlayer) argEntity, model, data);
+						BendsPack.animate(model, "player", "attack_2");
+					}
+					
+					else if(data.currentAttack == 4)
+					{
+						SpadaAttack4.animate((EntityPlayer) argEntity, model, data);
 						BendsPack.animate(model, "player", "attack_3");
 					}
 				}
