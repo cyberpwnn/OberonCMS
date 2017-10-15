@@ -106,15 +106,15 @@ public class BiomeCanopy extends LBiomeBase
 		normalTree.unbindTemperature(BiomeTemperature.SCORCHED);
 		normalTree.unbindTemperature(BiomeTemperature.HOT);
 
-		TreeBuffer superTree = new TreeBuffer(TreeModel.CANOPY, 9, Content.Block.LOG_MOSSY, Content.Block.LEAVES_OAK)
+		TreeBuffer superTree = new TreeBuffer(TreeModel.CANOPY, 9, Content.Block.LOG_CRACKED, Content.Block.LEAVES_OAK)
 		{
 			@Override
 			public void updateForGen(World w, int x, int z)
 			{
 				super.updateForGen(w, x, z);
 				
-				int dist = distanceToBorder(w, x, z, 67);
-				setTreeHeight((int) (10 + GEN.getNoise("canopy-height", x, z, 6, 0) + (dist / 3)));
+				int dist = distanceToBorder(w, x, z, 46);
+				setTreeHeight((int) (17 + GEN.getNoise("canopy-height", x, z, 6, 0) + (dist / 2)));
 			}
 		};
 		superTree.setTreeHeight(23);

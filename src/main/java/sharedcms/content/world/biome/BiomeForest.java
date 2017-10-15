@@ -9,6 +9,7 @@ import sharedcms.content.world.buffer.scatter.ShrubBuffer;
 import sharedcms.content.world.buffer.scatter.TreeBuffer;
 import sharedcms.content.world.buffer.scatter.TreeModel;
 import sharedcms.content.world.buffer.surface.SolidSurfaceBuffer;
+import sharedcms.content.world.buffer.surface.SplitSurfaceBuffer;
 import sharedcms.util.GEN;
 import sharedcns.api.biome.BiomeHumidity;
 import sharedcns.api.biome.BiomeTemperature;
@@ -22,8 +23,12 @@ public class BiomeForest extends LBiomeBase
 		variation += 0.15;
 		setBiomeHumidity(BiomeHumidity.DAMP);
 		setBiomeTemperature(BiomeTemperature.WARM);
-		setSurfaceBuffer(new SolidSurfaceBuffer(Content.Block.COLD_GRASS, Content.Block.COLD_DIRT, Content.Block.COLD_STONE));
-
+		SplitSurfaceBuffer buffer = new SplitSurfaceBuffer(Content.Block.COLD_GRASS, Content.Block.COLD_DIRT, Content.Block.COLD_STONE);
+		buffer.putFiller(Content.Block.MOIST_EARTH, BiomeHumidity.DRENCHED);
+		buffer.putFiller(Content.Block.MOIST_EARTH, BiomeHumidity.WET);
+		buffer.putFiller(Content.Block.MOIST_EARTH, BiomeTemperature.HOT);
+		buffer.putFiller(Content.Block.MOIST_EARTH, BiomeTemperature.WARM);
+		
 		ShrubBuffer mainShrub = new ShrubBuffer(40);
 		mainShrub.setDecorationPass(DecorationPass.PASS_12);
 		mainShrub.addSoil(Content.Block.COLD_GRASS);
@@ -93,22 +98,43 @@ public class BiomeForest extends LBiomeBase
 		normalTree.unbindTemperature(BiomeTemperature.SCORCHED);
 		normalTree.unbindTemperature(BiomeTemperature.HOT);
 		
-		TreeBuffer choppedTree = new TreeBuffer(TreeModel.BASIC, 4, Content.Block.LOG_SPRUCE, Blocks.air);
+		TreeBuffer normalTreeRare = new TreeBuffer(TreeModel.CONIFEROUS, 1, Content.Block.LOG_FAINTED, Content.Block.LEAVES_DARK)
+		{
+			@Override
+			public void updateForGen(World w, int x, int z)
+			{
+				super.updateForGen(w, x, z);
+				
+				int dist = distanceToBorder(w, x, z, 37);
+				setTreeHeight((int) ((7 + GEN.getNoise("canopy-height", x, z, 0.5, 1) * (dist / 3))));
+			}
+		};
+		
+		normalTreeRare.setTreeHeight(8);
+		normalTreeRare.setDecorationPass(DecorationPass.PASS_10);
+		normalTreeRare.addSoil(Content.Block.COLD_GRASS);
+		normalTreeRare.bindAllHumidities();
+		normalTreeRare.bindAllTemperatures();
+		normalTreeRare.unbindHumidity(BiomeHumidity.ARID);
+		normalTreeRare.unbindHumidity(BiomeHumidity.DRY);
+		normalTreeRare.unbindTemperature(BiomeTemperature.SCORCHED);
+		normalTreeRare.unbindTemperature(BiomeTemperature.HOT);
+		
+		TreeBuffer choppedTree = new TreeBuffer(TreeModel.BASIC, 4, Content.Block.LOG_GHOST, Blocks.air);
 		choppedTree.setTreeHeight(2);
 		choppedTree.setDecorationPass(DecorationPass.PASS_10);
 		choppedTree.addSoil(Content.Block.COLD_GRASS);
 		choppedTree.bindAllHumidities();
 		choppedTree.bindAllTemperatures();
 
-		TreeBuffer burnedTree = new TreeBuffer(TreeModel.BASIC, 13, Content.Block.LOG_DARK, Blocks.air);
+		TreeBuffer burnedTree = new TreeBuffer(TreeModel.BASIC, 13, Content.Block.LOG_GHOST, Blocks.air);
 		burnedTree.setTreeHeight(4);
 		burnedTree.setDecorationPass(DecorationPass.PASS_10);
 		burnedTree.addSoil(Content.Block.COLD_GRASS);
-		burnedTree.bindAllHumidities();
-		burnedTree.unbindHumidity(BiomeHumidity.ARID);
-		burnedTree.unbindHumidity(BiomeHumidity.DRY);
-		burnedTree.unbindTemperature(BiomeTemperature.SCORCHED);
-		burnedTree.unbindTemperature(BiomeTemperature.HOT);
+		burnedTree.bindHumidity(BiomeHumidity.ARID);
+		burnedTree.bindHumidity(BiomeHumidity.DRY);
+		burnedTree.bindTemperature(BiomeTemperature.SCORCHED);
+		burnedTree.bindTemperature(BiomeTemperature.HOT);
 		
 		TreeBuffer cookedTree = new TreeBuffer(TreeModel.BASIC, 9, Content.Block.LOG_ARID, Blocks.air);
 		cookedTree.setTreeHeight(5);
@@ -120,11 +146,13 @@ public class BiomeForest extends LBiomeBase
 		cookedTree.bindTemperature(BiomeTemperature.SCORCHED);
 		cookedTree.bindTemperature(BiomeTemperature.HOT);
 
+		setSurfaceBuffer(buffer);
 		addScatterBuffer(mainShrub);
 		addScatterBuffer(normalShrub);
 		addScatterBuffer(dryShrub);
 		addScatterBuffer(hotShrub);
 		addScatterBuffer(burnedTree);
+		addScatterBuffer(normalTreeRare);
 		addScatterBuffer(normalTree);
 		addScatterBuffer(cookedTree);
 		addScatterBuffer(choppedTree);

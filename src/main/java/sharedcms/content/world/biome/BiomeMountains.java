@@ -80,7 +80,7 @@ public class BiomeMountains extends LBiomeBase
 				super.updateForGen(w, x, z);
 				
 				int dist = distanceToBorder(w, x, z, 67);
-				setTreeHeight((int) ((14 + GEN.getNoise("canopy-height", x, z, 0.5, 1) * (dist / 5))));
+				setTreeHeight((int) ((19 + GEN.getNoise("canopy-height", x, z, 0.5, 1) * (dist / 5))));
 			}
 		};
 		
