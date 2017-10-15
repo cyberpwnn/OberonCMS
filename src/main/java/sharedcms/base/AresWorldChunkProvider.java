@@ -199,6 +199,7 @@ public class AresWorldChunkProvider implements IChunkProvider
 								{
 									blocks[j3 += short1] = Blocks.water;
 								}
+								
 								else
 								{
 									blocks[j3 += short1] = null;

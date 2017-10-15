@@ -486,7 +486,7 @@ public class Content implements IRegistrant
 
 	public static class BiomeLevel
 	{
-		public static LeveledBiome BIOME_A = new LeveledBiome(Biome.PLAINS, 5);
+		public static LeveledBiome BIOME_A = new LeveledBiome(Biome.PLAINS, 5); 
 		public static LeveledBiome BIOME_B = new LeveledBiome(Biome.PLAINS, 7);
 		public static LeveledBiome BIOME_C = new LeveledBiome(Biome.FOREST, 7);
 		public static LeveledBiome BIOME_D = new LeveledBiome(Biome.FOREST, 10);

@@ -30,7 +30,7 @@ public class BiomePlains extends LBiomeBase
 		ShrubBuffer normal = new ShrubBuffer(50);
 		normal.addSoil(Content.Block.COLD_GRASS);
 		
-		for(AresBlockShrub i : Content.flowers())
+		for(AresBlockShrub i : Content.flowers()) 
 		{
 			normal.addBlock(i, i.getWeight());
 		}
