@@ -8,6 +8,6 @@ public class AresStructureBlock extends AresBlock
 {
 	public AresStructureBlock(String unlocalizedName, Material material, SoundType type)
 	{
-		super(unlocalizedName, material, Content.Tab.NATURAL, type, true);
+		super(unlocalizedName, material, Content.Tab.NATURAL, type, false);
 	}
 }
