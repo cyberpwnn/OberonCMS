@@ -169,7 +169,7 @@ public class Content implements IRegistrant
 		public static BlockRoughDirt ROUGH_DIRT = new BlockRoughDirt("rough_dirt", Material.ground, Sound.GRAVEL);
 		public static BlockWattleDaub WATTLE_DAUB2 = new BlockWattleDaub("wattledaub2", Material.ground, Sound.GRAVEL);
 		public static BlockWattleDaub WATTLE_DAUB = new BlockWattleDaub("wattledaub", Material.ground, Sound.GRAVEL);
-		public static BlockLogRotten LOG_ROTTEN = new BlockLogRotten("rotterd_log", Material.wood, Sound.WOOD);
+		public static BlockLogRotten LOG_ROTTEN = new BlockLogRotten("rotted_log", Material.wood, Sound.WOOD);
 		public static BlockPillarPlanks PLANK_PILLAR = new BlockPillarPlanks("plank_pillar2", Material.wood, Sound.WOOD);
 		public static BlockPillarPlanks PLANK_PILLAR_BOUND = new BlockPillarPlanks("plank_pillar_bar2", Material.wood, Sound.WOOD);
 		public static BlockPlanksOakMoldy PLANK_MOLDY_OAK = new BlockPlanksOakMoldy("plank_oak_moldy", Material.wood, Sound.WOOD);
@@ -180,7 +180,7 @@ public class Content implements IRegistrant
 		public static BlockWoodNub WOOD_NUB = new BlockWoodNub("log_seeker", Material.wood, Sound.WOOD);
 		public static BlockLogGhost LOG_GHOST = new BlockLogGhost("log_ghost1", Material.wood, Sound.WOOD);
 		public static BlockLogFainted LOG_FAINTED = new BlockLogFainted("log_ghost", Material.wood, Sound.WOOD);
-		public static BlockLogCracked LOG_CRACKED = new BlockLogCracked("log_dark_tilable", Material.wood, Sound.WOOD);
+		public static BlockLogCracked LOG_CRACKED = new BlockLogCracked("log_dark_tileable", Material.wood, Sound.WOOD);
 		public static BlockLogDarkJungle LOG_DARK_JUNGLE = new BlockLogDarkJungle("log_dark_jungle", Material.wood, Sound.WOOD);
 		public static BlockLogDimmed LOG_DIMMED = new BlockLogDimmed("log_bright", Material.wood, Sound.WOOD);
 		public static BlockPillarBoundLogs PLANKS_BAR_BOUND = new BlockPillarBoundLogs("log_bar_pv", Material.wood, Sound.WOOD);
