@@ -38,12 +38,14 @@ public class Info
 	public static final int MAX_STREAM_CHANNELS = 8;
 	public static final int MAX_CHANNELS = 48;
 	public static final int ROOM_SCAN_SIZE = 512;
-	public static final float REVERB_DECAY = 4.5f;
-	public static final float REVERB_GAIN = 0.42f;
-	public static final float REVERB_DELAY = 0.001f;
-	public static final float REVERB_REFLECTOR = 0.01f;
-	public static final float REVERB_DIFFUSION = 0.74f;
-	public static final float REVERB_ROLLOFF = 0.001f;
+
+	public static float REVERB_DECAY = 6f;
+	public static float REVERB_GAIN = 0.75f;
+	public static float REVERB_DELAY = 0.001f;
+	public static float REVERB_REFLECTOR = 0.01f;
+	public static float REVERB_DIFFUSION = 0.85f;
+	public static float REVERB_ROLLOFF = 0.001f;
+
 	public static int SHADER_BLUR_RADIUS = 28;
 	public static final int SHADER_BLUR_FADE = 500;
 	public static final Color SHADER_BLUR_START = new Color(0, 0, 0, 0);
@@ -63,6 +65,11 @@ public class Info
 		cc.put("vertex-multiplier", TESSELLATION_VERTEX_MODIFIER);
 		cc.put("simplex-multiplier", TESSELLATION_SIMPLEX_MODIFIER);
 		cc.put("graphics", GRAPHICS_LEVEL);
+		cc.put("reverb-decay", (double) REVERB_DECAY);
+		cc.put("reverb-gain", (double) REVERB_GAIN);
+		cc.put("reverb-delay", (double) REVERB_DELAY);
+		cc.put("reverb-reflector", (double) REVERB_REFLECTOR);
+		cc.put("reverb-rolloff", (double) REVERB_ROLLOFF);
 		cc.write(new File("optionscms.json"));
 	}
 
@@ -87,6 +94,12 @@ public class Info
 			TESSELLATION_SIMPLEX_MODIFIER = (float) cc.getDouble("simplex-multiplier");
 			TESSELLATION_VERTEX_MODIFIER = R.CLIP(TESSELLATION_VERTEX_MODIFIER, 0f, 2.5f);
 			TESSELLATION_SIMPLEX_MODIFIER = R.CLIP(TESSELLATION_VERTEX_MODIFIER, 0f, 2f);
+			
+			REVERB_DECAY = (float) cc.getDouble("reverb-decay");
+			REVERB_GAIN = (float) cc.getDouble("reverb-gain");
+			REVERB_DELAY = (float) cc.getDouble("reverb-delay");
+			REVERB_REFLECTOR = (float) cc.getDouble("reverb-reflector");
+			REVERB_ROLLOFF = (float) cc.getDouble("reverb-rolloff");
 		}
 
 		catch(Exception e)
