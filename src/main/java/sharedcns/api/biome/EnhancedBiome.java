@@ -22,6 +22,7 @@ public class EnhancedBiome extends AresBiome implements IBiome
 	private ISurfaceBuffer paver;
 	private List<IScatterBuffer> decorators;
 	private int level;
+	protected boolean allowWater;
 
 	public EnhancedBiome(int id)
 	{
@@ -29,6 +30,7 @@ public class EnhancedBiome extends AresBiome implements IBiome
 		level = 0;
 		paver = new DefaultBiomePaver();
 		decorators = new ArrayList<IScatterBuffer>();
+		allowWater = false;
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -189,67 +191,70 @@ public class EnhancedBiome extends AresBiome implements IBiome
 				{
 					if(block2 != null)
 					{
-						if(k == -1)
+						if(block2 == Blocks.stone || !allowWater)
 						{
-							if(l <= 0)
+							if(k == -1)
 							{
-								blockTop = null;
-								b0 = 0;
-								blockFiller = getSurfaceBuffer().getRockBlock(vx, vy, vz, temperatureModifier, humidityModifier, temp, hum);
-							}
-
-							else if(l1 >= 59 && l1 <= 64)
-							{
-								blockTop = getSurfaceBuffer().getTopBlock(vx, vy, vz, temperatureModifier, humidityModifier, temp, hum);
-								b0 = (byte) (this.field_150604_aj & 255);
-								blockFiller = getSurfaceBuffer().getFillerBlock(vx, vy, vz, temperatureModifier, humidityModifier, temp, hum);
-							}
-
-							if(l1 < 63 && (blockTop == null || blockTop.getMaterial() == Material.air))
-							{
-								if(this.getFloatTemperature(chunkX, l1, chunkZ) < 0.15F)
+								if(l <= 0)
 								{
-									blockTop = Blocks.ice;
+									blockTop = null;
 									b0 = 0;
+									blockFiller = getSurfaceBuffer().getRockBlock(vx, vy, vz, temperatureModifier, humidityModifier, temp, hum);
+								}
+
+								else if(l1 >= 59 && l1 <= 64)
+								{
+									blockTop = getSurfaceBuffer().getTopBlock(vx, vy, vz, temperatureModifier, humidityModifier, temp, hum);
+									b0 = (byte) (this.field_150604_aj & 255);
+									blockFiller = getSurfaceBuffer().getFillerBlock(vx, vy, vz, temperatureModifier, humidityModifier, temp, hum);
+								}
+
+								if(l1 < 63 && (blockTop == null || blockTop.getMaterial() == Material.air))
+								{
+									if(this.getFloatTemperature(chunkX, l1, chunkZ) < 0.15F)
+									{
+										blockTop = Blocks.ice;
+										b0 = 0;
+									}
+
+									else
+									{
+										blockTop = Blocks.water;
+										b0 = 0;
+									}
+								}
+
+								k = l;
+
+								if(l1 >= 62)
+								{
+									blocks[i2] = blockTop;
+									bytes[i2] = b0;
+								}
+
+								else if(l1 < 56 - l)
+								{
+									blockTop = null;
+									blockFiller = getSurfaceBuffer().getRockBlock(vx, vy, vz, temperatureModifier, humidityModifier, temp, hum);
+									blocks[i2] = Blocks.gravel;
 								}
 
 								else
 								{
-									blockTop = Blocks.water;
-									b0 = 0;
+									blocks[i2] = getSurfaceBuffer().getRockBlock(vx, vy, vz, temperatureModifier, humidityModifier, temp, hum);
 								}
 							}
 
-							k = l;
-
-							if(l1 >= 62)
+							else if(k > 0)
 							{
-								blocks[i2] = blockTop;
-								bytes[i2] = b0;
-							}
+								--k;
+								blocks[i2] = blockFiller;
 
-							else if(l1 < 56 - l)
-							{
-								blockTop = null;
-								blockFiller = getSurfaceBuffer().getRockBlock(vx, vy, vz, temperatureModifier, humidityModifier, temp, hum);
-								blocks[i2] = Blocks.gravel;
-							}
-
-							else
-							{
-								blocks[i2] = getSurfaceBuffer().getRockBlock(vx, vy, vz, temperatureModifier, humidityModifier, temp, hum);
-							}
-						}
-
-						else if(k > 0)
-						{
-							--k;
-							blocks[i2] = blockFiller;
-
-							if(k == 0 && blockFiller == Blocks.sand)
-							{
-								k = random.nextInt(4) + Math.max(0, l1 - 63);
-								blockFiller = Blocks.sandstone;
+								if(k == 0 && blockFiller == Blocks.sand)
+								{
+									k = random.nextInt(4) + Math.max(0, l1 - 63);
+									blockFiller = Blocks.sandstone;
+								}
 							}
 						}
 					}
