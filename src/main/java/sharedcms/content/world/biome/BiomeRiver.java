@@ -27,12 +27,13 @@ public class BiomeRiver extends LBiomeBase
 	{
 		super(level);
 
-		height = -0.9f;
-		variation = 0f;
+		height = -0.66f;
+		variation = 0.02f;
+		allowWater = true;
 		setBiomeHumidity(BiomeHumidity.DRENCHED);
 		setBiomeTemperature(BiomeTemperature.CHILLY);
 
-		SplitSurfaceBuffer buffer = new SplitSurfaceBuffer(Blocks.air, Content.Block.PATH_SAND, Content.Block.COLD_STONE);
+		SplitSurfaceBuffer buffer = new SplitSurfaceBuffer(Content.Block.PATH_SAND, Content.Block.SMOOTH_DIRT, Content.Block.COLD_STONE);
 
 		setSurfaceBuffer(buffer);
 	}
