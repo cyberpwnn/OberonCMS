@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import org.lwjgl.opengl.Display;
+
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin.MCVersion;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
@@ -100,6 +102,7 @@ public class ASMHandler implements IFMLLoadingPlugin
 
 	public void buildInjectors()
 	{
+		Display.setTitle("Project Oberon");
 		add("InjectorBlock");
 		add("InjectorBlockCactus");
 		add("InjectorRenderer");

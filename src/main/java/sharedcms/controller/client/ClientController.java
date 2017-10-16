@@ -1,5 +1,7 @@
 package sharedcms.controller.client;
 
+import org.lwjgl.opengl.Display;
+
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
 import cpw.mods.fml.common.registry.GameData;
@@ -16,7 +18,7 @@ public class ClientController extends Controller
 {
 	public ClientController()
 	{
-
+		Display.setTitle("Project Oberon");
 	}
 
 	@Override
