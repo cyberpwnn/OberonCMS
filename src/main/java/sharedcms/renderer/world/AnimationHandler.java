@@ -10,6 +10,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.WorldRenderer;
 import sharedcms.asm.ASMHandler;
 import sharedcms.controller.client.ChunkAnimationController;
+import sharedcms.gui.util.R;
+import sharedcms.util.Location;
 
 public class AnimationHandler
 {
@@ -36,18 +38,22 @@ public class AnimationHandler
 				int animationDuration;
 				RendererInfo renderInfo = this.timeStamps.get(renderListID);
 				long time = renderInfo.timeStamp;
+
 				if(time == -1)
 				{
 					time = renderInfo.timeStamp = System.currentTimeMillis();
 				}
+
 				if((timeDif = System.currentTimeMillis() - time) < (long) (animationDuration = ChunkAnimationController.INSTANCE.config.getAnimationDuration()))
 				{
 					chunkY = renderInfo.posY;
 					int mode = ChunkAnimationController.INSTANCE.config.getMode();
+
 					if(mode == 2)
 					{
 						mode = chunkY < Minecraft.getMinecraft().theWorld.provider.getHorizon() ? 0 : 1;
 					}
+
 					switch(mode)
 					{
 						case 0:
@@ -56,6 +62,7 @@ public class AnimationHandler
 							modY = -chunkY + chunkY / (double) animationDuration * (double) timeDif;
 							break;
 						}
+
 						case 1:
 						{
 							p = (double) timeDif / (double) animationDuration;
@@ -63,15 +70,16 @@ public class AnimationHandler
 						}
 					}
 				}
+
 				else
 				{
 					this.timeStamps.remove(renderListID);
 				}
 			}
-			
+
 			double pv = Math.pow(p, 0.1);
 			double my = modY * (1.0 - pv);
-			
+
 			if(modY != 0.0)
 			{
 				GL11.glTranslated((double) 0.0, (double) my, (double) 0.0);
@@ -101,8 +109,8 @@ public class AnimationHandler
 			e.printStackTrace();
 		}
 
-		this.timeStamps.put(renderID, new RendererInfo(worldRenderer.posY, -1));
-		this.timeStamps.put(renderID + 1, new RendererInfo(worldRenderer.posY, -1));
+		this.timeStamps.put(renderID, new RendererInfo(worldRenderer.posX, worldRenderer.posY, worldRenderer.posZ, -1));
+		this.timeStamps.put(renderID + 1, new RendererInfo(worldRenderer.posX, worldRenderer.posY, worldRenderer.posZ, -1));
 	}
 
 	static
@@ -148,11 +156,15 @@ public class AnimationHandler
 
 	private class RendererInfo
 	{
+		public int posX;
 		public int posY;
+		public int posZ;
 		public long timeStamp;
 
-		public RendererInfo(int posY, long timeStamp)
+		public RendererInfo(int posX, int posY, int posZ, long timeStamp)
 		{
+			this.posX = posX;
+			this.posZ = posZ;
 			this.posY = posY;
 			this.timeStamp = timeStamp;
 		}
