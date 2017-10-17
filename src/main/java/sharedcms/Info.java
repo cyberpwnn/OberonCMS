@@ -8,6 +8,8 @@ import sharedcms.gui.util.R;
 
 public class Info
 {
+	public static final String WINDOW_TITLE = "Project Oberon";
+	public static final int WINDOW_FRAMERATE = 69;
 	public static final String NAME = "Shared CMS";
 	public static final String ID = "sharedcms";
 	public static final String VERSION = "1.0";

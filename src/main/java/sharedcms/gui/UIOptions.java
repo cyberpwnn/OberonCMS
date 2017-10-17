@@ -4,6 +4,7 @@ import java.awt.Color;
 
 import com.google.common.net.HostSpecifier;
 
+import cpw.mods.fml.client.config.GuiConfig;
 import net.minecraft.block.Block.SoundType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SoundCategory;
@@ -19,6 +20,8 @@ import sharedcms.config.GG;
 import sharedcms.config.graphics.GraphicsLevel;
 import sharedcms.config.graphics.GraphicsManager;
 import sharedcms.content.Content;
+import sharedcms.controller.client.ClientController;
+import sharedcms.controller.client.GuiController;
 import sharedcms.gui.base.LUI;
 import sharedcms.gui.component.IComponent;
 import sharedcms.gui.components.HButton;
@@ -737,14 +740,19 @@ public class UIOptions extends LUI
 		buttonSound.setFontSize(14);
 		sidebar.add(buttonSound);
 
-		HButton buttonQuit = new HButton("Quit Game")
+		String k = "Quit Game";
+		
+		if(mc.theWorld == null)
+		{
+			k = "Back";
+		}
+		
+		HButton buttonQuit = new HButton(k)
 		{
 			@Override
 			public void clicked()
 			{
-				mc.theWorld.sendQuittingDisconnectingPacket();
-				mc.loadWorld((WorldClient) null);
-				mc.displayGuiScreen(new GuiMainMenu());
+				GuiController.exitToMainMenu();
 			}
 		};
 

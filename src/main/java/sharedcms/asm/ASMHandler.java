@@ -48,7 +48,7 @@ public class ASMHandler implements IFMLLoadingPlugin
 		r = true;
 
 		long seed = 50;
-		
+
 		Random r = new Random(50);
 		final int[] prog = {0};
 
@@ -58,7 +58,7 @@ public class ASMHandler implements IFMLLoadingPlugin
 			public void draw(Graphics g)
 			{
 				System.out.println("Draw Cities & Villages");
-				
+
 				for(int i = 0; i < 1000; i++)
 				{
 					for(int j = 0; j < 1000; j++)
@@ -96,11 +96,13 @@ public class ASMHandler implements IFMLLoadingPlugin
 
 	public void buildInjectors()
 	{
-		Display.setTitle("Project Oberon");
+		add("InjectorMinecraftStartGame");
+		add("InjectorMinecraftLimitFramerate");
 		add("InjectorBlock");
 		add("InjectorBlockCactus");
 		add("InjectorRenderer");
 		add("InjectorCamera");
+		add("InjectorGuiScreenBackground");
 		add("InjectorBlurShader");
 		add("InjectorWorldRenderer");
 	}

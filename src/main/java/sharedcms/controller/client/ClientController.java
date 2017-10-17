@@ -16,11 +16,6 @@ import sharedcms.util.PlayerUtils;
 
 public class ClientController extends Controller
 {
-	public ClientController()
-	{
-		Display.setTitle("Project Oberon");
-	}
-
 	@Override
 	public void onPreInitialization()
 	{

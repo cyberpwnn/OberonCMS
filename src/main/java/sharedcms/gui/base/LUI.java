@@ -144,7 +144,7 @@ public abstract class LUI extends RecycledUI implements MouseAdapter
 		
 		catch(Exception e)
 		{
-			e.printStackTrace();
+			
 		}
 	}
 

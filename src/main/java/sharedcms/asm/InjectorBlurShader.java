@@ -3,6 +3,7 @@ package sharedcms.asm;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.InsnNode;
@@ -15,7 +16,7 @@ public class InjectorBlurShader implements IClassTransformer
 {
 	public byte[] transform(String name, String transformedName, byte[] basicClass)
 	{
-		if(transformedName.equals(ASMKey.CLASS_GUISCREEN))
+		if(transformedName.equals(ASMKey.CLASS_GUISCREEN_D))
 		{
 			System.out.println(" ===>>> Transforming Class [" + transformedName + "], Method [" + ASMKey.METHOD_GUISCREEN_DRAWBACKGROUND_D + "]");
 			ClassNode classNode = new ClassNode();
@@ -36,7 +37,7 @@ public class InjectorBlurShader implements IClassTransformer
 						continue;
 					}
 
-					System.out.println(" ===>>> Modifying GUI background darkness... ");
+					System.out.println(" ===>>> Modifying GUI background darkness");
 					MethodInsnNode colorHook = new MethodInsnNode(184, ASMKey.CLASS_BACKGROUNDBLURCONTROLLER, ASMKey.METHOD_BGC_BACKGROUND_D, ASMKey.SIGNATURE_GUISCREEN_BACKGROUND, false);
 					AbstractInsnNode colorHook2 = colorHook.clone(null);
 					m.instructions.set(next, (AbstractInsnNode) colorHook);
