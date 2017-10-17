@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.common.eventhandler.EventPriority;
@@ -34,7 +35,7 @@ public class GuiController extends Controller
 
 	public GuiController()
 	{
-
+		Display.setTitle("Project Oberon");
 	}
 
 	@Override
@@ -72,33 +73,33 @@ public class GuiController extends Controller
 
 		shx = ((-MouseManager.X + (w)) / 6f) - (w);
 		shy = ((MouseManager.Y - (h)) / 6f) - (h / 4);
-		
+
 		if(ashy == 0 && ashx == 0)
 		{
 			ashx = shx;
 			ashy = shy;
 		}
-		
+
 		if(ashx > shx)
 		{
 			ashx -= (ashx - shx) / 40.0;
 		}
-		
+
 		if(ashx < shx)
 		{
 			ashx += (shx - ashx) / 40.0;
 		}
-		
+
 		if(ashy > shy)
 		{
 			ashy -= (ashy - shy) / 40.0;
 		}
-		
+
 		if(ashy < shy)
 		{
 			ashy += (shy - ashy) / 40.0;
 		}
-		
+
 		GL11.glTranslated(ashx, ashy, 0);
 		GL11.glScalef(4f, 4f, 4f);
 	}
@@ -171,9 +172,10 @@ public class GuiController extends Controller
 	{
 		MouseManager.poll();
 		Keyboard.poll();
-		
+
 		if(first)
 		{
+			showMainMenu();
 			first = false;
 		}
 

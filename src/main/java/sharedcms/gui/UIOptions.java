@@ -90,6 +90,22 @@ public class UIOptions extends LUI
 		}
 	}
 
+	@Override
+	public void drawWorldBackground(int p_146270_1_)
+	{
+		if(this.mc.theWorld != null)
+		{
+			super.drawWorldBackground(p_146270_1_);
+		}
+		
+		else
+		{
+			GuiController.renderBackgroundNoWorldPre();
+			super.drawBackground(p_146270_1_);
+			GuiController.renderBackgroundNoWorld();
+		}
+	}
+
 	private HLabel addLabel(IComponent parent, String name, int font)
 	{
 		HLabel h = new HLabel(name);
@@ -224,7 +240,7 @@ public class UIOptions extends LUI
 		sliderGain.setValue((int) (Info.REVERB_GAIN * 100));
 		sliderGain.setFontSize(12);
 		panel2.add(sliderGain);
-		
+
 		HLabel labelReverbDiff = addLabel(panel2, "Reverb Diffusion", 12);
 
 		HSlider sliderDiff = new HSlider((int) (panel1.getSize().getX() / 1.5), 0, 100)
@@ -741,12 +757,12 @@ public class UIOptions extends LUI
 		sidebar.add(buttonSound);
 
 		String k = "Quit Game";
-		
+
 		if(mc.theWorld == null)
 		{
 			k = "Back";
 		}
-		
+
 		HButton buttonQuit = new HButton(k)
 		{
 			@Override
@@ -778,7 +794,7 @@ public class UIOptions extends LUI
 	public void onGuiClose()
 	{
 		Info.save();
-		
+
 		if(changedSetting)
 		{
 			GConfig.forceSaveALL();
