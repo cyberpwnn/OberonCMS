@@ -13,20 +13,16 @@
  */
 package sharedcms.asm.util;
 
-import net.minecraft.client.Minecraft;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL14;
+
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.settings.GameSettings;
-import net.minecraft.util.Vec3;
 import sharedcms.renderer.camera.ShoulderCamera;
 import sharedcms.renderer.camera.ShoulderLoader;
 import sharedcms.renderer.camera.ShoulderSettings;
 import sharedcms.renderer.camera.math.VectorConverter;
 import sharedcms.renderer.camera.renderer.ShoulderRenderBin;
-
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL14;
-import org.lwjgl.util.vector.Vector2f;
 
 public final class InjectionDelegation {
     @Deprecated

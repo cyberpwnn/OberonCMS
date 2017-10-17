@@ -29,7 +29,7 @@ public class InjectorMinecraftStartGame extends ASMHelper implements IClassTrans
 		String methodName = obfuscated ? ASMKey.METHOD_MINECRAFT_STARTGAME_O : ASMKey.METHOD_MINECRAFT_STARTGAME_D;
 		String methodDesc = ASMKey.SIGNATURE_MINECRAFT_STARTGAME;
 		String guiScreenClass = obfuscated ? ASMKey.CLASS_GUIMAINMENU_O : ASMKey.CLASS_GUIMAINMENU_D;
-		
+
 		for(MethodNode i : node.methods)
 		{
 			if(i.name.equals(methodName) && i.desc.equals(methodDesc))
@@ -45,7 +45,7 @@ public class InjectorMinecraftStartGame extends ASMHelper implements IClassTrans
 						{
 							MethodInsnNode m = (MethodInsnNode) j;
 							LdcInsnNode ldc = (LdcInsnNode) m.getPrevious();
-							
+
 							if(m.name.equals("setTitle") && m.desc.equals("(Ljava/lang/String;)V"))
 							{
 								System.out.println(" ===>>> Replace Game Title with " + Info.WINDOW_TITLE);
@@ -54,11 +54,11 @@ public class InjectorMinecraftStartGame extends ASMHelper implements IClassTrans
 							}
 						}
 					}
-					
+
 					if(j.getOpcode() == Opcodes.NEW)
 					{
 						TypeInsnNode n = (TypeInsnNode) j;
-						
+
 						if(n.desc.equals(guiScreenClass))
 						{
 							if(n.getNext().getOpcode() == Opcodes.DUP)
@@ -66,7 +66,7 @@ public class InjectorMinecraftStartGame extends ASMHelper implements IClassTrans
 								if(n.getNext().getNext().getOpcode() == Opcodes.INVOKESPECIAL)
 								{
 									MethodInsnNode m = (MethodInsnNode) j.getNext().getNext();
-									
+
 									n.desc = ASMKey.CLASS_UIMAINMENU;
 									System.out.println(" ===>>> Replaced Main Menu <NEW> with " + n.desc);
 									m.owner = ASMKey.CLASS_UIMAINMENU;
@@ -76,10 +76,10 @@ public class InjectorMinecraftStartGame extends ASMHelper implements IClassTrans
 						}
 					}
 				}
-				
+
 				if(mNode != null)
 				{
-					
+
 				}
 			}
 		}

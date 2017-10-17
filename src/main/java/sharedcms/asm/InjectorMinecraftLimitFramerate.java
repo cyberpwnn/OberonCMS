@@ -7,7 +7,6 @@ import org.objectweb.asm.tree.IntInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 
 import net.minecraft.launchwrapper.IClassTransformer;
-import sharedcms.Info;
 import sharedcms.asm.util.ASMHelper;
 import sharedcms.asm.util.Accept;
 
@@ -26,7 +25,7 @@ public class InjectorMinecraftLimitFramerate extends ASMHelper implements IClass
 		String methodName = obfuscated ? ASMKey.METHOD_MINECRAFT_GETLIMITFRAMERATE_O : ASMKey.METHOD_MINECRAFT_GETLIMITFRAMERATE_D;
 		String methodDesc = ASMKey.SIGNATURE_MINECRAFT_GETLIMITFRAMERATE;
 		
-		for(MethodNode i : node.methods)
+		block0: for(MethodNode i : node.methods)
 		{
 			if(i.name.equals(methodName) && i.desc.equals(methodDesc))
 			{
@@ -40,9 +39,9 @@ public class InjectorMinecraftLimitFramerate extends ASMHelper implements IClass
 						
 						if(iinsn.operand == 30)
 						{
-							iinsn.operand = Info.WINDOW_FRAMERATE;
-							System.out.println(" ===>>> Set locked framerate to " + Info.WINDOW_FRAMERATE);
-							break;
+							iinsn.operand = 69;
+							System.out.println(" ===>>> Set locked framerate to " + 69);
+							break block0;
 						}
 					}
 				}
