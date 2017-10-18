@@ -435,10 +435,11 @@ public class Content implements IRegistrant
 		public static LeveledBiome BIOME_E = new LeveledBiome(Biome.FOREST, 15);
 		public static LeveledBiome BIOME_F = new LeveledBiome(Biome.CANOPY, 15);
 		public static LeveledBiome BIOME_G = new LeveledBiome(Biome.CANOPY, 20);
-		public static LeveledBiome BIOME_H = new LeveledBiome(Biome.PLAINS, 20);
-		public static LeveledBiome BIOME_I = new LeveledBiome(Biome.PLAINS, 25);
-		public static LeveledBiome BIOME_J = new LeveledBiome(Biome.DESERT, 25);
+		public static LeveledBiome BIOME_H = new LeveledBiome(Biome.CANOPY, 27);
+		public static LeveledBiome BIOME_I = new LeveledBiome(Biome.PLAINS, 27);
+		public static LeveledBiome BIOME_J = new LeveledBiome(Biome.PLAINS, 30);
 		public static LeveledBiome BIOME_K = new LeveledBiome(Biome.DESERT, 30);
+		public static LeveledBiome BIOME_L = new LeveledBiome(Biome.DESERT, 33);
 
 		public static void s()
 		{

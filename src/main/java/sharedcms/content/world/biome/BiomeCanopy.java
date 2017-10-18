@@ -34,7 +34,7 @@ public class BiomeCanopy extends LBiomeBase
 		buffer.putTop(Content.Block.PODZOL, BiomeTemperature.WARM);
 		
 		ShrubBuffer mainShrub = new ShrubBuffer(40);
-		mainShrub.setDecorationPass(DecorationPass.PASS_12);
+		mainShrub.setDecorationPass(DecorationPass.PASS_4);
 		mainShrub.addSoil(Content.Block.PODZOL_MOSSY);
 		mainShrub.addSoil(Content.Block.PODZOL);
 		mainShrub.addBlock(Content.Block.THIN_GRASS, 20);
@@ -43,9 +43,19 @@ public class BiomeCanopy extends LBiomeBase
 		mainShrub.addBlock(Content.Block.SPOKED_GRASS, 20);
 		mainShrub.bindAllHumidities();
 		mainShrub.bindAllTemperatures();
+		
+		ShrubBuffer mainShrub2 = new ShrubBuffer(40);
+		mainShrub2.setDecorationPass(DecorationPass.PASS_14);
+		mainShrub2.addSoil(Content.Block.LEAVES_OAK);
+		mainShrub2.addBlock(Content.Block.THIN_GRASS, 20);
+		mainShrub2.addBlock(Content.Block.TALL_GRASS, 20);
+		mainShrub2.addBlock(Content.Block.STUBBED_GRASS, 20);
+		mainShrub2.addBlock(Content.Block.SPOKED_GRASS, 20);
+		mainShrub2.bindAllHumidities();
+		mainShrub2.bindAllTemperatures();
 
 		ShrubBuffer normalShrub = new ShrubBuffer(30);
-		normalShrub.setDecorationPass(DecorationPass.PASS_12);
+		normalShrub.setDecorationPass(DecorationPass.PASS_4);
 		normalShrub.addSoil(Content.Block.PODZOL_MOSSY);
 		normalShrub.addSoil(Content.Block.PODZOL);
 
@@ -60,9 +70,25 @@ public class BiomeCanopy extends LBiomeBase
 		normalShrub.bindTemperature(BiomeTemperature.CHILLY);
 		normalShrub.bindTemperature(BiomeTemperature.WARM);
 		normalShrub.bindTemperature(BiomeTemperature.HOT);
+		
+		ShrubBuffer normalShrub2 = new ShrubBuffer(30);
+		normalShrub2.setDecorationPass(DecorationPass.PASS_14);
+		normalShrub2.addSoil(Content.Block.LEAVES_OAK);
+
+		for(AresBlockShrub i : Content.flowers())
+		{
+			normalShrub2.addBlock(i, i.getWeight());
+		}
+
+		normalShrub2.bindAllHumidities();
+		normalShrub2.unbindHumidity(BiomeHumidity.ARID);
+		normalShrub2.unbindHumidity(BiomeHumidity.DRY);
+		normalShrub2.bindTemperature(BiomeTemperature.CHILLY);
+		normalShrub2.bindTemperature(BiomeTemperature.WARM);
+		normalShrub2.bindTemperature(BiomeTemperature.HOT);
 
 		ShrubBuffer hotShrub = new ShrubBuffer(25);
-		hotShrub.setDecorationPass(DecorationPass.PASS_12);
+		hotShrub.setDecorationPass(DecorationPass.PASS_4);
 		hotShrub.addSoil(Content.Block.PODZOL_MOSSY);
 		hotShrub.addSoil(Content.Block.PODZOL);
 		hotShrub.addBlock(Content.Block.DEAD_BUSH, 20);
@@ -73,7 +99,7 @@ public class BiomeCanopy extends LBiomeBase
 		hotShrub.bindTemperature(BiomeTemperature.SCORCHED);
 
 		ShrubBuffer dryShrub = new ShrubBuffer(20);
-		dryShrub.setDecorationPass(DecorationPass.PASS_12);
+		dryShrub.setDecorationPass(DecorationPass.PASS_4);
 		dryShrub.addSoil(Content.Block.PODZOL_MOSSY);
 		dryShrub.addSoil(Content.Block.PODZOL);
 		dryShrub.addBlock(Content.Block.DEAD_BUSH, 20);
@@ -132,7 +158,7 @@ public class BiomeCanopy extends LBiomeBase
 
 		TreeBuffer choppedTree = new TreeBuffer(TreeModel.CANOPY, 4, Content.Block.LOG_MOSSY, Blocks.air);
 		choppedTree.setTreeHeight(5);
-		choppedTree.setDecorationPass(DecorationPass.PASS_10);
+		choppedTree.setDecorationPass(DecorationPass.PASS_9);
 		choppedTree.addSoil(Content.Block.PODZOL_MOSSY);
 		choppedTree.addSoil(Content.Block.PODZOL);
 		choppedTree.bindAllHumidities();
@@ -140,7 +166,7 @@ public class BiomeCanopy extends LBiomeBase
 
 		TreeBuffer burnedTree = new TreeBuffer(TreeModel.CANOPY, 13, Content.Block.LOG_MOSSY, Blocks.air);
 		burnedTree.setTreeHeight(12);
-		burnedTree.setDecorationPass(DecorationPass.PASS_10);
+		burnedTree.setDecorationPass(DecorationPass.PASS_9);
 		burnedTree.addSoil(Content.Block.PODZOL_MOSSY);
 		burnedTree.addSoil(Content.Block.PODZOL);
 		burnedTree.bindHumidity(BiomeHumidity.ARID);
@@ -150,7 +176,7 @@ public class BiomeCanopy extends LBiomeBase
 
 		TreeBuffer cookedTree = new TreeBuffer(TreeModel.CANOPY, 9, Content.Block.LOG_DARK, Blocks.air);
 		cookedTree.setTreeHeight(7);
-		cookedTree.setDecorationPass(DecorationPass.PASS_10);
+		cookedTree.setDecorationPass(DecorationPass.PASS_9);
 		cookedTree.addSoil(Content.Block.PODZOL_MOSSY);
 		cookedTree.addSoil(Content.Block.PODZOL);
 		cookedTree.bindAllHumidities();
@@ -160,11 +186,13 @@ public class BiomeCanopy extends LBiomeBase
 		setSurfaceBuffer(buffer);
 		addScatterBuffer(superTree);
 		addScatterBuffer(mainShrub);
+		addScatterBuffer(mainShrub2);
 		addScatterBuffer(normalShrub);
 		addScatterBuffer(dryShrub);
 		addScatterBuffer(hotShrub);
 		addScatterBuffer(burnedTree);
 		addScatterBuffer(normalTree);
+		addScatterBuffer(normalShrub2);
 		addScatterBuffer(cookedTree);
 		addScatterBuffer(choppedTree);
 	}
