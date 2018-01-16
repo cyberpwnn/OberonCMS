@@ -5,6 +5,9 @@ import java.nio.IntBuffer;
 import java.util.HashMap;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL13;
+import org.lwjgl.opengl.GL14;
+import org.lwjgl.opengl.GL44;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.WorldRenderer;
@@ -31,12 +34,13 @@ public class AnimationHandler
 			double modY = 0.0;
 			double p = 1;
 			double chunkY = 0;
+			RendererInfo renderInfo = null;
 
 			if(this.timeStamps.containsKey(renderListID))
 			{
 				long timeDif;
 				int animationDuration;
-				RendererInfo renderInfo = this.timeStamps.get(renderListID);
+				renderInfo = this.timeStamps.get(renderListID);
 				long time = renderInfo.timeStamp;
 
 				if(time == -1)
@@ -80,7 +84,7 @@ public class AnimationHandler
 			double pv = Math.pow(p, 0.1);
 			double my = modY * (1.0 - pv);
 
-			if(modY != 0.0)
+			if(modY != 0.0 && renderInfo != null)
 			{
 				GL11.glTranslated((double) 0.0, (double) my, (double) 0.0);
 			}

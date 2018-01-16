@@ -461,7 +461,9 @@ public class Content implements IRegistrant
 	public static class BiomeEffect
 	{
 		public static BiomeSimplexEffect RIVER = new BiomeSimplexEffect(Biome.RIVER, 1000, 3, 20, BiomeEffectType.STREAK, 0.011, 35, 2);
-		public static BiomeSimplexEffect RIDGE = new BiomeSimplexEffect(Biome.MOUNTAINS, 2000, 9, 20, BiomeEffectType.STREAK, 0.025, 15, 4);
+		public static BiomeSimplexEffect POND = new BiomeSimplexEffect(Biome.RIVER, 2000, 6, 20, BiomeEffectType.BLOB, 0.019, 10, 2);
+		public static BiomeSimplexEffect RIDGE = new BiomeSimplexEffect(Biome.MOUNTAINS, 3000, 9, 20, BiomeEffectType.STREAK, 0.025, 15, 4);
+		public static BiomeSimplexEffect MOUNTAIN_RIDGE = new BiomeSimplexEffect(Biome.MOUNTAINS, 4000,11, 20, BiomeEffectType.BLOB, 0.025, 15, 4);
 
 		public static void s()
 		{

@@ -37,8 +37,10 @@ import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
 import sharedcms.Status;
 import sharedcms.content.Content;
+import sharedcms.content.world.generator.SelectorGenerator;
 import sharedcms.content.world.meta.objects.MetaWorld;
 import sharedcms.controller.shared.WorldHostController;
+import sharedcms.gui.util.R;
 import sharedcms.util.GEN;
 import sharedcms.util.GList;
 import sharedcms.util.M;
@@ -86,6 +88,7 @@ public class AresWorldChunkProvider implements IChunkProvider
 	double[] noise3;
 	double[] noise4;
 	int[][] field_73219_j = new int[32][32];
+	private SelectorGenerator sel;
 
 	private static final String __OBFID = "CL_00000396";
 	{
@@ -112,6 +115,7 @@ public class AresWorldChunkProvider implements IChunkProvider
 		this.noiseGen5 = new NoiseGeneratorOctaves(this.rand, 8);
 		this.doubleSet = new double[825];
 		this.parabolicField = new float[25];
+		sel = new SelectorGenerator(0, p_i2006_2_);
 
 		for(int j = -2; j <= 2; ++j)
 		{
@@ -199,7 +203,7 @@ public class AresWorldChunkProvider implements IChunkProvider
 								{
 									blocks[j3 += short1] = Blocks.water;
 								}
-								
+
 								else
 								{
 									blocks[j3 += short1] = null;
@@ -279,7 +283,7 @@ public class AresWorldChunkProvider implements IChunkProvider
 		int l = 0;
 		int i1 = 0;
 		double d4 = 8.5D;
-		
+
 		for(int j1 = 0; j1 < 5; ++j1)
 		{
 			for(int k1 = 0; k1 < 5; ++k1)
@@ -447,7 +451,7 @@ public class AresWorldChunkProvider implements IChunkProvider
 								continue;
 							}
 						}
-
+						
 						if(i.canDecorate(w, r, pass, surface, vx, vy, vz, temperatureModifier, humidityModifier, temp, hum))
 						{
 							i.decorate(w, r, pass, surface, vx, vy, vz, temperatureModifier, humidityModifier, temp, hum);
