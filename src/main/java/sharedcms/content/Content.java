@@ -108,6 +108,7 @@ public class Content implements IRegistrant
 		public static BlockColdGrass COLD_GRASS = new BlockColdGrass("grass", Material.grass, Sound.GRASS);
 		public static BlockColdDirt COLD_DIRT = new BlockColdDirt("dirt", Material.ground, Sound.GRAVEL);
 		public static BlockColdStone COLD_STONE = new BlockColdStone("cold_stone", Material.rock, Sound.STONE);
+		public static Blockfb BLOCK_FB = new Blockfb("blockfb", Material.rock, Sound.STONE);
 		public static BlockPathStoneBrick PATH_STONE_BRICK = new BlockPathStoneBrick("path_stonebrick", Material.rock, Sound.STONE);
 		public static BlockPathStoneBrickCracked PATH_STONE_BRICK_CRACKED = new BlockPathStoneBrickCracked("path_stonebrick_cracked", Material.rock, Sound.STONE);
 		public static BlockPathStoneBrickCrushed PATH_STONE_BRICK_CRUSHED = new BlockPathStoneBrickCrushed("path_stonebrick_crushed", Material.rock, Sound.STONE);

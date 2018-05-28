@@ -106,3 +106,4 @@ Temporary Items
 *.classpath
 /eclipse/
 /.gradle/
+/build/
